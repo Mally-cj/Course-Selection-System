@@ -3,7 +3,10 @@ from logging.config import fileConfig
 
 from alembic import context
 from sqlalchemy import engine_from_config, pool
+from dotenv import load_dotenv
 
+# 加载 .env 文件中的环境变量
+load_dotenv()
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
@@ -34,7 +37,7 @@ def get_url():
     server = os.getenv("MYSQL_SERVER", "db")
     port = os.getenv("MYSQL_PORT", "5432")
     db = os.getenv("MYSQL_DB", "app")
-    return f"MYSQLql+psycopg://{user}:{password}@{server}:{port}/{db}"
+    return f"mysql://{user}:{password}@{server}:{port}/{db}"
 
 
 def run_migrations_offline():
