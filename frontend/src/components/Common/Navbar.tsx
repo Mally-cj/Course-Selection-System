@@ -27,9 +27,9 @@ const Navbar: React.FC<NavbarProps> = ({ type }) => {
           variant="primary"
           gap={1}
           fontSize={{ base: "sm", md: "inherit" }}
-          onClick={type === "User" ? addUserModal.onOpen : addItemModal.onOpen}
+          onClick={type === "用户" ? addUserModal.onOpen : addItemModal.onOpen}
         >
-          <Icon as={FaPlus} /> Add {type}
+          <Icon as={FaPlus} /> 添加 {type}
         </Button>
         <AddUser isOpen={addUserModal.isOpen} onClose={addUserModal.onClose} />
         <AddItem isOpen={addItemModal.isOpen} onClose={addItemModal.onClose} />

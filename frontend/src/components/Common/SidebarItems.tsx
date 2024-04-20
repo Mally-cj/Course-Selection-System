@@ -7,9 +7,9 @@ import { useQueryClient } from "react-query"
 import type { UserOut } from "../../client"
 
 const items = [
-  { icon: FiHome, title: "Dashboard", path: "/" },
-  { icon: FiBriefcase, title: "Items", path: "/items" },
-  { icon: FiSettings, title: "User Settings", path: "/settings" },
+  { icon: FiHome, title: "主页", path: "/" },
+  { icon: FiBriefcase, title: "课程管理", path: "/items" },
+  { icon: FiSettings, title: "设置", path: "/settings" },
 ]
 
 interface SidebarItemsProps {
@@ -23,7 +23,7 @@ const SidebarItems: React.FC<SidebarItemsProps> = ({ onClose }) => {
   const currentUser = queryClient.getQueryData<UserOut>("currentUser")
 
   const finalItems = currentUser?.is_superuser
-    ? [...items, { icon: FiUsers, title: "Admin", path: "/admin" }]
+    ? [...items, { icon: FiUsers, title: "用户管理", path: "/admin" }]
     : items
 
   const listItems = finalItems.map((item) => (

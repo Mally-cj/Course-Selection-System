@@ -29,6 +29,7 @@ const Sidebar: React.FC = () => {
   const currentUser = queryClient.getQueryData<UserOut>("currentUser")
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { logout } = useAuth()
+  const textColor1 = useColorModeValue("ui.main", "ui.white")
 
   const handleLogout = async () => {
     logout()
@@ -93,10 +94,24 @@ const Sidebar: React.FC = () => {
           p={4}
           borderRadius={12}
         >
-          <Box>
+          {/* <Box>
             <Image src={Logo} alt="Logo" w="180px" maxW="2xs" p={6} />
             <SidebarItems />
+          </Box> */}
+          <Box>
+            <Text
+              color={textColor1}
+              noOfLines={2}
+              fontSize="m"
+              p={5}
+              maxW="180px"
+            >
+            智能选课系统
+            </Text>
+            {/* <Image src={Logo} alt="Logo" w="180px" maxW="2xs" p={6} /> */}
+            <SidebarItems />
           </Box>
+
           {currentUser?.email && (
             <Text
               color={textColor}
