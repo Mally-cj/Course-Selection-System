@@ -1,5 +1,5 @@
 from sqlmodel import Field, Relationship, SQLModel
-
+from pydantic import BaseModel
 
 # Shared properties
 # TODO replace email str with EmailStr when sqlmodel supports it
@@ -91,6 +91,13 @@ class ItemsOut(SQLModel):
     data: list[ItemOut]
     count: int
 
+from typing import TypeVar, Generic, Optional
+
+T = TypeVar('T')
+
+class ListResp(BaseModel, Generic[T]):
+    data: Optional[list[T]] = None
+    count: int
 
 # Generic message
 class Message(SQLModel):
