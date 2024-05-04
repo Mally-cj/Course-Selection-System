@@ -4,8 +4,8 @@ from fastapi import APIRouter, HTTPException
 from sqlmodel import func, select
 
 from app.api.deps import CurrentUser, SessionDep
-from app.models import Course, ListResp, CourseCreate, CourseUpdate
-
+from app.models import Course, ListResp, CourseCreate, CourseUpdate, CourseSelect
+from app.models import Student
 from app.crud import crud
 
 router = APIRouter()
@@ -27,12 +27,8 @@ def create_courses(
     """
     获取课程
     """
-    
-    # current_user.id
-
     data = crud.create(Course, session, req)
     return data
-    # return ListResp(data=items, count=count)
 
 @router.get("/{id}", response_model=Course)
 def get_course(
@@ -63,3 +59,23 @@ def delete_course(
     """
     data = crud.delete(Course, session, id)
     return data
+
+@router.post("/select")
+def select_course(
+    session: SessionDep, current_user: CurrentUser, req: CourseSelect
+) -> Any:
+    """
+    获取课程
+    """
+    course = crud.get(Course, session, req.course_id)
+    if course is None:
+        raise HTTPException(status_code=200, detail="Course not found")
+    student = crud.get(Student, session, req.student_id)
+    if student is None:
+        raise HTTPException(status_code=200, detail="Student not found")
+    course.students.append(student)
+    session.add(course)
+    session.commit()
+    session.refresh(course)
+    
+    return "OK"

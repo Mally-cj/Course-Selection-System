@@ -19,7 +19,7 @@ from app.models.models import (
     UserCreate,
     UserCreateOpen,
     UserOut,
-    UsersOut,
+    ListResp,
     UserUpdate,
     UserUpdateMe,
 )
@@ -29,7 +29,7 @@ router = APIRouter()
 
 
 @router.get(
-    "/", dependencies=[Depends(get_current_active_superuser)], response_model=UsersOut
+    "/", dependencies=[Depends(get_current_active_superuser)], response_model=ListResp[UserOut]
 )
 def read_users(session: SessionDep, skip: int = 0, limit: int = 100) -> Any:
     """
@@ -42,7 +42,7 @@ def read_users(session: SessionDep, skip: int = 0, limit: int = 100) -> Any:
     statement = select(User).offset(skip).limit(limit)
     users = session.exec(statement).all()
 
-    return UsersOut(data=users, count=count)
+    return ListResp(data=users, count=count)
 
 
 @router.post(

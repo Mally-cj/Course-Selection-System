@@ -1,6 +1,7 @@
 from typing import Any
 
 from app.api.deps import SessionDep
+from pydantic import BaseModel
 from sqlmodel import Session, select, func
 
 from app.core.security import get_password_hash, verify_password
@@ -18,10 +19,10 @@ from typing import TypeVar, Generic, Optional
 
 T = TypeVar('T', bound=SQLModel)
 
-def list(model: T, session: SessionDep, skip: int, limit: int) -> tuple[list[T], int]:
+def list(model: T, session: SessionDep, skip: int, limit: int, cond: dict| BaseModel = None) -> tuple[list[T], int]:
     count_statement = select(func.count()).select_from(model)
     count = session.exec(count_statement).one()
-    statement = select(model).offset(skip).limit(limit)
+    statement = select(model).where(cond).offset(skip).limit(limit)
     items = session.exec(statement).all()
     return items, count
 

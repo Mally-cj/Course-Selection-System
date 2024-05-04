@@ -1,15 +1,87 @@
 from sqlmodel import Field, Relationship, SQLModel
 from pydantic import BaseModel
-
+import enum
 # Shared properties
 # TODO replace email str with EmailStr when sqlmodel supports it
+
+
+class StudentCourseLink(SQLModel, table=True):
+    course_id: int = Field(foreign_key="course.id", primary_key=True)
+    student_id: int = Field(foreign_key="student.id", primary_key=True)
+
+class TeacherCourseLink(SQLModel, table=True):
+    course_id: int | None = Field(default=None, foreign_key="course.id", primary_key=True)
+    teacher_id: int | None = Field(default=None, foreign_key="teacher.id", primary_key=True)
+
+
+class CourseBase(SQLModel):
+    name: str
+    description: str | None = None
+    
+class Course(CourseBase, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    students: list["Student"] = Relationship(back_populates="courses", link_model=StudentCourseLink)
+    teachers: list["Teacher"] = Relationship(back_populates="courses", link_model=TeacherCourseLink)
+
+class CourseQuery(CourseBase):
+    student_id: int
+    
+    
+class CourseCreate(CourseBase):
+    name : str | None = None
+
+class CourseSelect(BaseModel):
+    course_id: int
+    student_id: int
+
+class CourseUpdate(CourseBase):
+    pass
+
+class StudentBase(SQLModel):
+    name: str
+    email: str
+    
+class Student(StudentBase, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    # course_id: int = ForeignKey('course.id')
+    courses: list["Course"] = Relationship(back_populates="students", link_model=StudentCourseLink)
+    user: "User" = Relationship(back_populates="student")
+
+class StudentCreate(StudentBase):
+    pass
+
+class StudentUpdate(StudentBase):
+    pass
+
+class TeacherBase(SQLModel):
+    name: str
+    email: str
+
+class Teacher(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    # course_id: int = ForeignKey('course.id')
+    courses: list["Course"] = Relationship(back_populates="teachers", link_model=TeacherCourseLink)
+    user: "User" = Relationship(back_populates="teacher")
+
+class TeacherCreate(TeacherBase):
+    pass
+
+class TeacherUpdate(TeacherBase):
+    pass
+class UserType(int, enum.Enum):
+    admin = 1
+    student = 2
+    teacher = 3
+    
 class UserBase(SQLModel):
     email: str = Field(unique=True, index=True)
     is_active: bool = True
     is_superuser: bool = False
     full_name: str | None = None
-
-
+    student_id: int | None = Field(default=None, foreign_key="student.id")
+    teacher_id: int | None = Field(default=None, foreign_key="teacher.id")
+    user_type: UserType
+    
 # Properties to receive via API on creation
 class UserCreate(UserBase):
     password: str
@@ -45,18 +117,16 @@ class User(UserBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
     hashed_password: str
     items: list["Item"] = Relationship(back_populates="owner")
+    student: Student | None = Relationship(back_populates="user")
+    teacher: Teacher | None = Relationship(back_populates="user")
 
 
 # Properties to return via API, id is always required
 class UserOut(UserBase):
     id: int
-
-
-class UsersOut(SQLModel):
-    data: list[UserOut]
-    count: int
-
-
+    student: Student | None = Field(default=None)
+    teacher: Teacher | None = Field(default=None)
+    
 # Shared properties
 class ItemBase(SQLModel):
     title: str
