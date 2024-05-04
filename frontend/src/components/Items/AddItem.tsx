@@ -98,6 +98,7 @@ const AddItem: React.FC<AddItemProps> = ({ isOpen, onClose }) => {
                 {...register("description")}
                 placeholder="Description"
                 type="text"
+                style={{ width: "400px", height: "200px" }}
               />
             </FormControl>
           </ModalBody>

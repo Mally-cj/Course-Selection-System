@@ -10,14 +10,15 @@ import type React from "react"
 import { BsThreeDotsVertical } from "react-icons/bs"
 import { FiEdit, FiTrash } from "react-icons/fi"
 
-import type { ItemOut, UserOut } from "../../client"
+import type { ItemOut, UserOut, CourseOut } from "../../client"
 import EditUser from "../Admin/EditUser"
 import EditItem from "../Items/EditItem"
 import Delete from "./DeleteAlert"
+import EditCourse from "../Courses/EditCourse"
 
 interface ActionsMenuProps {
   type: string
-  value: ItemOut | UserOut
+  value: ItemOut | UserOut | CourseOut
   disabled?: boolean
 }
 
@@ -55,13 +56,19 @@ const ActionsMenu: React.FC<ActionsMenuProps> = ({ type, value, disabled }) => {
             isOpen={editUserModal.isOpen}
             onClose={editUserModal.onClose}
           />
-        ) : (
+        ): type === "Item" ? (
           <EditItem
             item={value as ItemOut}
             isOpen={editUserModal.isOpen}
             onClose={editUserModal.onClose}
           />
-        )}
+        ):(
+        <EditCourse
+        item={value as CourseOut}
+        isOpen={editUserModal.isOpen}
+        onClose={editUserModal.onClose}
+        />)
+      }
         <Delete
           type={type}
           id={value.id}

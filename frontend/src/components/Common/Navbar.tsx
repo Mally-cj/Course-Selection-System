@@ -4,6 +4,7 @@ import { FaPlus } from "react-icons/fa"
 
 import AddUser from "../Admin/AddUser"
 import AddItem from "../Items/AddItem"
+import AddCourse from "../Courses/Addcourse"
 
 interface NavbarProps {
   type: string
@@ -12,6 +13,7 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ type }) => {
   const addUserModal = useDisclosure()
   const addItemModal = useDisclosure()
+  const addCourseModal = useDisclosure()
 
   return (
     <>
@@ -27,12 +29,13 @@ const Navbar: React.FC<NavbarProps> = ({ type }) => {
           variant="primary"
           gap={1}
           fontSize={{ base: "sm", md: "inherit" }}
-          onClick={type === "用户" ? addUserModal.onOpen : addItemModal.onOpen}
+          onClick={type === "User" ? addUserModal.onOpen : type==="Item" ? addItemModal.onOpen :addCourseModal}
         >
           <Icon as={FaPlus} /> 添加 {type}
         </Button>
         <AddUser isOpen={addUserModal.isOpen} onClose={addUserModal.onClose} />
         <AddItem isOpen={addItemModal.isOpen} onClose={addItemModal.onClose} />
+        <AddCourse isOpen={addCourseModal.isOpen} onClose={addCourseModal.onClose} />
       </Flex>
     </>
   )

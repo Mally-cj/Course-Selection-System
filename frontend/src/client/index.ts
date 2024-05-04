@@ -24,6 +24,10 @@ export type { UsersOut } from './models/UsersOut';
 export type { UserUpdate } from './models/UserUpdate';
 export type { UserUpdateMe } from './models/UserUpdateMe';
 export type { ValidationError } from './models/ValidationError';
+export type { CourseCreate } from './models/CourseCreate';
+export type { CourseOut } from './models/CourseOut';
+export type { CoursesOut } from './models/CoursesOut';
+export type { CourseUpdate } from './models/CourseUpdate';
 
 export { $Body_login_login_access_token } from './schemas/$Body_login_login_access_token';
 export { $HTTPValidationError } from './schemas/$HTTPValidationError';
@@ -47,3 +51,4 @@ export { ItemsService } from './services/ItemsService';
 export { LoginService } from './services/LoginService';
 export { UsersService } from './services/UsersService';
 export { UtilsService } from './services/UtilsService';
+export { CoursesService } from './services/CoursesService';

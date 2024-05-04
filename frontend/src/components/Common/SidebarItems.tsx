@@ -8,10 +8,9 @@ import type { UserOut } from "../../client"
 
 const items = [
   { icon: FiHome, title: "主页", path: "/" },
-  { icon: FiBriefcase, title: "课程管理", path: "/items" },
+  { icon: FiBriefcase, title: "项目", path: "/items" },
   { icon: FiSettings, title: "设置", path: "/settings" },
-  { icon: FiSettings, title: "设置", path: "/settings" },
-
+  { icon: FiBriefcase, title: "课程管理", path: "/courses" },
 ]
 
 interface SidebarItemsProps {
