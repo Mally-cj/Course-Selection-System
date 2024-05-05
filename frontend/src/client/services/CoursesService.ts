@@ -4,9 +4,9 @@
 /* eslint-disable */
 import type { Course } from '../models/Course';
 import type { CourseCreate } from '../models/CourseCreate';
-import type { CourseOut } from '../models/CourseOut';
+import type { CourseSelect } from '../models/CourseSelect';
 import type { CourseUpdate } from '../models/CourseUpdate';
-import type { ListResp_Course_ } from '../models/ListResp_Course_';
+import type { ListResp_CourseOut_ } from '../models/ListResp_CourseOut_';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -17,7 +17,7 @@ export class CoursesService {
     /**
      * List Courses
      * 获取课程
-     * @returns ListResp_Course_ Successful Response
+     * @returns ListResp_CourseOut_ Successful Response
      * @throws ApiError
      */
     public static coursesListCourses({
@@ -26,7 +26,7 @@ export class CoursesService {
     }: {
         skip?: number,
         limit?: number,
-    }): CancelablePromise<ListResp_Course_> {
+    }): CancelablePromise<ListResp_CourseOut_> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/courses/',
@@ -144,7 +144,7 @@ export class CoursesService {
     public static coursesSelectCourse({
         requestBody,
     }: {
-        requestBody: CourseOut,
+        requestBody: CourseSelect,
     }): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',

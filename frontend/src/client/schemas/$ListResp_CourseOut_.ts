@@ -2,19 +2,22 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export const $Teacher = {
+export const $ListResp_CourseOut_ = {
     properties: {
-        name: {
-            type: 'string',
-            isRequired: true,
-        },
-        id: {
+        data: {
             type: 'any-of',
             contains: [{
-                type: 'number',
+                type: 'array',
+                contains: {
+                    type: 'CourseOut',
+                },
             }, {
                 type: 'null',
             }],
+        },
+        count: {
+            type: 'number',
+            isRequired: true,
         },
     },
 } as const;

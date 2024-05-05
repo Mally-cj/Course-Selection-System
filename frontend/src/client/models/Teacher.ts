@@ -4,7 +4,7 @@
 /* eslint-disable */
 
 export type Teacher = {
-    id: number;
     name: string;
+    id?: (number | null);
 };
 

@@ -4,8 +4,8 @@
 /* eslint-disable */
 
 export type Student = {
-    id: number;
-    student_id: string;
     name: string;
+    student_id: string;
+    id?: (number | null);
 };
 

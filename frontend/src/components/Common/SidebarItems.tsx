@@ -24,6 +24,8 @@ const SidebarItems: React.FC<SidebarItemsProps> = ({ onClose }) => {
   if (currentUser?.user_type == 2) {
     // 如果当前用户是学生
     items = [...items, ...[
+      { icon: FiBriefcase, title: "我的课程", path: "/my-courses"},
+      { icon: FiBriefcase, title: "课程选择", path: "/courses-selection"}
       ]
     ]
   } else if (currentUser?.user_type === 3) {

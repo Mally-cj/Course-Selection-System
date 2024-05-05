@@ -1,5 +1,6 @@
 from typing import Any
 
+from app.models.models import CourseSelect
 from fastapi import APIRouter, HTTPException
 from sqlmodel import func, select
 
@@ -62,7 +63,7 @@ def delete_course(
 
 @router.post("/select")
 def select_course(
-    session: SessionDep, current_user: CurrentUser, req: CourseOut
+    session: SessionDep, current_user: CurrentUser, req: CourseSelect
 ) -> Any:
     """
     获取课程
