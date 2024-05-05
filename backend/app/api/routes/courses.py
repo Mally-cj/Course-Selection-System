@@ -7,26 +7,38 @@ from app.api.deps import CurrentUser, SessionDep
 from app.models import Course, ListResp, CourseCreate, CourseUpdate, CourseOut
 from app.models import Student
 from app.crud import crud
+from app.crud import course
 
 router = APIRouter()
+
+@router.get("/teachercourse", response_model=ListResp[CourseOut])
+def list_teachercourses(
+    session: SessionDep, current_user: CurrentUser, skip: int = 0, limit: int = 100
+) -> Any:
+    """
+    获取教师的课程
+    """
+    items, count = course.list_byteacher(Course, session,current_user.teacher_id, skip, limit)
+    return ListResp(data=items, count=count)
 
 @router.get("/", response_model=ListResp[CourseOut])
 def list_courses(
     session: SessionDep, current_user: CurrentUser, skip: int = 0, limit: int = 100
 ) -> Any:
     """
-    获取课程
+    获取所有的课程
     """
     items, count = crud.list(Course, session, skip, limit)
     return ListResp(data=items, count=count)
 
-@router.post("/", response_model=Course)
+@router.post("/add", response_model=Course)
 def create_courses(
     session: SessionDep, current_user: CurrentUser, req: CourseCreate
 ) -> Any:
     """
-    获取课程
+    添加课程课程
     """
+    req.teacher_id=current_user.teacher_id
     data = crud.create(Course, session, req)
     return data
 

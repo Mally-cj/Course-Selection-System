@@ -144,7 +144,6 @@ const AddCourse: React.FC<AddCourseProps> = ({ isOpen, onClose }) => {
             </FormControl>
             <FormControl mt={4}>
               <FormLabel htmlFor="description">课程简介</FormLabel>
-              <FormLabel htmlFor="description">课程简介</FormLabel>
               <Input
                 id="description"
                 {...register("description")}

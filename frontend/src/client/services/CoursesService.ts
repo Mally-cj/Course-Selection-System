@@ -53,7 +53,7 @@ export class CoursesService {
     }): CancelablePromise<Course> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/v1/courses/',
+            url: '/api/v1/courses/add',
             body: requestBody,
             mediaType: 'application/json',
             errors: {
@@ -157,4 +157,31 @@ export class CoursesService {
         });
     }
 
+        /**
+     * List Courses
+     * 获取课程
+     * @returns ListResp_Course_ Successful Response
+     * @throws ApiError
+     */
+         public static teacherCourses({
+            skip,
+            limit = 100,
+        }: {
+            skip?: number,
+            limit?: number,
+        }): CancelablePromise<ListResp_Course_> {
+            return __request(OpenAPI, {
+                method: 'GET',
+                url: '/api/v1/courses/teachercourse',
+                query: {
+                    'skip': skip,
+                    'limit': limit,
+                },
+                errors: {
+                    422: `Validation Error`,
+                },
+            });
+        }
+
 }
+

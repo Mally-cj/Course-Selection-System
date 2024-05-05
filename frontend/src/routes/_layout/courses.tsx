@@ -30,7 +30,7 @@ function Courses() {
     isLoading,
     isError,
     error,
-  } = useQuery("courese", () => CoursesService.coursesListCourses({}))
+  } = useQuery("courese", () => CoursesService.teacherCourses({}))
 
   if (isError) {
     const errDetail = (error as ApiError).body?.detail
