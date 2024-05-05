@@ -4,7 +4,6 @@
 /* eslint-disable */
 
 export type TeacherCreate = {
-    id?: number;
-    name?: string;
+    name: string;
 };
 

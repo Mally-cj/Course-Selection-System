@@ -1,6 +1,7 @@
 from typing import Any
 
 # from app.models.models import StudentCourseLink
+from app.models.models import EnrollmentList
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import func, select
 
@@ -69,8 +70,8 @@ def list_student_courses(
     """
     获取学生
     """
-    statement = select(Course).where(Student.id == id).offset(skip).limit(limit)
+    statement = select(Course).where(EnrollmentList.student_id == id, Course.id == EnrollmentList.course_id).offset(skip).limit(limit)
     items = session.exec(statement).all()
     count_statement = select(func.count()).select_from(Course).where(Student.id == id)
     count = session.exec(count_statement).one()
-    return ListResp(data=items, count=1)
+    return ListResp(data=items, count=count)

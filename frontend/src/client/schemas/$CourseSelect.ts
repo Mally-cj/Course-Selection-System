@@ -2,14 +2,14 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export const $StudentUpdate = {
+export const $CourseSelect = {
     properties: {
-        name: {
-            type: 'string',
+        course_id: {
+            type: 'number',
             isRequired: true,
         },
         student_id: {
-            type: 'string',
+            type: 'number',
             isRequired: true,
         },
     },

@@ -4,17 +4,15 @@
 /* eslint-disable */
 
 export type Course = {
-    id: number;
-    teacher_id: number;
-    teacher_name: string;
+    id?: (number | null);
     name: string;
     textbook: string;
-    description: string;
+    description?: (string | null);
     class_time: string;
     class_location: string;
-    enrollment_list_id: number;
-    announcement_id: number;
-    comment_id: number;
+    teacher_id?: (number | null);
     status: string;
+    max_capacity?: (number | null);
+    current_capacity?: (number | null);
 };
 

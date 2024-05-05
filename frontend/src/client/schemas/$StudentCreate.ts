@@ -4,14 +4,13 @@
 /* eslint-disable */
 export const $StudentCreate = {
     properties: {
-        id: {
-            type: 'number',
+        name: {
+            type: 'string',
+            isRequired: true,
         },
         student_id: {
             type: 'string',
-        },
-        name: {
-            type: 'string',
+            isRequired: true,
         },
     },
 } as const;

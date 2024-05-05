@@ -5,16 +5,12 @@
 export const $Course = {
     properties: {
         id: {
-            type: 'number',
-            isRequired: true,
-        },
-        teacher_id: {
-            type: 'number',
-            isRequired: true,
-        },
-        teacher_name: {
-            type: 'string',
-            isRequired: true,
+            type: 'any-of',
+            contains: [{
+                type: 'number',
+            }, {
+                type: 'null',
+            }],
         },
         name: {
             type: 'string',
@@ -25,8 +21,12 @@ export const $Course = {
             isRequired: true,
         },
         description: {
-            type: 'string',
-            isRequired: true,
+            type: 'any-of',
+            contains: [{
+                type: 'string',
+            }, {
+                type: 'null',
+            }],
         },
         class_time: {
             type: 'string',
@@ -36,21 +36,33 @@ export const $Course = {
             type: 'string',
             isRequired: true,
         },
-        enrollment_list_id: {
-            type: 'number',
-            isRequired: true,
-        },
-        announcement_id: {
-            type: 'number',
-            isRequired: true,
-        },
-        comment_id: {
-            type: 'number',
-            isRequired: true,
+        teacher_id: {
+            type: 'any-of',
+            contains: [{
+                type: 'number',
+            }, {
+                type: 'null',
+            }],
         },
         status: {
             type: 'string',
             isRequired: true,
+        },
+        max_capacity: {
+            type: 'any-of',
+            contains: [{
+                type: 'number',
+            }, {
+                type: 'null',
+            }],
+        },
+        current_capacity: {
+            type: 'any-of',
+            contains: [{
+                type: 'number',
+            }, {
+                type: 'null',
+            }],
         },
     },
 } as const;

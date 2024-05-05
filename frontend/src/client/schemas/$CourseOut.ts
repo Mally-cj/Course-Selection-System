@@ -5,40 +5,72 @@
 export const $CourseOut = {
     properties: {
         id: {
-            type: 'number',
-        },
-        teacher_id: {
-            type: 'number',
-        },
-        teacher_name: {
-            type: 'string',
+            type: 'any-of',
+            contains: [{
+                type: 'number',
+            }, {
+                type: 'null',
+            }],
         },
         name: {
             type: 'string',
+            isRequired: true,
         },
         textbook: {
             type: 'string',
+            isRequired: true,
         },
         description: {
-            type: 'string',
+            type: 'any-of',
+            contains: [{
+                type: 'string',
+            }, {
+                type: 'null',
+            }],
         },
         class_time: {
             type: 'string',
+            isRequired: true,
         },
         class_location: {
             type: 'string',
+            isRequired: true,
         },
-        enrollment_list_id: {
-            type: 'number',
-        },
-        announcement_id: {
-            type: 'number',
-        },
-        comment_id: {
-            type: 'number',
+        teacher_id: {
+            type: 'any-of',
+            contains: [{
+                type: 'number',
+            }, {
+                type: 'null',
+            }],
         },
         status: {
             type: 'string',
+            isRequired: true,
+        },
+        max_capacity: {
+            type: 'any-of',
+            contains: [{
+                type: 'number',
+            }, {
+                type: 'null',
+            }],
+        },
+        current_capacity: {
+            type: 'any-of',
+            contains: [{
+                type: 'number',
+            }, {
+                type: 'null',
+            }],
+        },
+        teacher: {
+            type: 'any-of',
+            contains: [{
+                type: 'Teacher',
+            }, {
+                type: 'null',
+            }],
         },
     },
 } as const;

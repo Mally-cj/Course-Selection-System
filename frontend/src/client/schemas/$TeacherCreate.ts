@@ -4,11 +4,9 @@
 /* eslint-disable */
 export const $TeacherCreate = {
     properties: {
-        id: {
-            type: 'number',
-        },
         name: {
             type: 'string',
+            isRequired: true,
         },
     },
 } as const;

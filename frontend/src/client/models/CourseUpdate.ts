@@ -4,17 +4,15 @@
 /* eslint-disable */
 
 export type CourseUpdate = {
-    id?: number;
-    teacher_id?: number;
-    teacher_name?: string;
-    name?: string;
-    textbook?: (string | null);
+    id?: (number | null);
+    name: string;
+    textbook: string;
     description?: (string | null);
-    class_time?: string;
-    class_location?: string;
-    enrollment_list_id?: number;
-    announcement_id?: number;
-    comment_id?: number;
-    status?: string;
+    class_time: string;
+    class_location: string;
+    teacher_id?: (number | null);
+    status: string;
+    max_capacity?: (number | null);
+    current_capacity?: (number | null);
 };
 

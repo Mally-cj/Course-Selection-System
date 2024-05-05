@@ -4,8 +4,7 @@
 /* eslint-disable */
 
 export type StudentUpdate = {
-    id?: number;
-    student_id?: string;
-    name?: string;
+    name: string;
+    student_id: string;
 };
 

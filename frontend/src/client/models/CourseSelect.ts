@@ -3,8 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type StudentCreate = {
-    name: string;
-    student_id: string;
+export type CourseSelect = {
+    course_id: number;
+    student_id: number;
 };
 

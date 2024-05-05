@@ -25,6 +25,10 @@ const Navbar: React.FC<NavbarProps> = ({ type }) => {
     const addCourseModal = useDisclosure()
     onClick = addCourseModal.onOpen
     item = <AddCourse isOpen={addCourseModal.isOpen} onClose={addCourseModal.onClose} />
+  } else if (type == "CourseSelect") {
+    // const selectCourseModal = useDisclosure()
+    // onClick = selectCourseModal.onOpen
+    // item = <SelectCourse isOpen={selectCourseModal.isOpen} onClose={selectCourseModal.onClose} />
   }
   return (
     <>

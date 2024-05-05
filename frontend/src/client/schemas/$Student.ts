@@ -4,17 +4,21 @@
 /* eslint-disable */
 export const $Student = {
     properties: {
-        id: {
-            type: 'number',
+        name: {
+            type: 'string',
             isRequired: true,
         },
         student_id: {
             type: 'string',
             isRequired: true,
         },
-        name: {
-            type: 'string',
-            isRequired: true,
+        id: {
+            type: 'any-of',
+            contains: [{
+                type: 'number',
+            }, {
+                type: 'null',
+            }],
         },
     },
 } as const;
