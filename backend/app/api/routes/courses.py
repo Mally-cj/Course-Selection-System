@@ -5,12 +5,13 @@ from fastapi import APIRouter, HTTPException
 from sqlmodel import func, select
 
 from app.api.deps import CurrentUser, SessionDep
-from app.models import Course, ListResp, CourseCreate, CourseUpdate, CourseOut
+from app.models import Course, ListResp, CourseCreate, CourseUpdate, CourseOut, EnrollmentList, EnrollmentOut
 from app.models import Student
 from app.crud import crud
 from app.crud import course
 
 router = APIRouter()
+
 
 @router.get("/teachercourse", response_model=ListResp[CourseOut])
 def list_teachercourses(
@@ -92,3 +93,14 @@ def select_course(
     session.refresh(course)
     
     return "OK"
+
+
+@router.get("/getenrollmentlist/{course_id}", response_model=ListResp[EnrollmentOut])
+def getenrollmentlist(
+    session: SessionDep, current_user: CurrentUser, course_id: int,skip: int = 0, limit: int = 100
+) -> Any:
+    """
+    获取课程报名名单
+    """
+    items, count = course.getenrollmentlist_bycourseid(EnrollmentList, session, course_id,skip,limit)
+    return ListResp(data=items, count=count)

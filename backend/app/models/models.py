@@ -6,9 +6,15 @@ import enum
 # TODO replace email str with EmailStr when sqlmodel supports it
 
 
-class EnrollmentList(SQLModel, table=True):
+class EnrollmentListbase(SQLModel):
     course_id: int = Field(foreign_key="course.id", primary_key=True)
     student_id: int = Field(foreign_key="student.id", primary_key=True)
+
+class EnrollmentList(EnrollmentListbase, table=True):
+    pass
+
+class EnrollmentOut(EnrollmentListbase):
+    student: Optional["Student"] = None
 
 class TeacherCourseLink(SQLModel, table=True):
     course_id: int | None = Field(default=None, foreign_key="course.id", primary_key=True)

@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from sqlmodel import Session, select, func
 
 from app.core.security import get_password_hash, verify_password
-from app.models import Item, ItemCreate, User, UserCreate, UserUpdate, Course, CourseCreate
+from app.models import Item, ItemCreate, User, UserCreate, UserUpdate, Course, CourseCreate, EnrollmentList
 from sqlmodel import SQLModel
 
 def create_course(*, session: Session, course_in: CourseCreate, owner_id: int) -> Course:
@@ -20,19 +20,18 @@ from typing import TypeVar, Generic, Optional
 T = TypeVar('T', bound=SQLModel)
 
 def list_byteacher(model: T, session: SessionDep,teacher_id: id, skip: int, limit: int, cond: dict| BaseModel = None) -> tuple[list[T], int]:
-    # count_statement = select(func.count()).select_from(model)
-    # if cond is not None:
-    #     count_statement = count_statement.where(cond)
-    # count = session.exec(count_statement).one()
-    # statement = select(model)
-    # if cond is not None:
-    #     statement = statement.where(cond)
-    # statement = statement.offset(skip).limit(limit)
-    # items = session.exec(statement).all()
     count_statement = select(func.count()).select_from(model).where(model.teacher_id == teacher_id)
     count = session.execute(count_statement).scalar()
 
     statement = select(model).where(model.teacher_id == teacher_id).offset(skip).limit(limit)
+    items = session.execute(statement).scalars().all()
+    return items, count
+
+def getenrollmentlist_bycourseid(model: T, session: SessionDep,course_id: id, skip: int, limit: int, cond: dict| BaseModel = None) -> tuple[list[T], int]:
+    count_statement = select(func.count()).select_from(model).where(model.course_id == course_id)
+    count = session.execute(count_statement).scalar()
+
+    statement = select(model).where(model.course_id == course_id).offset(skip).limit(limit)
     items = session.execute(statement).scalars().all()
     return items, count
 

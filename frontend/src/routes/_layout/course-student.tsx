@@ -20,18 +20,20 @@ import Rebackbar from "../../components/Common/Rebackbar"
 import useCustomToast from "../../hooks/useCustomToast"
 
 export const Route = createFileRoute("/_layout/course-student")({
-  component: Courses,
+  component: Coursestudent,
 })
 
-
-function Courses() {
+function Coursestudent() {
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const courseId = urlParams.get('courseId');
   const showToast = useCustomToast()
   const {
-    data: courses,
+    data: studentlist,
     isLoading,
     isError,
     error,
-  } = useQuery("courese", () => CoursesService.teacherCourses({}))
+  } = useQuery("studentlist", () => CoursesService.courseidReadenrollmentlist({course_id: courseId}))
 
   if (isError) {
     const errDetail = (error as ApiError).body?.detail
@@ -46,7 +48,7 @@ function Courses() {
           <Spinner size="xl" color="ui.main" />
         </Flex>
       ) : (
-        courses && (
+        studentlist && (
           <Container maxW="full">
             <Heading
               size="lg"
@@ -60,24 +62,19 @@ function Courses() {
               <Table size={{ base: "sm", md: "md" }}>
                 <Thead>
                   <Tr>
-                    <Th>课程编号</Th>
-                    <Th>课程名</Th>
-                    <Th>课程教材</Th>
-                    <Th>课程安排</Th>
-                    <Th>课程状态</Th>
+                    <Th>编号</Th>
+                    <Th>学号</Th>
+                    <Th>姓名</Th>
                     <Th>Actions</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {courses.data?.map((course) => (
-                    <Tr key={course.id}>
-                      <Td>{course.id}</Td>
-                      <Td>{course.name}</Td>
-                      <Td>{course.textbook}</Td>
-                      <Td>{course.class_time}</Td>
-                      <Td>{course.status}</Td>
+                  {studentlist.data?.map((student) => (
+                    <Tr key={student.id}>
+                      <Td>{student.student_id}</Td>
+                      <Td>student.student_name</Td>
                       <Td>
-                        <ActionsMenu type={"Course"} value={course} />
+                        <ActionsMenu type={"student"} value={student} />
                       </Td>
                     </Tr>
                   ))}
@@ -91,4 +88,4 @@ function Courses() {
   )
 }
 
-export default Courses
+export default Coursestudent
