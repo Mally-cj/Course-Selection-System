@@ -59,6 +59,7 @@ function Courses() {
               <Table size={{ base: "sm", md: "md" }}>
                 <Thead>
                   <Tr>
+                    <Th>课程编号</Th>
                     <Th>课程名</Th>
                     <Th>课程教材</Th>
                     <Th>课程安排</Th>

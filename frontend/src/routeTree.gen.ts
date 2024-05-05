@@ -15,9 +15,9 @@ import { Route as ResetPasswordImport } from './routes/reset-password'
 import { Route as RecoverPasswordImport } from './routes/recover-password'
 import { Route as LoginImport } from './routes/login'
 import { Route as LayoutImport } from './routes/_layout'
-import { Route as LayoutMyCoursesImport } from './routes/_layout/my-courses'
 import { Route as LayoutIndexImport } from './routes/_layout/index'
 import { Route as LayoutSettingsImport } from './routes/_layout/settings'
+import { Route as LayoutMyCoursesImport } from './routes/_layout/my-courses'
 import { Route as LayoutItemsImport } from './routes/_layout/items'
 import { Route as LayoutCoursesSelectionImport } from './routes/_layout/courses-selection'
 import { Route as LayoutCoursesImport } from './routes/_layout/courses'
@@ -45,11 +45,6 @@ const LayoutRoute = LayoutImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const LayoutMyCoursesRoute = LayoutMyCoursesImport.update({
-  path: '/my-courses',
-  getParentRoute: () => LayoutRoute,
-} as any)
-
 const LayoutIndexRoute = LayoutIndexImport.update({
   path: '/',
   getParentRoute: () => LayoutRoute,
@@ -57,6 +52,11 @@ const LayoutIndexRoute = LayoutIndexImport.update({
 
 const LayoutSettingsRoute = LayoutSettingsImport.update({
   path: '/settings',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutMyCoursesRoute = LayoutMyCoursesImport.update({
+  path: '/my-courses',
   getParentRoute: () => LayoutRoute,
 } as any)
 
@@ -116,16 +116,16 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutItemsImport
       parentRoute: typeof LayoutImport
     }
+    '/_layout/my-courses': {
+      preLoaderRoute: typeof LayoutMyCoursesImport
+      parentRoute: typeof LayoutImport
+    }
     '/_layout/settings': {
       preLoaderRoute: typeof LayoutSettingsImport
       parentRoute: typeof LayoutImport
     }
     '/_layout/': {
       preLoaderRoute: typeof LayoutIndexImport
-      parentRoute: typeof LayoutImport
-    }
-    '/_layout/my-courses': {
-      preLoaderRoute: typeof LayoutMyCoursesImport
       parentRoute: typeof LayoutImport
     }
   }
@@ -139,9 +139,9 @@ export const routeTree = rootRoute.addChildren([
     LayoutCoursesRoute,
     LayoutCoursesSelectionRoute,
     LayoutItemsRoute,
+    LayoutMyCoursesRoute,
     LayoutSettingsRoute,
     LayoutIndexRoute,
-    LayoutMyCoursesRoute,
   ]),
   LoginRoute,
   RecoverPasswordRoute,
