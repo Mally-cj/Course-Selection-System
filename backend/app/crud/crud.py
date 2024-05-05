@@ -21,8 +21,13 @@ T = TypeVar('T', bound=SQLModel)
 
 def list(model: T, session: SessionDep, skip: int, limit: int, cond: dict| BaseModel = None) -> tuple[list[T], int]:
     count_statement = select(func.count()).select_from(model)
+    if cond is not None:
+        count_statement = count_statement.where(cond)
     count = session.exec(count_statement).one()
-    statement = select(model).where(cond).offset(skip).limit(limit)
+    statement = select(model)
+    if cond is not None:
+        statement = statement.where(cond)
+    statement = statement.offset(skip).limit(limit)
     items = session.exec(statement).all()
     return items, count
 

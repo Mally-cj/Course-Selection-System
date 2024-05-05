@@ -15,7 +15,7 @@ import { createFileRoute } from "@tanstack/react-router"
 import { useQuery } from "react-query"
 
 import { type ApiError, CoursesService } from "../../client"
-import ActionsMenu from "../../components/Common/ActionsMenu"
+// import ActionsMenu from "../../components/Common/ActionsMenu"
 import Navbar from "../../components/Common/Navbar"
 import useCustomToast from "../../hooks/useCustomToast"
 
@@ -30,7 +30,7 @@ function Courses() {
     isLoading,
     isError,
     error,
-  } = useQuery("courese", () => CoursesService.readCourses({}))
+  } = useQuery("courese", () => CoursesService.coursesListCourses({}))
 
   if (isError) {
     const errDetail = (error as ApiError).body?.detail
@@ -54,7 +54,7 @@ function Courses() {
             >
               课程管理
             </Heading>
-            <Navbar type={"Course"} />
+            {/* <Navbar type={"Course"} /> */}
             <TableContainer>
               <Table size={{ base: "sm", md: "md" }}>
                 <Thead>
@@ -74,9 +74,9 @@ function Courses() {
                       <Td>{course.book}</Td>
                       <Td>{course.time}</Td>
                       <Td>{course.status}</Td>
-                      <Td>
+                      {/* <Td>
                         <ActionsMenu type={"Course"} value={course} />
-                      </Td>
+                      </Td> */}
                     </Tr>
                   ))}
                 </Tbody>

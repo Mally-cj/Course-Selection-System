@@ -4,10 +4,17 @@
 /* eslint-disable */
 
 export type CourseOut = {
-    name: string;
-    book: string;
-    time: string;
-    status: string;
-    owner_id: number;
-    id: number;
+    id?: number;
+    teacher_id?: number;
+    teacher_name?: string;
+    name?: string;
+    textbook?: string;
+    description?: string;
+    class_time?: string;
+    class_location?: string;
+    enrollment_list_id?: number;
+    announcement_id?: number;
+    comment_id?: number;
+    status?: string;
 };
+

@@ -4,15 +4,7 @@ import type React from "react"
 import { FiBriefcase, FiHome, FiSettings, FiUsers } from "react-icons/fi"
 import { useQueryClient } from "react-query"
 
-import type { UserOut } from "../../client"
-
-const items = [
-  { icon: FiHome, title: "主页", path: "/" },
-  { icon: FiBriefcase, title: "项目", path: "/items" },
-  { icon: FiSettings, title: "设置", path: "/settings" },
-  { icon: FiBriefcase, title: "课程管理", path: "/courses" },
-]
-
+import type { UserOut, UserType } from "../../client"
 interface SidebarItemsProps {
   onClose?: () => void
 }
@@ -23,6 +15,29 @@ const SidebarItems: React.FC<SidebarItemsProps> = ({ onClose }) => {
   const bgActive = useColorModeValue("#E2E8F0", "#4A5568")
   const currentUser = queryClient.getQueryData<UserOut>("currentUser")
 
+  let items = [
+    { icon: FiHome, title: "主页", path: "/" },
+    // { icon: FiBriefcase, title: "项目", path: "/items" },
+    { icon: FiSettings, title: "设置", path: "/settings" },
+  ];
+
+  if (currentUser?.user_type == 2) {
+    // 如果当前用户是学生
+    items = [...items, ...[
+      ]
+    ]
+  } else if (currentUser?.user_type === 3) {
+    // 如果当前用户是老师
+    items = [...items, ...[
+      ]
+    ]
+  } else {
+    // 如果是管理员
+    items = [...items, ...[
+      { icon: FiBriefcase, title: "课程管理", path: "/courses" },
+      ]
+    ] 
+  }
   const finalItems = currentUser?.is_superuser
     ? [...items, { icon: FiUsers, title: "用户管理", path: "/admin" }]
     : items

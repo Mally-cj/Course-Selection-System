@@ -34,7 +34,7 @@ function Admin() {
     isLoading,
     isError,
     error,
-  } = useQuery("users", () => UsersService.readUsers({}))
+  } = useQuery("users", () => UsersService.usersReadUsers({}))
 
   if (isError) {
     const errDetail = (error as ApiError).body?.detail

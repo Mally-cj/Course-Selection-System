@@ -3,9 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { CourseOut } from './CourseOut';
-
-export type CoursesOut = {
-    data: Array<CourseOut>;
-    count: number;
+export type StudentCreate = {
+    id?: number;
+    student_id?: string;
+    name?: string;
 };
+

@@ -1,51 +1,24 @@
-from sqlmodel import Field, Relationship, SQLModel
+from sqlmodel import Field, Relationship, SQLModel, ForeignKey
 from pydantic import BaseModel
 import enum
 # Shared properties
 # TODO replace email str with EmailStr when sqlmodel supports it
 
-# 教师表
-class Teacher(SQLModel, table=True):
-    id: int = Field(primary_key=True)
-    name: str
 
-# 学生表
-class Student(SQLModel, table=True):
-    id: int = Field(primary_key=True)
-    student_id: str
-    name: str
+class StudentCourseLink(SQLModel, table=True):
+    course_id: int = Field(foreign_key="course.id", primary_key=True)
+    student_id: int = Field(foreign_key="student.id", primary_key=True)
 
-# 课程表
-class Course(SQLModel, table=True):
-    id: int = Field(primary_key=True)
-    teacher_id: int = Field(foreign_key="teacher.id")
-    teacher_name: str
-    name: str
-    textbook: str
-    description: str
-    class_time: str
-    class_location: str
-    enrollment_list_id: int = Field(foreign_key="enrollment_list.id")
-    announcement_id: int = Field(foreign_key="announcement.id")
-    comment_id: int = Field(foreign_key="comment.id")
-    status: str
+class TeacherCourseLink(SQLModel, table=True):
+    course_id: int | None = Field(default=None, foreign_key="course.id", primary_key=True)
+    teacher_id: int | None = Field(default=None, foreign_key="teacher.id", primary_key=True)
 
-# 选课名单表
-class EnrollmentList(SQLModel, table=True):
-    id: int = Field(primary_key=True)
-    course_id: int = Field(foreign_key="course.id")
-    course_name: str
-    student_id: int = Field(foreign_key="student.id")
-    student_student_id: str
-    student_name: str
-    max_capacity: int
-    current_capacity: int
 
 # 课程公告表
 class Announcement(SQLModel, table=True):
     id: int = Field(primary_key=True)
     course_id: int = Field(foreign_key="course.id")
-    course_name: str
+    course: "Course" = Relationship(back_populates="announcements")
     content: str
     announcement_time: str
 
@@ -53,101 +26,78 @@ class Announcement(SQLModel, table=True):
 class Comment(SQLModel, table=True):
     id: int = Field(primary_key=True)
     course_id: int = Field(foreign_key="course.id")
-    course_name: str
+    course: "Course" = Relationship(back_populates="comments")
     student_id: int = Field(foreign_key="student.id")
-    student_student_id: str
-    student_name: str
+    student: "Student" = Relationship(back_populates="comments")
     content: str
 
-class CourseCreate(Course):
-    textbook: str | None = None  # type: ignore
-    description: str | None = None  # type: ignore
+class CourseBase(SQLModel):
+    name: str
+    textbook: str
+    description: str | None = None
+    class_time: str
+    class_location: str
+    teacher_id: int | None = Field(foreign_key="teacher.id", default=None)
+    status: str
 
-class CourseOut(Course):
+class Course(CourseBase, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    teacher: "Teacher" = Relationship(back_populates="courses")
+    # enrollment_list_id: int = Field(foreign_key="enrollment_list.id")
+    # announcement_id: int = Field(foreign_key="announcement.id")
+    announcements: list["Announcement"] = Relationship(back_populates="course")
+    comments: list["Comment"] = Relationship(back_populates="course")
+    # comment_id: int = Field(foreign_key="comment.id")
+    students: list["Student"] = Relationship(back_populates="courses", link_model=StudentCourseLink)
+
+class CourseOut(CourseBase):
     pass
 
-class CoursesOut(SQLModel):
-    data: list[CourseOut]
-    count: int
-
-class CourseUpdate(Course):
-    textbook: str | None = None  # type: ignore
-    description: str | None = None  # type: ignore
-
-class StudentCreate(Student):
-    pass
-
-class StudentUpdate(Student):
-    pass
-
-class TeacherCreate(Teacher):
-    pass
-
-class TeacherUpdate(Teacher):
-    pass
-# class StudentCourseLink(SQLModel, table=True):
-#     course_id: int = Field(foreign_key="course.id", primary_key=True)
-#     student_id: int = Field(foreign_key="student.id", primary_key=True)
-
-# class TeacherCourseLink(SQLModel, table=True):
-#     course_id: int | None = Field(default=None, foreign_key="course.id", primary_key=True)
-#     teacher_id: int | None = Field(default=None, foreign_key="teacher.id", primary_key=True)
-
-
-# class CourseBase(SQLModel):
-#     name: str
-#     description: str | None = None
-    
-# class Course(CourseBase, table=True):
-#     id: int | None = Field(default=None, primary_key=True)
-#     students: list["Student"] = Relationship(back_populates="courses", link_model=StudentCourseLink)
-#     teachers: list["Teacher"] = Relationship(back_populates="courses", link_model=TeacherCourseLink)
-
-# class CourseQuery(CourseBase):
-#     student_id: int
+class CourseQuery(BaseModel):
+    student_id: int
     
     
-# class CourseCreate(CourseBase):
-#     name : str | None = None
+class CourseCreate(CourseBase):
+    name : str | None = None
 
-# class CourseSelect(BaseModel):
-#     course_id: int
-#     student_id: int
+class CourseSelect(BaseModel):
+    course_id: int
+    student_id: int
 
-# class CourseUpdate(CourseBase):
-#     pass
+class CourseUpdate(CourseBase):
+    pass
 
-# class StudentBase(SQLModel):
-#     name: str
-#     email: str
+class StudentBase(SQLModel):
+    name: str
+    student_id: str
     
-# class Student(StudentBase, table=True):
-#     id: int | None = Field(default=None, primary_key=True)
-#     # course_id: int = ForeignKey('course.id')
-#     courses: list["Course"] = Relationship(back_populates="students", link_model=StudentCourseLink)
-#     user: "User" = Relationship(back_populates="student")
+class Student(StudentBase, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    comments: list["Comment"] = Relationship(back_populates="student")
+    # course_id: int = ForeignKey('course.id')
+    courses: list["Course"] = Relationship(back_populates="students", link_model=StudentCourseLink)
+    user: "User" = Relationship(back_populates="student")
 
-# class StudentCreate(StudentBase):
-#     pass
+class StudentCreate(StudentBase):
+    pass
 
-# class StudentUpdate(StudentBase):
-#     pass
+class StudentUpdate(StudentBase):
+    pass
 
-# class TeacherBase(SQLModel):
-#     name: str
-#     email: str
+class TeacherBase(SQLModel):
+    name: str
 
-# class Teacher(SQLModel, table=True):
-#     id: int | None = Field(default=None, primary_key=True)
-#     # course_id: int = ForeignKey('course.id')
-#     courses: list["Course"] = Relationship(back_populates="teachers", link_model=TeacherCourseLink)
-#     user: "User" = Relationship(back_populates="teacher")
+class Teacher(TeacherBase, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    # course_id: int = ForeignKey('course.id')
+    courses: list["Course"] = Relationship(back_populates="teacher")
+    user: "User" = Relationship(back_populates="teacher")
 
-# class TeacherCreate(TeacherBase):
-#     pass
+class TeacherCreate(TeacherBase):
+    pass
 
-# class TeacherUpdate(TeacherBase):
-#     pass
+class TeacherUpdate(TeacherBase):
+    pass
 class UserType(int, enum.Enum):
     admin = 1
     student = 2

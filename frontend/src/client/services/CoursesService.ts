@@ -2,11 +2,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { Course } from '../models/Course';
 import type { CourseCreate } from '../models/CourseCreate';
 import type { CourseOut } from '../models/CourseOut';
-import type { CoursesOut } from '../models/CoursesOut';
 import type { CourseUpdate } from '../models/CourseUpdate';
-import type { Message } from '../models/Message';
+import type { ListResp_Course_ } from '../models/ListResp_Course_';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -15,18 +15,18 @@ import { request as __request } from '../core/request';
 export class CoursesService {
 
     /**
-     * Read Courses
-     * Retrieve courses.
-     * @returns CoursesOut Successful Response
+     * List Courses
+     * 获取课程
+     * @returns ListResp_Course_ Successful Response
      * @throws ApiError
      */
-    public static readCourses({
-skip,
-limit = 100,
-}: {
-skip?: number,
-limit?: number,
-}): CancelablePromise<CoursesOut> {
+    public static coursesListCourses({
+        skip,
+        limit = 100,
+    }: {
+        skip?: number,
+        limit?: number,
+    }): CancelablePromise<ListResp_Course_> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/courses/',
@@ -41,16 +41,16 @@ limit?: number,
     }
 
     /**
-     * Create Course
-     * Create new Course.
-     * @returns CourseOut Successful Response
+     * Create Courses
+     * 获取课程
+     * @returns Course Successful Response
      * @throws ApiError
      */
-    public static createCourse({
-requestBody,
-}: {
-requestBody: CourseCreate,
-}): CancelablePromise<CourseOut> {
+    public static coursesCreateCourses({
+        requestBody,
+    }: {
+        requestBody: CourseCreate,
+    }): CancelablePromise<Course> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/courses/',
@@ -63,19 +63,19 @@ requestBody: CourseCreate,
     }
 
     /**
-     * Read Course
-     * Get Course by ID.
-     * @returns CourseOut Successful Response
+     * Get Course
+     * 获取课程
+     * @returns Course Successful Response
      * @throws ApiError
      */
-    public static readCourse({
-id,
-}: {
-id: number,
-}): CancelablePromise<CourseOut> {
+    public static coursesGetCourse({
+        id,
+    }: {
+        id: number,
+    }): CancelablePromise<Course> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/v1/Course/{id}',
+            url: '/api/v1/courses/{id}',
             path: {
                 'id': id,
             },
@@ -87,20 +87,20 @@ id: number,
 
     /**
      * Update Course
-     * Update an Course.
-     * @returns CourseOut Successful Response
+     * 获取课程
+     * @returns Course Successful Response
      * @throws ApiError
      */
-    public static updateCourse({
-id,
-requestBody,
-}: {
-id: number,
-requestBody: CourseUpdate,
-}): CancelablePromise<CourseOut> {
+    public static coursesUpdateCourse({
+        id,
+        requestBody,
+    }: {
+        id: number,
+        requestBody: CourseUpdate,
+    }): CancelablePromise<Course> {
         return __request(OpenAPI, {
             method: 'PUT',
-            url: '/api/v1/Courses/{id}',
+            url: '/api/v1/courses/{id}',
             path: {
                 'id': id,
             },
@@ -113,22 +113,44 @@ requestBody: CourseUpdate,
     }
 
     /**
-     * Delete Item
-     * Delete an item.
-     * @returns Message Successful Response
+     * Delete Course
+     * 获取课程
+     * @returns Course Successful Response
      * @throws ApiError
      */
-    public static deleteCourse({
-id,
-}: {
-id: number,
-}): CancelablePromise<Message> {
+    public static coursesDeleteCourse({
+        id,
+    }: {
+        id: number,
+    }): CancelablePromise<Course> {
         return __request(OpenAPI, {
             method: 'DELETE',
-            url: '/api/v1/Courses/{id}',
+            url: '/api/v1/courses/{id}',
             path: {
                 'id': id,
             },
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
+     * Select Course
+     * 获取课程
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static coursesSelectCourse({
+        requestBody,
+    }: {
+        requestBody: CourseOut,
+    }): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/courses/select',
+            body: requestBody,
+            mediaType: 'application/json',
             errors: {
                 422: `Validation Error`,
             },

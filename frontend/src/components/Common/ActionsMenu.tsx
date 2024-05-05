@@ -10,7 +10,7 @@ import type React from "react"
 import { BsThreeDotsVertical } from "react-icons/bs"
 import { FiEdit, FiTrash } from "react-icons/fi"
 
-import type { ItemOut, UserOut, CourseOut } from "../../client"
+import type { ItemOut, UserOut, Course } from "../../client"
 import EditUser from "../Admin/EditUser"
 import EditItem from "../Items/EditItem"
 import Delete from "./DeleteAlert"
@@ -18,7 +18,7 @@ import EditCourse from "../Courses/EditCourse"
 
 interface ActionsMenuProps {
   type: string
-  value: ItemOut | UserOut | CourseOut
+  value: ItemOut | UserOut | Course
   disabled?: boolean
 }
 

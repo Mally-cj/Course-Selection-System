@@ -3,9 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { UserOut } from './UserOut';
-
-export type UsersOut = {
-    data: Array<UserOut>;
-    count: number;
+export type TeacherUpdate = {
+    id?: number;
+    name?: string;
 };
+

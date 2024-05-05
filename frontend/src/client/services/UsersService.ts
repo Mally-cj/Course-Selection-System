@@ -2,12 +2,12 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { ListResp_UserOut_ } from '../models/ListResp_UserOut_';
 import type { Message } from '../models/Message';
 import type { UpdatePassword } from '../models/UpdatePassword';
 import type { UserCreate } from '../models/UserCreate';
 import type { UserCreateOpen } from '../models/UserCreateOpen';
 import type { UserOut } from '../models/UserOut';
-import type { UsersOut } from '../models/UsersOut';
 import type { UserUpdate } from '../models/UserUpdate';
 import type { UserUpdateMe } from '../models/UserUpdateMe';
 
@@ -20,16 +20,16 @@ export class UsersService {
     /**
      * Read Users
      * Retrieve users.
-     * @returns UsersOut Successful Response
+     * @returns ListResp_UserOut_ Successful Response
      * @throws ApiError
      */
-    public static readUsers({
-skip,
-limit = 100,
-}: {
-skip?: number,
-limit?: number,
-}): CancelablePromise<UsersOut> {
+    public static usersReadUsers({
+        skip,
+        limit = 100,
+    }: {
+        skip?: number,
+        limit?: number,
+    }): CancelablePromise<ListResp_UserOut_> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/users/',
@@ -49,11 +49,11 @@ limit?: number,
      * @returns UserOut Successful Response
      * @throws ApiError
      */
-    public static createUser({
-requestBody,
-}: {
-requestBody: UserCreate,
-}): CancelablePromise<UserOut> {
+    public static usersCreateUser({
+        requestBody,
+    }: {
+        requestBody: UserCreate,
+    }): CancelablePromise<UserOut> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/users/',
@@ -71,7 +71,7 @@ requestBody: UserCreate,
      * @returns UserOut Successful Response
      * @throws ApiError
      */
-    public static readUserMe(): CancelablePromise<UserOut> {
+    public static usersReadUserMe(): CancelablePromise<UserOut> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/users/me',
@@ -84,11 +84,11 @@ requestBody: UserCreate,
      * @returns UserOut Successful Response
      * @throws ApiError
      */
-    public static updateUserMe({
-requestBody,
-}: {
-requestBody: UserUpdateMe,
-}): CancelablePromise<UserOut> {
+    public static usersUpdateUserMe({
+        requestBody,
+    }: {
+        requestBody: UserUpdateMe,
+    }): CancelablePromise<UserOut> {
         return __request(OpenAPI, {
             method: 'PATCH',
             url: '/api/v1/users/me',
@@ -106,11 +106,11 @@ requestBody: UserUpdateMe,
      * @returns Message Successful Response
      * @throws ApiError
      */
-    public static updatePasswordMe({
-requestBody,
-}: {
-requestBody: UpdatePassword,
-}): CancelablePromise<Message> {
+    public static usersUpdatePasswordMe({
+        requestBody,
+    }: {
+        requestBody: UpdatePassword,
+    }): CancelablePromise<Message> {
         return __request(OpenAPI, {
             method: 'PATCH',
             url: '/api/v1/users/me/password',
@@ -128,11 +128,11 @@ requestBody: UpdatePassword,
      * @returns UserOut Successful Response
      * @throws ApiError
      */
-    public static createUserOpen({
-requestBody,
-}: {
-requestBody: UserCreateOpen,
-}): CancelablePromise<UserOut> {
+    public static usersCreateUserOpen({
+        requestBody,
+    }: {
+        requestBody: UserCreateOpen,
+    }): CancelablePromise<UserOut> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/v1/users/open',
@@ -150,11 +150,11 @@ requestBody: UserCreateOpen,
      * @returns UserOut Successful Response
      * @throws ApiError
      */
-    public static readUserById({
-userId,
-}: {
-userId: number,
-}): CancelablePromise<UserOut> {
+    public static usersReadUserById({
+        userId,
+    }: {
+        userId: number,
+    }): CancelablePromise<UserOut> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/users/{user_id}',
@@ -173,13 +173,13 @@ userId: number,
      * @returns UserOut Successful Response
      * @throws ApiError
      */
-    public static updateUser({
-userId,
-requestBody,
-}: {
-userId: number,
-requestBody: UserUpdate,
-}): CancelablePromise<UserOut> {
+    public static usersUpdateUser({
+        userId,
+        requestBody,
+    }: {
+        userId: number,
+        requestBody: UserUpdate,
+    }): CancelablePromise<UserOut> {
         return __request(OpenAPI, {
             method: 'PATCH',
             url: '/api/v1/users/{user_id}',
@@ -200,11 +200,11 @@ requestBody: UserUpdate,
      * @returns Message Successful Response
      * @throws ApiError
      */
-    public static deleteUser({
-userId,
-}: {
-userId: number,
-}): CancelablePromise<Message> {
+    public static usersDeleteUser({
+        userId,
+    }: {
+        userId: number,
+    }): CancelablePromise<Message> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/api/v1/users/{user_id}',
