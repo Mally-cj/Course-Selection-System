@@ -4,7 +4,7 @@ from fastapi import APIRouter, HTTPException
 from sqlmodel import func, select
 
 from app.api.deps import CurrentUser, SessionDep
-from app.models import Course, ListResp, CourseCreate, CourseUpdate, CourseSelect
+from app.models import Course, ListResp, CourseCreate, CourseUpdate, CourseOut
 from app.models import Student
 from app.crud import crud
 
@@ -62,7 +62,7 @@ def delete_course(
 
 @router.post("/select")
 def select_course(
-    session: SessionDep, current_user: CurrentUser, req: CourseSelect
+    session: SessionDep, current_user: CurrentUser, req: CourseOut
 ) -> Any:
     """
     获取课程

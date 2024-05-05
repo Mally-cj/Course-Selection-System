@@ -4,70 +4,150 @@ import enum
 # Shared properties
 # TODO replace email str with EmailStr when sqlmodel supports it
 
-
-class StudentCourseLink(SQLModel, table=True):
-    course_id: int = Field(foreign_key="course.id", primary_key=True)
-    student_id: int = Field(foreign_key="student.id", primary_key=True)
-
-class TeacherCourseLink(SQLModel, table=True):
-    course_id: int | None = Field(default=None, foreign_key="course.id", primary_key=True)
-    teacher_id: int | None = Field(default=None, foreign_key="teacher.id", primary_key=True)
-
-
-class CourseBase(SQLModel):
-    name: str
-    description: str | None = None
-    
-class Course(CourseBase, table=True):
-    id: int | None = Field(default=None, primary_key=True)
-    students: list["Student"] = Relationship(back_populates="courses", link_model=StudentCourseLink)
-    teachers: list["Teacher"] = Relationship(back_populates="courses", link_model=TeacherCourseLink)
-
-class CourseQuery(CourseBase):
-    student_id: int
-    
-    
-class CourseCreate(CourseBase):
-    name : str | None = None
-
-class CourseSelect(BaseModel):
-    course_id: int
-    student_id: int
-
-class CourseUpdate(CourseBase):
-    pass
-
-class StudentBase(SQLModel):
-    name: str
-    email: str
-    
-class Student(StudentBase, table=True):
-    id: int | None = Field(default=None, primary_key=True)
-    # course_id: int = ForeignKey('course.id')
-    courses: list["Course"] = Relationship(back_populates="students", link_model=StudentCourseLink)
-    user: "User" = Relationship(back_populates="student")
-
-class StudentCreate(StudentBase):
-    pass
-
-class StudentUpdate(StudentBase):
-    pass
-
-class TeacherBase(SQLModel):
-    name: str
-    email: str
-
+# 教师表
 class Teacher(SQLModel, table=True):
-    id: int | None = Field(default=None, primary_key=True)
-    # course_id: int = ForeignKey('course.id')
-    courses: list["Course"] = Relationship(back_populates="teachers", link_model=TeacherCourseLink)
-    user: "User" = Relationship(back_populates="teacher")
+    id: int = Field(primary_key=True)
+    name: str
 
-class TeacherCreate(TeacherBase):
+# 学生表
+class Student(SQLModel, table=True):
+    id: int = Field(primary_key=True)
+    student_id: str
+    name: str
+
+# 课程表
+class Course(SQLModel, table=True):
+    id: int = Field(primary_key=True)
+    teacher_id: int = Field(foreign_key="teacher.id")
+    teacher_name: str
+    name: str
+    textbook: str
+    description: str
+    class_time: str
+    class_location: str
+    enrollment_list_id: int = Field(foreign_key="enrollment_list.id")
+    announcement_id: int = Field(foreign_key="announcement.id")
+    comment_id: int = Field(foreign_key="comment.id")
+    status: str
+
+# 选课名单表
+class EnrollmentList(SQLModel, table=True):
+    id: int = Field(primary_key=True)
+    course_id: int = Field(foreign_key="course.id")
+    course_name: str
+    student_id: int = Field(foreign_key="student.id")
+    student_student_id: str
+    student_name: str
+    max_capacity: int
+    current_capacity: int
+
+# 课程公告表
+class Announcement(SQLModel, table=True):
+    id: int = Field(primary_key=True)
+    course_id: int = Field(foreign_key="course.id")
+    course_name: str
+    content: str
+    announcement_time: str
+
+# 课程评论表
+class Comment(SQLModel, table=True):
+    id: int = Field(primary_key=True)
+    course_id: int = Field(foreign_key="course.id")
+    course_name: str
+    student_id: int = Field(foreign_key="student.id")
+    student_student_id: str
+    student_name: str
+    content: str
+
+class CourseCreate(Course):
+    textbook: str | None = None  # type: ignore
+    description: str | None = None  # type: ignore
+
+class CourseOut(Course):
     pass
 
-class TeacherUpdate(TeacherBase):
+class CoursesOut(SQLModel):
+    data: list[CourseOut]
+    count: int
+
+class CourseUpdate(Course):
+    textbook: str | None = None  # type: ignore
+    description: str | None = None  # type: ignore
+
+class StudentCreate(Student):
     pass
+
+class StudentUpdate(Student):
+    pass
+
+class TeacherCreate(Teacher):
+    pass
+
+class TeacherUpdate(Teacher):
+    pass
+# class StudentCourseLink(SQLModel, table=True):
+#     course_id: int = Field(foreign_key="course.id", primary_key=True)
+#     student_id: int = Field(foreign_key="student.id", primary_key=True)
+
+# class TeacherCourseLink(SQLModel, table=True):
+#     course_id: int | None = Field(default=None, foreign_key="course.id", primary_key=True)
+#     teacher_id: int | None = Field(default=None, foreign_key="teacher.id", primary_key=True)
+
+
+# class CourseBase(SQLModel):
+#     name: str
+#     description: str | None = None
+    
+# class Course(CourseBase, table=True):
+#     id: int | None = Field(default=None, primary_key=True)
+#     students: list["Student"] = Relationship(back_populates="courses", link_model=StudentCourseLink)
+#     teachers: list["Teacher"] = Relationship(back_populates="courses", link_model=TeacherCourseLink)
+
+# class CourseQuery(CourseBase):
+#     student_id: int
+    
+    
+# class CourseCreate(CourseBase):
+#     name : str | None = None
+
+# class CourseSelect(BaseModel):
+#     course_id: int
+#     student_id: int
+
+# class CourseUpdate(CourseBase):
+#     pass
+
+# class StudentBase(SQLModel):
+#     name: str
+#     email: str
+    
+# class Student(StudentBase, table=True):
+#     id: int | None = Field(default=None, primary_key=True)
+#     # course_id: int = ForeignKey('course.id')
+#     courses: list["Course"] = Relationship(back_populates="students", link_model=StudentCourseLink)
+#     user: "User" = Relationship(back_populates="student")
+
+# class StudentCreate(StudentBase):
+#     pass
+
+# class StudentUpdate(StudentBase):
+#     pass
+
+# class TeacherBase(SQLModel):
+#     name: str
+#     email: str
+
+# class Teacher(SQLModel, table=True):
+#     id: int | None = Field(default=None, primary_key=True)
+#     # course_id: int = ForeignKey('course.id')
+#     courses: list["Course"] = Relationship(back_populates="teachers", link_model=TeacherCourseLink)
+#     user: "User" = Relationship(back_populates="teacher")
+
+# class TeacherCreate(TeacherBase):
+#     pass
+
+# class TeacherUpdate(TeacherBase):
+#     pass
 class UserType(int, enum.Enum):
     admin = 1
     student = 2

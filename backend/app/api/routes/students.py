@@ -1,6 +1,6 @@
 from typing import Any
 
-from app.models.models import StudentCourseLink
+# from app.models.models import StudentCourseLink
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import func, select
 
