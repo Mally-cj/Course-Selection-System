@@ -6,7 +6,7 @@ import enum
 # TODO replace email str with EmailStr when sqlmodel supports it
 
 
-class StudentCourseLink(SQLModel, table=True):
+class EnrollmentList(SQLModel, table=True):
     course_id: int = Field(foreign_key="course.id", primary_key=True)
     student_id: int = Field(foreign_key="student.id", primary_key=True)
 
@@ -49,8 +49,10 @@ class Course(CourseBase, table=True):
     announcements: list["Announcement"] = Relationship(back_populates="course")
     comments: list["Comment"] = Relationship(back_populates="course")
     # comment_id: int = Field(foreign_key="comment.id")
-    students: list["Student"] = Relationship(back_populates="courses", link_model=StudentCourseLink)
-
+    students: list["Student"] = Relationship(back_populates="courses", link_model=EnrollmentList)
+    max_capacity: int
+    current_capacity: int
+    
 class CourseOut(CourseBase):
     teacher: Optional["Teacher"] = None
 
@@ -76,7 +78,7 @@ class Student(StudentBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
     comments: list["Comment"] = Relationship(back_populates="student")
     # course_id: int = ForeignKey('course.id')
-    courses: list["Course"] = Relationship(back_populates="students", link_model=StudentCourseLink)
+    courses: list["Course"] = Relationship(back_populates="students", link_model=EnrollmentList)
     user: "User" = Relationship(back_populates="student")
 
 class StudentCreate(StudentBase):
