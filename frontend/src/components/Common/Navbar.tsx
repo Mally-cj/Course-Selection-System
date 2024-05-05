@@ -29,7 +29,7 @@ const Navbar: React.FC<NavbarProps> = ({ type }) => {
           variant="primary"
           gap={1}
           fontSize={{ base: "sm", md: "inherit" }}
-          onClick={type === "User" ? addUserModal.onOpen : type==="Item" ? addItemModal.onOpen :addCourseModal}
+          onClick={type === "User" ? addUserModal.onOpen : type==="Item" ? addItemModal.onOpen :addCourseModal.onOpen}
         >
           <Icon as={FaPlus} /> 添加 {type}
         </Button>

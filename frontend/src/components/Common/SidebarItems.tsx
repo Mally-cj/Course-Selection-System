@@ -29,12 +29,13 @@ const SidebarItems: React.FC<SidebarItemsProps> = ({ onClose }) => {
   } else if (currentUser?.user_type === 3) {
     // 如果当前用户是老师
     items = [...items, ...[
+      { icon: FiBriefcase, title: "课程管理", path: "/courses" },
       ]
     ]
   } else {
     // 如果是管理员
     items = [...items, ...[
-      { icon: FiBriefcase, title: "课程管理", path: "/courses" },
+      
       ]
     ] 
   }
