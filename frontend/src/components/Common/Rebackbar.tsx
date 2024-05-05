@@ -1,10 +1,7 @@
 import { Button, Flex, Icon, useDisclosure } from "@chakra-ui/react"
 import type React from "react"
-import { FaPlus } from "react-icons/fa"
+import { FaAngleLeft } from "react-icons/fa"
 
-import AddUser from "../Admin/AddUser"
-import AddItem from "../Items/AddItem"
-import AddCourse from "../Courses/Addcourse"
 import ReturnCourse from "../Courses/Returncourse"
 interface NavbarProps {
   type: string
@@ -13,23 +10,7 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ type }) => {
   let onClick: React.MouseEventHandler<HTMLButtonElement> | undefined = undefined;
   let item: JSX.Element | undefined = undefined;
-  if (type === "User") {
-    const addUserModal = useDisclosure()
-    onClick = addUserModal.onOpen
-    item = <AddUser isOpen={addUserModal.isOpen} onClose={addUserModal.onClose} />
-  } else if (type === "Item") {
-    const addItemModal = useDisclosure()
-    onClick = addItemModal.onOpen
-    item =  <AddItem isOpen={addItemModal.isOpen} onClose={addItemModal.onClose} />
-  } else if (type === "Course") {
-    const addCourseModal = useDisclosure()
-    onClick = addCourseModal.onOpen
-    item = <AddCourse isOpen={addCourseModal.isOpen} onClose={addCourseModal.onClose} />
-  } else if (type == "CourseSelect") {
-    // const selectCourseModal = useDisclosure()
-    // onClick = selectCourseModal.onOpen
-    // item = <SelectCourse isOpen={selectCourseModal.isOpen} onClose={selectCourseModal.onClose} />
-  }else if (type === "ReturnCourse") {
+  if (type === "ReturnCourse") {
     const returnCourseModal = useDisclosure()
     onClick = returnCourseModal.onOpen;
     item = <ReturnCourse isOpen={returnCourseModal.isOpen} onClose={returnCourseModal.onClose} />;
@@ -50,7 +31,7 @@ const Navbar: React.FC<NavbarProps> = ({ type }) => {
           fontSize={{ base: "sm", md: "inherit" }}
           onClick={onClick}
         >
-          <Icon as={FaPlus} /> 添加 {type}
+          <Icon as={FaAngleLeft} />  {type}
         </Button>
         {item}
       </Flex>

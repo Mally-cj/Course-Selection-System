@@ -149,7 +149,7 @@ const AddCourse: React.FC<AddCourseProps> = ({ isOpen, onClose }) => {
                 {...register("description")}
                 placeholder="请输入课程简介"
                 type="text"
-                style={{ width: "400px", height: "200px" }}
+                style={{ width: "400px", height: "150px" }}
               />
             </FormControl>
             <FormControl isHidden>

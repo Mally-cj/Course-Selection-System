@@ -107,48 +107,6 @@ const EditCourse: React.FC<EditItemProps> = ({ item, isOpen, onClose }) => {
                 type="text"
               />
             </FormControl>
-            <FormControl isRequired isInvalid={!!errors.class_time} mt={4}>
-              <FormLabel htmlFor="class_time">上课安排</FormLabel>
-              <Input
-                id="class_time"
-                {...register("class_time", {
-                  required: "上课安排不能为空.",
-                })}
-                placeholder="请输入上课安排"
-                type="text"
-              />
-              {errors.class_time && (
-                <FormErrorMessage>{errors.class_time.message}</FormErrorMessage>
-              )}
-            </FormControl>
-            <FormControl isRequired isInvalid={!!errors.class_location} mt={4}>
-              <FormLabel htmlFor="class_location">上课地点</FormLabel>
-              <Input
-                id="class_location"
-                {...register("class_location", {
-                  required: "上课地点不能为空.",
-                })}
-                placeholder="请输入上课地点"
-                type="text"
-              />
-              {errors.class_time && (
-                <FormErrorMessage>{errors.class_location.message}</FormErrorMessage>
-              )}
-            </FormControl>
-            <FormControl isRequired isInvalid={!!errors.max_capacity} mt={4}>
-              <FormLabel htmlFor="max_capacity">课程最大人数</FormLabel>
-              <Input
-                id="max_capacity"
-                {...register("max_capacity", {
-                  required: "上课容量不能为空.",
-                })}
-                placeholder="请输入课程人数"
-                type="text"
-              />
-              {errors.class_time && (
-                <FormErrorMessage>{errors.max_capacity.message}</FormErrorMessage>
-              )}
-            </FormControl>
             <FormControl mt={4}>
               <FormLabel htmlFor="description">课程简介</FormLabel>
               <Input
@@ -156,16 +114,7 @@ const EditCourse: React.FC<EditItemProps> = ({ item, isOpen, onClose }) => {
                 {...register("description")}
                 placeholder="请输入课程简介"
                 type="text"
-                style={{ width: "400px", height: "200px" }}
-              />
-            </FormControl>
-            <FormControl isHidden>
-              <Input
-                id="status"
-                {...register("status", {
-                  value: "未审核"
-                })}
-                type="hidden"
+                style={{ width: "400px", height: "150px" }}
               />
             </FormControl>
           </ModalBody>

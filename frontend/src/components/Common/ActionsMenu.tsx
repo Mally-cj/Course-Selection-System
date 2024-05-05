@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react"
 import type React from "react"
 import { BsThreeDotsVertical } from "react-icons/bs"
-import { FiEdit, FiTrash } from "react-icons/fi"
+import { FiEdit, FiTrash, FiLink } from "react-icons/fi"
 
 import type { ItemOut, UserOut, CourseOut } from "../../client"
 import EditUser from "../Admin/EditUser"
@@ -63,14 +63,23 @@ const ActionsMenu: React.FC<ActionsMenuProps> = ({ type, value, disabled }) => {
             onClick={editUserModal.onOpen}
             icon={<FiEdit fontSize="16px" />}
           >
-            Edit {type}
+            编辑课程 
+          </MenuItem>
+          <MenuItem
+          icon={<FiLink fontSize="16px" />}
+            onClick={() => {
+              // Example: Redirect to a specific page
+              window.location.href = `/course-student`;
+            }}
+          >
+            选课名单
           </MenuItem>
           <MenuItem
             onClick={deleteModal.onOpen}
             icon={<FiTrash fontSize="16px" />}
             color="ui.danger"
           >
-            Delete {type}
+            删除 
           </MenuItem>
         </MenuList>
         {editItem(value)}
