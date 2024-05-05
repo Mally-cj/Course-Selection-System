@@ -1,5 +1,6 @@
 from sqlmodel import Field, Relationship, SQLModel, ForeignKey
 from pydantic import BaseModel
+from typing import Optional
 import enum
 # Shared properties
 # TODO replace email str with EmailStr when sqlmodel supports it
@@ -51,7 +52,7 @@ class Course(CourseBase, table=True):
     students: list["Student"] = Relationship(back_populates="courses", link_model=StudentCourseLink)
 
 class CourseOut(CourseBase):
-    pass
+    teacher: Optional["Teacher"] = None
 
 class CourseQuery(BaseModel):
     student_id: int

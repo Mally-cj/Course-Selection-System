@@ -10,7 +10,7 @@ from app.crud import crud
 
 router = APIRouter()
 
-@router.get("/", response_model=ListResp[Course])
+@router.get("/", response_model=ListResp[CourseOut])
 def list_courses(
     session: SessionDep, current_user: CurrentUser, skip: int = 0, limit: int = 100
 ) -> Any:
