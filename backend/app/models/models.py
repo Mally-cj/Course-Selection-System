@@ -33,6 +33,7 @@ class Comment(SQLModel, table=True):
     content: str
 
 class CourseBase(SQLModel):
+    id: int | None = Field(default=None, primary_key=True)
     name: str
     textbook: str
     description: str | None = None
@@ -40,9 +41,10 @@ class CourseBase(SQLModel):
     class_location: str
     teacher_id: int | None = Field(foreign_key="teacher.id", default=None)
     status: str
+    max_capacity: int | None = 0
+    current_capacity: int | None = 0
 
 class Course(CourseBase, table=True):
-    id: int | None = Field(default=None, primary_key=True)
     teacher: "Teacher" = Relationship(back_populates="courses")
     # enrollment_list_id: int = Field(foreign_key="enrollment_list.id")
     # announcement_id: int = Field(foreign_key="announcement.id")
@@ -50,8 +52,6 @@ class Course(CourseBase, table=True):
     comments: list["Comment"] = Relationship(back_populates="course")
     # comment_id: int = Field(foreign_key="comment.id")
     students: list["Student"] = Relationship(back_populates="courses", link_model=EnrollmentList)
-    max_capacity: int
-    current_capacity: int
     
 class CourseOut(CourseBase):
     teacher: Optional["Teacher"] = None

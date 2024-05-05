@@ -11,10 +11,21 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({ type }) => {
-  const addUserModal = useDisclosure()
-  const addItemModal = useDisclosure()
-  const addCourseModal = useDisclosure()
-
+  let onClick: React.MouseEventHandler<HTMLButtonElement> | undefined = undefined;
+  let item: JSX.Element | undefined = undefined;
+  if (type === "User") {
+    const addUserModal = useDisclosure()
+    onClick = addUserModal.onOpen
+    item = <AddUser isOpen={addUserModal.isOpen} onClose={addUserModal.onClose} />
+  } else if (type === "Item") {
+    const addItemModal = useDisclosure()
+    onClick = addItemModal.onOpen
+    item =  <AddItem isOpen={addItemModal.isOpen} onClose={addItemModal.onClose} />
+  } else if (type === "Course") {
+    const addCourseModal = useDisclosure()
+    onClick = addCourseModal.onOpen
+    item = <AddCourse isOpen={addCourseModal.isOpen} onClose={addCourseModal.onClose} />
+  }
   return (
     <>
       <Flex py={8} gap={4}>
@@ -29,13 +40,11 @@ const Navbar: React.FC<NavbarProps> = ({ type }) => {
           variant="primary"
           gap={1}
           fontSize={{ base: "sm", md: "inherit" }}
-          onClick={type === "User" ? addUserModal.onOpen : type==="Item" ? addItemModal.onOpen :addCourseModal.onOpen}
+          onClick={onClick}
         >
           <Icon as={FaPlus} /> 添加 {type}
         </Button>
-        <AddUser isOpen={addUserModal.isOpen} onClose={addUserModal.onClose} />
-        <AddItem isOpen={addItemModal.isOpen} onClose={addItemModal.onClose} />
-        <AddCourse isOpen={addCourseModal.isOpen} onClose={addCourseModal.onClose} />
+        {item}
       </Flex>
     </>
   )

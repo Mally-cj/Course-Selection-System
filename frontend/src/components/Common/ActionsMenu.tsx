@@ -10,7 +10,7 @@ import type React from "react"
 import { BsThreeDotsVertical } from "react-icons/bs"
 import { FiEdit, FiTrash } from "react-icons/fi"
 
-import type { ItemOut, UserOut, Course } from "../../client"
+import type { ItemOut, UserOut, CourseOut } from "../../client"
 import EditUser from "../Admin/EditUser"
 import EditItem from "../Items/EditItem"
 import Delete from "./DeleteAlert"
@@ -18,7 +18,7 @@ import EditCourse from "../Courses/EditCourse"
 
 interface ActionsMenuProps {
   type: string
-  value: ItemOut | UserOut | Course
+  value: ItemOut | UserOut | CourseOut
   disabled?: boolean
 }
 
@@ -26,6 +26,29 @@ const ActionsMenu: React.FC<ActionsMenuProps> = ({ type, value, disabled }) => {
   const editUserModal = useDisclosure()
   const deleteModal = useDisclosure()
 
+  let editItem: (value: any) => JSX.Element | null = null;
+  if (type === "User") {
+    editItem = (value: any) => (
+      <EditUser
+        user={value as UserOut}
+        isOpen={editUserModal.isOpen}
+        onClose={editUserModal.onClose}
+      />)
+  } else if (type === "Item") {
+    editItem = (value: any) => (
+      <EditItem
+        item={value as ItemOut}
+        isOpen={editUserModal.isOpen}
+        onClose={editUserModal.onClose}
+      />)
+  } else if (type === "Course") {
+    editItem = (value: any) => (
+      <EditCourse
+        item={value as CourseOut}
+        isOpen={editUserModal.isOpen}
+        onClose={editUserModal.onClose}
+      />)
+  }
   return (
     <>
       <Menu>
@@ -50,25 +73,8 @@ const ActionsMenu: React.FC<ActionsMenuProps> = ({ type, value, disabled }) => {
             Delete {type}
           </MenuItem>
         </MenuList>
-        {type === "User" ? (
-          <EditUser
-            user={value as UserOut}
-            isOpen={editUserModal.isOpen}
-            onClose={editUserModal.onClose}
-          />
-        ): type === "Item" ? (
-          <EditItem
-            item={value as ItemOut}
-            isOpen={editUserModal.isOpen}
-            onClose={editUserModal.onClose}
-          />
-        ):(
-        <EditCourse
-        item={value as CourseOut}
-        isOpen={editUserModal.isOpen}
-        onClose={editUserModal.onClose}
-        />)
-      }
+        {editItem(value)}
+      
         <Delete
           type={type}
           id={value.id}

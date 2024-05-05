@@ -25,12 +25,12 @@ import {
 import useCustomToast from "../../hooks/useCustomToast"
 
 interface EditItemProps {
-  item: CourseOut
+  item: CourseUpdate
   isOpen: boolean
   onClose: () => void
 }
 
-const EditCourse: React.FC<EditItemProps> = ({ course, isOpen, onClose }) => {
+const EditCourse: React.FC<EditItemProps> = ({ item, isOpen, onClose }) => {
   const queryClient = useQueryClient()
   const showToast = useCustomToast()
   const {
@@ -41,11 +41,11 @@ const EditCourse: React.FC<EditItemProps> = ({ course, isOpen, onClose }) => {
   } = useForm<CourseUpdate>({
     mode: "onBlur",
     criteriaMode: "all",
-    defaultValues: course,
+    defaultValues: item,
   })
 
   const updateCourse = async (data: CourseUpdate) => {
-    await CoursesService.updateItem({ id: course.id, requestBody: data })
+    await CoursesService.coursesUpdateCourse({ id: item.id, requestBody: data })
   }
 
   const mutation = useMutation(updateCourse, {
@@ -117,22 +117,36 @@ const EditCourse: React.FC<EditItemProps> = ({ course, isOpen, onClose }) => {
                 placeholder="请输入上课安排"
                 type="text"
               />
-              {errors.time && (
-                <FormErrorMessage>{errors.time.message}</FormErrorMessage>
+              {errors.class_time && (
+                <FormErrorMessage>{errors.class_time.message}</FormErrorMessage>
               )}
             </FormControl>
             <FormControl isRequired isInvalid={!!errors.class_location} mt={4}>
-              <FormLabel htmlFor="class_locatio">上课地点</FormLabel>
+              <FormLabel htmlFor="class_location">上课地点</FormLabel>
               <Input
-                id="class_locatio"
-                {...register("class_locatio", {
+                id="class_location"
+                {...register("class_location", {
                   required: "上课地点不能为空.",
                 })}
                 placeholder="请输入上课地点"
                 type="text"
               />
-              {errors.class_locatio && (
-                <FormErrorMessage>{errors.class_locatio.message}</FormErrorMessage>
+              {errors.class_time && (
+                <FormErrorMessage>{errors.class_location.message}</FormErrorMessage>
+              )}
+            </FormControl>
+            <FormControl isRequired isInvalid={!!errors.max_capacity} mt={4}>
+              <FormLabel htmlFor="max_capacity">课程最大人数</FormLabel>
+              <Input
+                id="max_capacity"
+                {...register("max_capacity", {
+                  required: "上课容量不能为空.",
+                })}
+                placeholder="请输入课程人数"
+                type="text"
+              />
+              {errors.class_time && (
+                <FormErrorMessage>{errors.max_capacity.message}</FormErrorMessage>
               )}
             </FormControl>
             <FormControl mt={4}>
@@ -155,16 +169,12 @@ const EditCourse: React.FC<EditItemProps> = ({ course, isOpen, onClose }) => {
               />
             </FormControl>
           </ModalBody>
+
           <ModalFooter gap={3}>
-            <Button
-              variant="primary"
-              type="submit"
-              isLoading={isSubmitting}
-              isDisabled={!isDirty}
-            >
+            <Button variant="primary" type="submit" isLoading={isSubmitting}>
               Save
             </Button>
-            <Button onClick={onCancel}>Cancel</Button>
+            <Button onClick={onClose}>Cancel</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

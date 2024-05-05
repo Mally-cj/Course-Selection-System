@@ -11,7 +11,7 @@ import React from "react"
 import { useForm } from "react-hook-form"
 import { useMutation, useQueryClient } from "react-query"
 
-import { ItemsService, UsersService } from "../../client"
+import { ItemsService, UsersService, CoursesService } from "../../client"
 import useCustomToast from "../../hooks/useCustomToast"
 
 interface DeleteProps {
@@ -31,10 +31,13 @@ const Delete: React.FC<DeleteProps> = ({ type, id, isOpen, onClose }) => {
   } = useForm()
 
   const deleteEntity = async (id: number) => {
+    console.log("id: ", id)
     if (type === "Item") {
-      await ItemsService.deleteItem({ id: id })
+      await ItemsService.itemsDeleteItem({ id: id })
     } else if (type === "User") {
-      await UsersService.deleteUser({ userId: id })
+      await UsersService.usersDeleteUser({ userId: id })
+    } else if (type == "Course") {
+      await CoursesService.coursesDeleteCourse({ id: id })
     } else {
       throw new Error(`Unexpected type: ${type}`)
     }

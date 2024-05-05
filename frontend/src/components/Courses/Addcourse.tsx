@@ -36,13 +36,13 @@ const AddCourse: React.FC<AddCourseProps> = ({ isOpen, onClose }) => {
     mode: "onBlur",
     criteriaMode: "all",
     defaultValues: {
-      title: "",
+      name: "",
       description: "",
     },
   })
 
   const addCourse = async (data: CourseCreate) => {
-    await CoursesService.createCourse({ requestBody: data })
+    await CoursesService.coursesCreateCourses({ requestBody: data })
   }
 
   const mutation = useMutation(addCourse, {
@@ -60,7 +60,7 @@ const AddCourse: React.FC<AddCourseProps> = ({ isOpen, onClose }) => {
     },
   })
 
-  const onSubmit: SubmitHandler<ItemCreate> = (data) => {
+  const onSubmit: SubmitHandler<CourseCreate> = (data) => {
     mutation.mutate(data)
   }
 
@@ -110,25 +110,40 @@ const AddCourse: React.FC<AddCourseProps> = ({ isOpen, onClose }) => {
                 placeholder="请输入上课安排"
                 type="text"
               />
-              {errors.time && (
-                <FormErrorMessage>{errors.time.message}</FormErrorMessage>
+              {errors.class_time && (
+                <FormErrorMessage>{errors.class_time.message}</FormErrorMessage>
+              )}
+            </FormControl>
+            <FormControl isRequired isInvalid={!!errors.max_capacity} mt={4}>
+              <FormLabel htmlFor="max_capacity">课程最大人数</FormLabel>
+              <Input
+                id="max_capacity"
+                {...register("max_capacity", {
+                  required: "上课容量不能为空.",
+                })}
+                placeholder="请输入课程人数"
+                type="text"
+              />
+              {errors.class_time && (
+                <FormErrorMessage>{errors.max_capacity.message}</FormErrorMessage>
               )}
             </FormControl>
             <FormControl isRequired isInvalid={!!errors.class_location} mt={4}>
-              <FormLabel htmlFor="class_locatio">上课地点</FormLabel>
+              <FormLabel htmlFor="class_location">上课地点</FormLabel>
               <Input
-                id="class_locatio"
-                {...register("class_locatio", {
+                id="class_location"
+                {...register("class_location", {
                   required: "上课地点不能为空.",
                 })}
                 placeholder="请输入上课地点"
                 type="text"
               />
-              {errors.class_locatio && (
-                <FormErrorMessage>{errors.class_locatio.message}</FormErrorMessage>
+              {errors.class_location && (
+                <FormErrorMessage>{errors.class_location.message}</FormErrorMessage>
               )}
             </FormControl>
             <FormControl mt={4}>
+              <FormLabel htmlFor="description">课程简介</FormLabel>
               <FormLabel htmlFor="description">课程简介</FormLabel>
               <Input
                 id="description"

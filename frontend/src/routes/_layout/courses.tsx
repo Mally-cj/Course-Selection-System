@@ -67,12 +67,12 @@ function Courses() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {courses.data.map((course) => (
+                  {courses.data?.map((course) => (
                     <Tr key={course.id}>
                       <Td>{course.id}</Td>
                       <Td>{course.name}</Td>
-                      <Td>{course.book}</Td>
-                      <Td>{course.time}</Td>
+                      <Td>{course.textbook}</Td>
+                      <Td>{course.class_time}</Td>
                       <Td>{course.status}</Td>
                       <Td>
                         <ActionsMenu type={"Course"} value={course} />
