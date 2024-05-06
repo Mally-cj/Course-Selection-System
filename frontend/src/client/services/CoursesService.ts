@@ -7,7 +7,7 @@ import type { CourseCreate } from '../models/CourseCreate';
 import type { CourseSelect } from '../models/CourseSelect';
 import type { CourseUpdate } from '../models/CourseUpdate';
 import type { ListResp_CourseOut_ } from '../models/ListResp_CourseOut_';
-import type { ListResp_Enrollment_ } from '../models/ListResp_Enrollment_';
+import type { ListResp_EnrollmentOut_ } from '../models/ListResp_EnrollmentOut_';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -16,8 +16,34 @@ import { request as __request } from '../core/request';
 export class CoursesService {
 
     /**
+     * List Teachercourses
+     * 获取教师的课程
+     * @returns ListResp_CourseOut_ Successful Response
+     * @throws ApiError
+     */
+    public static coursesListTeachercourses({
+        skip,
+        limit = 100,
+    }: {
+        skip?: number,
+        limit?: number,
+    }): CancelablePromise<ListResp_CourseOut_> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/courses/teachercourse',
+            query: {
+                'skip': skip,
+                'limit': limit,
+            },
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
      * List Courses
-     * 获取课程
+     * 获取所有的课程
      * @returns ListResp_CourseOut_ Successful Response
      * @throws ApiError
      */
@@ -43,7 +69,7 @@ export class CoursesService {
 
     /**
      * Create Courses
-     * 创建课程
+     * 添加课程课程
      * @returns Course Successful Response
      * @throws ApiError
      */
@@ -62,37 +88,6 @@ export class CoursesService {
             },
         });
     }
-
-        /**
-     * 获得上课名单 
-     * 获得上课名单 by CourseID.
-     * @returns enrollmentlist Successful Response
-     * @throws ApiError
-     */
-         public static courseidReadenrollmentlist({
-            course_id,
-            skip,
-            limit = 100,
-        }: {
-            course_id: number,
-            skip?: number,
-            limit?: number,
-        }): CancelablePromise<ListResp_Enrollment_> {
-            return __request(OpenAPI, {
-                method: 'GET',
-                url: '/api/v1/courses/getenrollmentlist/{course_id}',
-                path: {
-                    'course_id': course_id,
-                },
-                query: {
-                    'skip': skip,
-                    'limit': limit,
-                },
-                errors: {
-                    422: `Validation Error`,
-                },
-            });
-        }
 
     /**
      * Get Course
@@ -119,7 +114,7 @@ export class CoursesService {
 
     /**
      * Update Course
-     * 更新课程
+     * 获取课程
      * @returns Course Successful Response
      * @throws ApiError
      */
@@ -146,7 +141,7 @@ export class CoursesService {
 
     /**
      * Delete Course
-     * 删除课程
+     * 获取课程
      * @returns Course Successful Response
      * @throws ApiError
      */
@@ -189,48 +184,27 @@ export class CoursesService {
         });
     }
 
-    //     /**
-    //  * List Courses
-    //  * 获取课程
-    //  * @returns ListResp_Course_ Successful Response
-    //  * @throws ApiError
-    //  */
-    //      public static teacherCourses({
-    //         skip,
-    //         limit = 100,
-    //     }: {
-    //         skip?: number,
-    //         limit?: number,
-    //     }): CancelablePromise<ListResp_CourseOut_> {
-    //         return __request(OpenAPI, {
-    //             method: 'GET',
-    //             url: '/api/v1/courses/teachercourse',
-    //             query: {
-    //                 'skip': skip,
-    //                 'limit': limit,
-    //             },
-    //             errors: {
-    //                 422: `Validation Error`,
-    //             },
-    //         });
-    //     }
-
-            /**
-     * List Courses
-     * 获取教师的课程
-     * @returns ListResp_CourseOut_ Successful Response
+    /**
+     * Getenrollmentlist
+     * 获取课程报名名单
+     * @returns ListResp_EnrollmentOut_ Successful Response
      * @throws ApiError
      */
-    public static teacherCourses({
+    public static coursesGetenrollmentlist({
+        courseId,
         skip,
         limit = 100,
     }: {
+        courseId: number,
         skip?: number,
         limit?: number,
-    }): CancelablePromise<ListResp_CourseOut_> {
+    }): CancelablePromise<ListResp_EnrollmentOut_> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/v1/courses/teachercourse',
+            url: '/api/v1/courses/getenrollmentlist/{course_id}',
+            path: {
+                'course_id': courseId,
+            },
             query: {
                 'skip': skip,
                 'limit': limit,
@@ -240,5 +214,5 @@ export class CoursesService {
             },
         });
     }
-}
 
+}

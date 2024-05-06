@@ -3,10 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { enrollment } from './enrollment';
-
-export type enrollmentlist = {
-    data: Array<enrollment>;
-    count: number;
+export type CommentCreate = {
+    course_id: number;
+    student_id: number;
+    content: string;
 };
 
