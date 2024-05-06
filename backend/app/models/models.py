@@ -82,7 +82,8 @@ class StudentBase(SQLModel):
     
 class Student(StudentBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
-
+    email: str
+    major: str
     comments: list["Comment"] = Relationship(back_populates="student")
     # course_id: int = ForeignKey('course.id')
     courses: list["Course"] = Relationship(back_populates="students", link_model=EnrollmentList)

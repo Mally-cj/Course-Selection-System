@@ -68,7 +68,7 @@ function StuManage() {
                     <Th>Full name</Th>
                     <Th>Email</Th>
                     <Th>id</Th>
-                    <Th>Status</Th>
+                      <Th>Major</Th>
                     <Th>Actions</Th>
                   </Tr>
                 </Thead>
@@ -78,9 +78,9 @@ function StuManage() {
                       
                       <Td>{students.name}</Td>
                       {/* TODO: 补充数据库的表然后填补 */}
-                      <Td>{}</Td>
-                      <Td>{}</Td>
+                      <Td>{students.email}</Td>
                       <Td>{students.student_id}</Td>
+                      <Td>{students.major}</Td>
                       
                       <Td>
                         <ActionsMenu
