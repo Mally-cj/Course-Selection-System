@@ -9,5 +9,6 @@ export type Student = {
     id?: (number | null);
     email: string;
     major: string;
+    classLocation?: (string | null);
 };
 

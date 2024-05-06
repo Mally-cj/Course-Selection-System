@@ -68,23 +68,24 @@ function StuManage() {
                     <Th>Full name</Th>
                     <Th>Email</Th>
                     <Th>id</Th>
-                      <Th>Major</Th>
+                    <Th>Major</Th>
+                    <Th>ClassLocation</Th>
                     <Th>Actions</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
                   {students.data?.map((students) => (
                     <Tr key={students.id}>
-                      
+
                       <Td>{students.name}</Td>
                       {/* TODO: 补充数据库的表然后填补 */}
                       <Td>{students.email}</Td>
                       <Td>{students.student_id}</Td>
                       <Td>{students.major}</Td>
-                      
+                      <Td>{students.classLocation}</Td>
                       <Td>
                         <ActionsMenu
-                          type="User"
+                          type="Student"
                           value={students}
                         //ToDO: ActionsMenu的students类
                         />

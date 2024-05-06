@@ -10,15 +10,17 @@ import type React from "react"
 import { BsThreeDotsVertical } from "react-icons/bs"
 import { FiEdit, FiTrash, FiLink } from "react-icons/fi"
 
-import type { ItemOut, UserOut, CourseOut } from "../../client"
+import type { ItemOut, UserOut, CourseOut, StudentUpdate } from "../../client"
 import EditUser from "../Admin/EditUser"
 import EditItem from "../Items/EditItem"
+import EditStudent from "../Students/EditStudent"
+
 import Delete from "./DeleteAlert"
 import EditCourse from "../Courses/EditCourse"
 
 interface ActionsMenuProps {
   type: string
-  value: ItemOut | UserOut | CourseOut
+  value: ItemOut | UserOut | CourseOut |StudentUpdate
   disabled?: boolean
 }
 
@@ -49,6 +51,14 @@ const ActionsMenu: React.FC<ActionsMenuProps> = ({ type, value, disabled }) => {
         onClose={editUserModal.onClose}
       />)
   }
+  else if (type === "Student") {
+    editItem = (value: any) => (
+      <EditStudent
+        student={value as StudentUpdate}
+        isOpen={editUserModal.isOpen}
+        onClose={editUserModal.onClose}
+      />)
+  }
   return (
     <>
       <Menu>
@@ -63,7 +73,7 @@ const ActionsMenu: React.FC<ActionsMenuProps> = ({ type, value, disabled }) => {
             onClick={editUserModal.onOpen}
             icon={<FiEdit fontSize="16px" />}
           >
-            编辑课程 
+            Edit {type}
           </MenuItem>
           <MenuItem
           icon={<FiLink fontSize="16px" />}

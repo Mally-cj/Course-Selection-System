@@ -6,5 +6,9 @@
 export type StudentUpdate = {
     name: string;
     student_id: string;
+    id?: (number | null);
+    email: string;
+    major: string;
+    classLocation?: (string | null);
 };
 
