@@ -39,6 +39,7 @@ function Coursestudent() {
     const errDetail = (error as ApiError).body?.detail
     showToast("Something went wrong.", `${errDetail}`, "error")
   }
+  console.log(studentlist)
 
   return (
     <>
@@ -73,9 +74,9 @@ function Coursestudent() {
                     <Tr key={student.id}>
                       <Td>{student.student_id}</Td>
                       <Td>student.student_name</Td>
-                      <Td>
+                      {/* <Td>
                         <ActionsMenu type={"student"} value={student} />
-                      </Td>
+                      </Td> */}
                     </Tr>
                   ))}
                 </Tbody>

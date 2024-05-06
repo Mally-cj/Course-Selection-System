@@ -161,7 +161,7 @@ const AddStudent: React.FC<AddStudentProps> = ({ isOpen, onClose }) => {
         </ModalContent>
       </Modal>
     </>
-  );
-};
+  )
+}
 
-export default AddStudent;
+export default AddStudent

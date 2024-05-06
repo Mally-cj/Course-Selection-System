@@ -9,9 +9,12 @@ import enum
 class EnrollmentListbase(SQLModel):
     course_id: int = Field(foreign_key="course.id", primary_key=True)
     student_id: int = Field(foreign_key="student.id", primary_key=True)
+    
 
 class EnrollmentList(EnrollmentListbase, table=True):
-    pass
+    course: "Course" = Relationship(back_populates="EnrollmentList")
+    student: "Student" = Relationship(back_populates="EnrollmentList")
+    
 
 class EnrollmentOut(EnrollmentListbase):
     student: Optional["Student"] = None
