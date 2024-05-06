@@ -3,6 +3,7 @@ import type React from "react"
 import { FaPlus } from "react-icons/fa"
 
 import AddUser from "../Admin/AddUser"
+import AddStudent from "../Students/AddStudent";  // 确保你有这个组件
 import AddItem from "../Items/AddItem"
 import AddCourse from "../Courses/Addcourse"
 import ReturnCourse from "../Courses/Returncourse"
@@ -25,6 +26,10 @@ const Navbar: React.FC<NavbarProps> = ({ type }) => {
     const addCourseModal = useDisclosure()
     onClick = addCourseModal.onOpen
     item = <AddCourse isOpen={addCourseModal.isOpen} onClose={addCourseModal.onClose} />
+  } else if (type === "Student") {  // 增加的部分
+    const addStudentModal = useDisclosure();
+    onClick = addStudentModal.onOpen;
+    item = <AddStudent isOpen={addStudentModal.isOpen} onClose={addStudentModal.onClose} />;
   } else if (type == "CourseSelect") {
     // const selectCourseModal = useDisclosure()
     // onClick = selectCourseModal.onOpen

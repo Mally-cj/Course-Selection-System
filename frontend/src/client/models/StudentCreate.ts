@@ -4,7 +4,10 @@
 /* eslint-disable */
 
 export type StudentCreate = {
-    name: string;
-    student_id: string;
+    name?: (string | null);
+    email: string;
+    student_id?: (string | null);
+    major?: (string | null);
+    classLocation?: (string | null);
 };
 
