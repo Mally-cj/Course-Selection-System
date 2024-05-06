@@ -2,6 +2,7 @@ from typing import Any
 
 from app.models.models import CourseSelect
 from fastapi import APIRouter, HTTPException
+import sqlalchemy
 from sqlmodel import func, select
 
 from app.api.deps import CurrentUser, SessionDep
@@ -89,7 +90,10 @@ def select_course(
         raise HTTPException(status_code=200, detail="Student not found")
     course.students.append(student)
     session.add(course)
-    session.commit()
+    try:
+        session.commit()
+    except sqlalchemy.exc.IntegrityError as e:
+        raise HTTPException(status_code=500, detail="Course Already selected")
     session.refresh(course)
     
     return "OK"

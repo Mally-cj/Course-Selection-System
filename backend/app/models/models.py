@@ -30,13 +30,21 @@ class Announcement(SQLModel, table=True):
     announcement_time: str
 
 # 课程评论表
-class Comment(SQLModel, table=True):
-    id: int = Field(primary_key=True)
+class CommentBase(SQLModel):
     course_id: int = Field(foreign_key="course.id")
-    course: "Course" = Relationship(back_populates="comments")
     student_id: int = Field(foreign_key="student.id")
-    student: "Student" = Relationship(back_populates="comments")
     content: str
+    
+class Comment(CommentBase, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    course: "Course" = Relationship(back_populates="comments")
+    student: "Student" = Relationship(back_populates="comments")
+
+class CommentCreate(CommentBase):
+    pass
+
+class CommentUpdate(CommentBase):
+    pass
 
 class CourseBase(SQLModel):
     id: int | None = Field(default=None, primary_key=True)

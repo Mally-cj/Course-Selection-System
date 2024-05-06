@@ -3,10 +3,10 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { enrollment } from './enrollment';
+import type { Comment } from './Comment';
 
-export type ListResp_Enrollment_ = {
-    data?: (Array<enrollment> | null);
+export type ListResp_Comment_ = {
+    data?: (Array<Comment> | null);
     count: number;
 };
 

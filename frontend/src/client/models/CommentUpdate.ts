@@ -3,10 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type enrollment = {
-    id?: (number | null);
-    student_id: number;
+export type CommentUpdate = {
     course_id: number;
-    student_name: string;
-    
+    student_id: number;
+    content: string;
 };
+

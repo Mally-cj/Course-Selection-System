@@ -2,31 +2,23 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export const $Student = {
+export const $EnrollmentOut = {
     properties: {
-        name: {
-            type: 'string',
+        course_id: {
+            type: 'number',
             isRequired: true,
         },
         student_id: {
-            type: 'string',
+            type: 'number',
             isRequired: true,
         },
-        id: {
+        student: {
             type: 'any-of',
             contains: [{
-                type: 'number',
+                type: 'Student',
             }, {
                 type: 'null',
             }],
-        },
-        email: {
-            type: 'string',
-            isRequired: true,
-        },
-        major: {
-            type: 'string',
-            isRequired: true,
         },
     },
 } as const;

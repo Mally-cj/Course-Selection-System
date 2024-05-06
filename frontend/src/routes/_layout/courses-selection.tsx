@@ -2,7 +2,7 @@ import { Box, Container, Heading, Text } from "@chakra-ui/react"
 import { createFileRoute } from "@tanstack/react-router"
 import { Table } from "antd"
 import { useQuery, useQueryClient } from "react-query"
-import { CourseOut, CoursesService, UserOut } from "../../client"
+import { ApiError, CourseOut, CoursesService, UserOut } from "../../client"
 
 export const Route = createFileRoute("/_layout/courses-selection")({
   component: CourseSelect,
@@ -37,10 +37,21 @@ function CourseSelect() {
             key: 'x',
             render: (item: CourseOut) => <a onClick={
                 async () => {
-                    await CoursesService.coursesSelectCourse({requestBody: {
-                        course_id: item.id || 0,
-                        student_id: currentUser?.student_id || 0
-                    }})
+                    let resp = null;
+                    try {
+                        resp = await CoursesService.coursesSelectCourse({requestBody: {
+                            course_id: item.id || 0,
+                            student_id: currentUser?.student_id || 0
+                        }})
+                        alert("选课成功")
+                    }
+                    catch (e: any){
+                        // 将e转换为ApiError
+                        const apierror = e as ApiError;
+                        alert(apierror.body.detail);
+                        console.log(apierror.body);
+                    }
+                    
                 }
             }>选课</a>,
           },
