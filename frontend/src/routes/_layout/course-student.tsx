@@ -15,8 +15,8 @@ import { createFileRoute } from "@tanstack/react-router"
 import { useQuery } from "react-query"
 
 import { type ApiError, CoursesService } from "../../client"
-import ActionsMenu from "../../components/Common/ActionsMenu"
-import Rebackbar from "../../components/Common/Rebackbar"
+import ActionsMenu from "../../components/Courses/ActionsMenu"
+import Rebackbar from "../../components/Courses/Rebackbar"
 import useCustomToast from "../../hooks/useCustomToast"
 
 export const Route = createFileRoute("/_layout/course-student")({

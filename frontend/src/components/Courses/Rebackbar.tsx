@@ -2,7 +2,7 @@ import { Button, Flex, Icon, useDisclosure } from "@chakra-ui/react"
 import type React from "react"
 import { FaAngleLeft } from "react-icons/fa"
 
-import ReturnCourse from "../Courses/Returncourse"
+import ReturnCourse from "./Returncourse"
 interface NavbarProps {
   type: string
 }
