@@ -8,7 +8,7 @@ from sqlmodel import func, select
 from app.api.deps import CurrentUser, SessionDep
 from app.models import Student, ListResp, StudentCreate, StudentUpdate
 from app.models import Course
-from app.crud import student
+from app.crud import crud
 
 router = APIRouter()
 
@@ -20,7 +20,7 @@ def list_students(
     获取学生
     """
     
-    items, count = student.list(Student, session, skip, limit)
+    items, count = crud.list(Student, session, skip, limit)
     return ListResp(data=items, count=count)
 
 @router.post("/", response_model=Student)
@@ -30,7 +30,7 @@ def create_students(
     """
     获取学生
     """
-    data = student.create(Student, session, req)
+    data = crud.create(Student, session, req)
     return data
 
 @router.get("/{id}", response_model=Student)
@@ -40,7 +40,7 @@ def get_student(
     """
     获取学生
     """
-    data = student.get(Student, session, id)
+    data = crud.get(Student, session, id)
     return data
 
 @router.put("/{id}", response_model=Student)
@@ -50,7 +50,7 @@ def update_student(
     """
     获取学生
     """
-    data = student.update(Student, session, id, req)
+    data = crud.update(Student, session, id, req)
     return data
 
 @router.delete("/{id}", response_model=Student)
@@ -60,7 +60,7 @@ def delete_student(
     """
     获取学生
     """
-    data = student.delete(Student, session, id)
+    data = crud.delete(Student, session, id)
     return data
 
 @router.get("/{id}/courses", response_model=ListResp[Course])
