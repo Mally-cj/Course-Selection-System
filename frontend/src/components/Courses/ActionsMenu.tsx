@@ -10,16 +10,16 @@ import type React from "react"
 import { BsThreeDotsVertical } from "react-icons/bs"
 import { FiEdit, FiTrash, FiLink } from "react-icons/fi"
 
-import type { ItemOut, UserOut, StudentUpdate } from "../../client"
+import type { ItemOut, UserOut, CourseOut,  } from "../../client"
 import EditUser from "../Admin/EditUser"
 import EditItem from "../Items/EditItem"
-import EditStudent from "../Students/EditStudent"
 
-import Delete from "./DeleteAlert"
+import Delete from "../Common/DeleteAlert"
+import EditCourse from "../Courses/EditCourse"
 
 interface ActionsMenuProps {
   type: string
-  value: ItemOut | UserOut |StudentUpdate
+  value: ItemOut | UserOut | CourseOut 
   disabled?: boolean
 }
 
@@ -42,11 +42,10 @@ const ActionsMenu: React.FC<ActionsMenuProps> = ({ type, value, disabled }) => {
         isOpen={editUserModal.isOpen}
         onClose={editUserModal.onClose}
       />)
-  } 
-  else if (type === "Student") {
+  } else if (type === "Course") {
     editItem = (value: any) => (
-      <EditStudent
-        student={value as StudentUpdate}
+      <EditCourse
+        item={value as CourseOut}
         isOpen={editUserModal.isOpen}
         onClose={editUserModal.onClose}
       />)
@@ -65,7 +64,16 @@ const ActionsMenu: React.FC<ActionsMenuProps> = ({ type, value, disabled }) => {
             onClick={editUserModal.onOpen}
             icon={<FiEdit fontSize="16px" />}
           >
-            Edit {type}
+            编辑课程信息
+          </MenuItem>
+          <MenuItem
+          icon={<FiLink fontSize="16px" />}
+            onClick={() => {
+              // Example: Redirect to a specific page
+              window.location.href = `/course-student?courseId=${value.id}&courseName=${value.name}`;
+            }}
+          >
+            选课名单
           </MenuItem>
           <MenuItem
             onClick={deleteModal.onOpen}

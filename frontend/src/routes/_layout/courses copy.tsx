@@ -15,11 +15,11 @@ import { createFileRoute } from "@tanstack/react-router"
 import { useQuery } from "react-query"
 
 import { type ApiError, CoursesService } from "../../client"
-import ActionsMenu from "../../components/Courses/ActionsMenu"
+import ActionsMenu from "../../components/Common/ActionsMenu"
 import Navbar from "../../components/Common/Navbar"
 import useCustomToast from "../../hooks/useCustomToast"
 
-export const Route = createFileRoute("/_layout/courses")({
+export const Route = createFileRoute("/_layout/courses copy")({
   component: Courses,
 })
 
