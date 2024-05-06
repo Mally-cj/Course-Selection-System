@@ -3,16 +3,18 @@ import {
   Flex,
   Heading,
   Spinner,
-  Table,
+  // Table,
   TableContainer,
   Tbody,
   Td,
   Th,
   Thead,
   Tr,
+  Box,
 } from "@chakra-ui/react"
 import { createFileRoute } from "@tanstack/react-router"
 import { useQuery } from "react-query"
+import { Table } from "antd";
 
 import { type ApiError, CoursesService } from "../../client"
 import ActionsMenu from "../../components/Courses/ActionsMenu"
@@ -35,15 +37,55 @@ function Coursestudent() {
     isError,
     error,
   } = useQuery("studentlist", () => CoursesService.coursesGetenrollmentlist({courseId: courseId}))
-  console.log(studentlist);
+
   if (isError) {
     const errDetail = (error as ApiError).body?.detail
     showToast("Something went wrong.", `${errDetail}`, "error")
   }
+  const processedData = studentlist?.data.map((student) => {
+    return {
+      course_id: student.course_id,
+      student_id: student.student.student_id,
+      name: student.student.name,
+      email: student.student.email,
+      major: student.student.major,
+      classLocation: student.student.classLocation,
+    };
+  });
+  const columns = [
+    {
+        title: '序号',
+        render: (text, record, index) => index + 1
+    },
+    {
+      title: '学号',
+      dataIndex: 'student_id',
+      // key: 'student.student_id',
+    },
+    {
+      title: '姓名',
+      dataIndex: 'name',
+    },
+    {
+      title: '学院',
+      dataIndex: 'major',
+    },
+    {
+      title: '邮箱',
+      dataIndex: 'email',
+    },
+    // {
+    //   title: 'Action',
+    //   dataIndex: '',
+    //   key: 'x',
+    //   render: ( record) => <ActionsMenu type={"Course"} value={record} />,
+    // }
+
+    ];
 
   return (
     <>
-      {isLoading ? (
+      {/* {isLoading ? (
         // TODO: Add skeleton
         <Flex justify="center" align="center" height="100vh" width="full">
           <Spinner size="xl" color="ui.main" />
@@ -68,7 +110,7 @@ function Coursestudent() {
                     <Th>姓名</Th>
                     <Th>学院</Th>
                     <Th>邮箱</Th>
-                    {/* <Th>Actions</Th> */}
+                    {/* <Th>Actions</Th> 
                   </Tr>
                 </Thead>
                 <Tbody>
@@ -81,7 +123,7 @@ function Coursestudent() {
                       <Td>{enrollment.student.email}</Td>
                       {/* <Td>
                         <ActionsMenu type={"student"} value={student} />
-                      </Td> */}
+                      </Td> 
                     </Tr>
                   ))}
                 </Tbody>
@@ -89,7 +131,18 @@ function Coursestudent() {
             </TableContainer>
           </Container>
         )
-      )}
+      )} */}
+      <>
+      <Container maxW="full">
+        <Heading size="lg" textAlign={{ base: "center", md: "left" }} pt={8} pb={12}>
+             {courseName}的选课名单
+        </Heading>
+        <Rebackbar type={"ReturnCourse"} mb={4} />
+        <Box pt={0} px={4}>
+          <Table dataSource={processedData} columns={columns} />;
+        </Box>
+      </Container>
+    </>
     </>
   )
 }

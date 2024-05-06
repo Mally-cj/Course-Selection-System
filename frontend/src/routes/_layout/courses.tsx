@@ -3,21 +3,24 @@ import {
   Flex,
   Heading,
   Spinner,
-  Table,
+  // Table,
   TableContainer,
   Tbody,
   Td,
   Th,
   Thead,
   Tr,
+  Box,
+  IconButton,
 } from "@chakra-ui/react"
 import { createFileRoute } from "@tanstack/react-router"
 import { useQuery } from "react-query"
-
-import { type ApiError, CoursesService } from "../../client"
+import { Table } from "antd";
+import { type ApiError, CoursesService,CourseOut } from "../../client"
 import ActionsMenu from "../../components/Courses/ActionsMenu"
 import Navbar from "../../components/Common/Navbar"
 import useCustomToast from "../../hooks/useCustomToast"
+
 
 export const Route = createFileRoute("/_layout/courses")({
   component: Courses,
@@ -37,9 +40,44 @@ function Courses() {
     showToast("Something went wrong.", `${errDetail}`, "error")
   }
 
+  const columns = [
+    {
+        title: '课程编号',
+        dataIndex: 'id',
+        key: 'id',
+    },
+    {
+        title: '课程名',
+        dataIndex: 'name',
+        key: 'name',
+    },
+    {
+      title: '课程教材',
+      dataIndex: 'textbook',
+      key: 'name',
+    },
+    {
+      title: '课程安排',
+      dataIndex: 'class_time',
+      key: 'class_time',
+    },
+    {
+      title: '课程状态',
+      dataIndex: 'status',
+      key: 'status',
+    },
+    {
+      title: 'Action',
+      dataIndex: '',
+      key: 'x',
+      render: ( record) => <ActionsMenu type={"Course"} value={record} />,
+    }
+
+    ];
+
   return (
     <>
-      {isLoading ? (
+      {/* {isLoading ? (
         // TODO: Add skeleton
         <Flex justify="center" align="center" height="100vh" width="full">
           <Spinner size="xl" color="ui.main" />
@@ -85,7 +123,18 @@ function Courses() {
             </TableContainer>
           </Container>
         )
-      )}
+      )} */}
+      <>
+      <Container maxW="full">
+        <Heading size="lg" textAlign={{ base: "center", md: "left" }} pt={8} pb={12}>
+            我的课程
+        </Heading>
+        <Navbar type={"Course"}  mb={4}/>
+        <Box pt={0} px={4}>
+          <Table dataSource={courses?.data || []} columns={columns} />;
+        </Box>
+      </Container>
+    </>
     </>
   )
 }

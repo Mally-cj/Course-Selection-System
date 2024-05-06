@@ -50,6 +50,7 @@ const AddCourse: React.FC<AddCourseProps> = ({ isOpen, onClose }) => {
       showToast("Success!", "Course created successfully.", "success")
       reset()
       onClose()
+      window.location.reload();
     },
     onError: (err: ApiError) => {
       const errDetail = err.body?.detail
