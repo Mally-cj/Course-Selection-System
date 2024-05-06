@@ -12,19 +12,19 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
-import type React from "react";
+import React from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
 
-import { type ApiError, type StudentCreate, StudentsService } from "../../client";
+import { type ApiError, type TeacherCreate, TeachersService } from "../../client";
 import useCustomToast from "../../hooks/useCustomToast";
 
-interface AddStudentProps {
+interface AddTeacherProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const AddStudent: React.FC<AddStudentProps> = ({ isOpen, onClose }) => {
+const AddTeacher: React.FC<AddTeacherProps> = ({ isOpen, onClose }) => {
   const queryClient = useQueryClient();
   const showToast = useCustomToast();
   const {
@@ -32,25 +32,24 @@ const AddStudent: React.FC<AddStudentProps> = ({ isOpen, onClose }) => {
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<StudentCreate>({
+  } = useForm<TeacherCreate>({
     mode: "onBlur",
     criteriaMode: "all",
     defaultValues: {
       name: "",
       email: "",
-      student_id: "",
-      major: "",
-      classLocation: ""
+      title: "",
+      college: ""
     },
   });
 
-  const addStudent = async (data: StudentCreate) => {
-    await StudentsService.studentsCreateStudents({ requestBody: data });
+  const addTeacher = async (data: TeacherCreate) => {
+    await TeachersService.teachersCreateTeacher({ requestBody: data });
   };
 
-  const mutation = useMutation(addStudent, {
+  const mutation = useMutation(addTeacher, {
     onSuccess: () => {
-      showToast("Success!", "Student added successfully.", "success");
+      showToast("Success!", "Teacher added successfully.", "success");
       reset();
       onClose();
     },
@@ -59,11 +58,11 @@ const AddStudent: React.FC<AddStudentProps> = ({ isOpen, onClose }) => {
       showToast("Something went wrong.", `${errDetail}`, "error");
     },
     onSettled: () => {
-      queryClient.invalidateQueries("students");
+      queryClient.invalidateQueries("teachers");
     },
   });
 
-  const onSubmit: SubmitHandler<StudentCreate> = (data) => {
+  const onSubmit: SubmitHandler<TeacherCreate> = (data) => {
     mutation.mutate(data);
   };
 
@@ -77,7 +76,7 @@ const AddStudent: React.FC<AddStudentProps> = ({ isOpen, onClose }) => {
       >
         <ModalOverlay />
         <ModalContent as="form" onSubmit={handleSubmit(onSubmit)}>
-          <ModalHeader>添加学生</ModalHeader>
+          <ModalHeader>添加教师</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             <FormControl isRequired isInvalid={!!errors.name}>
@@ -87,7 +86,7 @@ const AddStudent: React.FC<AddStudentProps> = ({ isOpen, onClose }) => {
                 {...register("name", {
                   required: "姓名不能为空",
                 })}
-                placeholder="请输入学生姓名"
+                placeholder="请输入教师姓名"
                 type="text"
               />
               {errors.name && (
@@ -101,53 +100,39 @@ const AddStudent: React.FC<AddStudentProps> = ({ isOpen, onClose }) => {
                 {...register("email", {
                   required: "电子邮箱不能为空",
                 })}
-                placeholder="请输入学生邮箱"
+                placeholder="请输入教师邮箱"
                 type="email"
               />
               {errors.email && (
                 <FormErrorMessage>{errors.email.message}</FormErrorMessage>
               )}
             </FormControl>
-            <FormControl isRequired isInvalid={!!errors.student_id}>
-              <FormLabel htmlFor="student_id">学号</FormLabel>
+            <FormControl isRequired isInvalid={!!errors.title}>
+              <FormLabel htmlFor="title">职称</FormLabel>
               <Input
-                id="student_id"
-                {...register("student_id", {
-                  required: "学号不能为空",
+                id="title"
+                {...register("title", {
+                  required: "职称不能为空",
                 })}
-                placeholder="请输入学生学号"
+                placeholder="请输入教师职称"
                 type="text"
               />
-              {errors.student_id && (
-                <FormErrorMessage>{errors.student_id.message}</FormErrorMessage>
+              {errors.title && (
+                <FormErrorMessage>{errors.title.message}</FormErrorMessage>
               )}
             </FormControl>
-            <FormControl isRequired isInvalid={!!errors.major}>
-              <FormLabel htmlFor="major">专业</FormLabel>
+            <FormControl isRequired isInvalid={!!errors.college}>
+              <FormLabel htmlFor="college">所属学院</FormLabel>
               <Input
-                id="major"
-                {...register("major", {
-                  required: "专业不能为空",
+                id="college"
+                {...register("college", {
+                  required: "所属学院不能为空",
                 })}
-                placeholder="请输入学生专业"
+                placeholder="请输入教师所属学院"
                 type="text"
               />
-              {errors.major && (
-                <FormErrorMessage>{errors.major.message}</FormErrorMessage>
-              )}
-            </FormControl>
-            <FormControl isRequired isInvalid={!!errors.classLocation}>
-              <FormLabel htmlFor="classLocation">班级</FormLabel>
-              <Input
-                id="classLocation"
-                {...register("classLocation", {
-                  required: "班级不能为空",
-                })}
-                placeholder="请输入学生班级"
-                type="text"
-              />
-              {errors.classLocation && (
-                <FormErrorMessage>{errors.classLocation.message}</FormErrorMessage>
+              {errors.college && (
+                <FormErrorMessage>{errors.college.message}</FormErrorMessage>
               )}
             </FormControl>
           </ModalBody>
@@ -161,7 +146,7 @@ const AddStudent: React.FC<AddStudentProps> = ({ isOpen, onClose }) => {
         </ModalContent>
       </Modal>
     </>
-  )
-};
+  );
+}
 
-export default AddStudent;
+export default AddTeacher;

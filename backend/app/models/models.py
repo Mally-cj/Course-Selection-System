@@ -112,6 +112,9 @@ class StudentUpdate(StudentBase):
 
 class TeacherBase(SQLModel):
     name: str
+    email: str | None = None
+    title: str| None = None
+    college: str| None = None
 
 class Teacher(TeacherBase, table=True):
     id: int | None = Field(default=None, primary_key=True)

@@ -11,7 +11,7 @@ import React from "react"
 import { useForm } from "react-hook-form"
 import { useMutation, useQueryClient } from "react-query"
 
-import { ItemsService, UsersService, CoursesService, StudentsService } from "../../client"
+import { ItemsService, UsersService, CoursesService, StudentsService, TeachersService } from "../../client"
 import useCustomToast from "../../hooks/useCustomToast"
 
 interface DeleteProps {
@@ -38,8 +38,10 @@ const Delete: React.FC<DeleteProps> = ({ type, id, isOpen, onClose }) => {
       await UsersService.usersDeleteUser({ userId: id })
     } else if (type == "Course") {
       await CoursesService.coursesDeleteCourse({ id: id })
-    }else if (type == "Student") {
+    } else if (type == "Student") {
       await StudentsService.studentsDeleteStudent({ id: id })
+    } else if (type == "Teacher") {
+      await TeachersService.teachersDeleteTeacher({ id: id })
     }
     else {
       throw new Error(`Unexpected type: ${type}`)

@@ -10,16 +10,17 @@ import type React from "react"
 import { BsThreeDotsVertical } from "react-icons/bs"
 import { FiEdit, FiTrash, FiLink } from "react-icons/fi"
 
-import type { ItemOut, UserOut, StudentUpdate } from "../../client"
+import type { ItemOut, UserOut, StudentUpdate, TeacherUpdate } from "../../client"
 import EditUser from "../Admin/EditUser"
 import EditItem from "../Items/EditItem"
+import EditTeacher from "../Teachers/EditTeacher"
 import EditStudent from "../Students/EditStudent"
 
 import Delete from "./DeleteAlert"
 
 interface ActionsMenuProps {
   type: string
-  value: ItemOut | UserOut |StudentUpdate
+  value: ItemOut | UserOut | StudentUpdate | TeacherUpdate
   disabled?: boolean
 }
 
@@ -42,11 +43,19 @@ const ActionsMenu: React.FC<ActionsMenuProps> = ({ type, value, disabled }) => {
         isOpen={editUserModal.isOpen}
         onClose={editUserModal.onClose}
       />)
-  } 
+  }
   else if (type === "Student") {
     editItem = (value: any) => (
       <EditStudent
         student={value as StudentUpdate}
+        isOpen={editUserModal.isOpen}
+        onClose={editUserModal.onClose}
+      />)
+  }
+  else if (type === "Teacher") {
+    editItem = (value: any) => (
+      <EditTeacher
+        teacher={value as TeacherUpdate}
         isOpen={editUserModal.isOpen}
         onClose={editUserModal.onClose}
       />)
@@ -65,18 +74,18 @@ const ActionsMenu: React.FC<ActionsMenuProps> = ({ type, value, disabled }) => {
             onClick={editUserModal.onOpen}
             icon={<FiEdit fontSize="16px" />}
           >
-            Edit {type}
+            编辑 {type}
           </MenuItem>
           <MenuItem
             onClick={deleteModal.onOpen}
             icon={<FiTrash fontSize="16px" />}
             color="ui.danger"
           >
-            删除 
+            删除
           </MenuItem>
         </MenuList>
         {editItem(value)}
-      
+
         <Delete
           type={type}
           id={value.id}

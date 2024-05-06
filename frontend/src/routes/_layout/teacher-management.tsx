@@ -60,7 +60,7 @@ function TeacherManage() {
             >
               教师管理
             </Heading>
-            <Navbar type={"Teachers"} />
+              <Navbar type={"Teacher"} />
             <TableContainer>
               <Table fontSize="md" size={{ base: "sm", md: "md" }}>
                 <Thead>
@@ -68,7 +68,8 @@ function TeacherManage() {
                     <Th>Full name</Th>
                     <Th>Email</Th>
                     <Th>id</Th>
-                    <Th>Status</Th>
+                    <Th>title</Th>
+                    <Th>college</Th>
                     <Th>Actions</Th>
                   </Tr>
                 </Thead>
@@ -78,13 +79,13 @@ function TeacherManage() {
                       
                       <Td>{teachers.name}</Td>
                       {/* TODO: 补充数据库的表然后填补 */}
-                      <Td>{}</Td>
-                      <Td>{}</Td>
-                      <Td>{}</Td>
-                      
+                      <Td>{teachers.email}</Td>
+                      <Td>{teachers.id}</Td>
+                      <Td>{teachers.title}</Td>
+                      <Td>{teachers.college }</Td>
                       <Td>
                         <ActionsMenu
-                          type="User"
+                          type="Teacher"
                           value={teachers}
                         //ToDO: ActionsMenu的Teachers类
                         />

@@ -5,5 +5,9 @@
 
 export type TeacherCreate = {
     name: string;
+    id?: (number | null);
+    email: (string | null);
+    title: (string | null);
+    college: (string | null);
 };
 

@@ -6,6 +6,7 @@ import AddUser from "../Admin/AddUser"
 import AddStudent from "../Students/AddStudent"  // 确保你有这个组件
 import AddItem from "../Items/AddItem"
 import AddCourse from "../Courses/Addcourse"
+import AddTeacher from "../Teachers/AddTeacher"
 import ReturnCourse from "../Courses/Returncourse"
 interface NavbarProps {
   type: string
@@ -30,6 +31,10 @@ const Navbar: React.FC<NavbarProps> = ({ type }) => {
     const addStudentModal = useDisclosure();
     onClick = addStudentModal.onOpen;
     item = <AddStudent isOpen={addStudentModal.isOpen} onClose={addStudentModal.onClose} />;
+  } else if (type === "Teacher") {  // 增加的部分
+    const addTeacherModal = useDisclosure();
+    onClick = addTeacherModal.onOpen;
+    item = <AddTeacher isOpen={addTeacherModal.isOpen} onClose={addTeacherModal.onClose} />;
   } else if (type == "CourseSelect") {
     // const selectCourseModal = useDisclosure()
     // onClick = selectCourseModal.onOpen
