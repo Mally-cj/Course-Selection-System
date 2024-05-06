@@ -192,12 +192,8 @@ export class CoursesService {
      */
     public static coursesGetenrollmentlist({
         courseId,
-        skip,
-        limit = 100,
     }: {
         courseId: number,
-        skip?: number,
-        limit?: number,
     }): CancelablePromise<ListResp_EnrollmentOut_> {
         return __request(OpenAPI, {
             method: 'GET',
@@ -205,10 +201,7 @@ export class CoursesService {
             path: {
                 'course_id': courseId,
             },
-            query: {
-                'skip': skip,
-                'limit': limit,
-            },
+
             errors: {
                 422: `Validation Error`,
             },

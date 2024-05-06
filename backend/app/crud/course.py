@@ -28,7 +28,6 @@ def list_byteacher(model: T, session: SessionDep,teacher_id: id, skip: int, limi
     return items, count
 
 def getenrollmentlist_bycourseid(model: T, session: SessionDep,course_id: id, skip: int, limit: int, cond: dict| BaseModel = None) -> tuple[list[T], int]:
-    print(course_id)
     count_statement = select(func.count()).select_from(model).where(model.course_id == course_id)
     count = session.execute(count_statement).scalar()
 

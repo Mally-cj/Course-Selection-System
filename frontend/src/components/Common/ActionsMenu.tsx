@@ -69,7 +69,7 @@ const ActionsMenu: React.FC<ActionsMenuProps> = ({ type, value, disabled }) => {
           icon={<FiLink fontSize="16px" />}
             onClick={() => {
               // Example: Redirect to a specific page
-              window.location.href = `/course-student?courseId=${value.id}`;
+              window.location.href = `/course-student?courseId=${value.id}&courseName=${value.name}`;
             }}
           >
             选课名单

@@ -12,8 +12,7 @@ class EnrollmentListbase(SQLModel):
     
 
 class EnrollmentList(EnrollmentListbase, table=True):
-    course: "Course" = Relationship(back_populates="EnrollmentList")
-    student: "Student" = Relationship(back_populates="EnrollmentList")
+    student: "Student" = Relationship(back_populates="enrollment_list")
     
 
 class EnrollmentOut(EnrollmentListbase):
@@ -101,6 +100,8 @@ class Student(StudentBase, table=True):
     # course_id: int = ForeignKey('course.id')
     courses: list["Course"] = Relationship(back_populates="students", link_model=EnrollmentList)
     user: "User" = Relationship(back_populates="student")
+    enrollment_list: list["EnrollmentList"] = Relationship(back_populates="student")
+
 
 
 class StudentCreate(StudentBase):

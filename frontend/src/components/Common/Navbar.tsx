@@ -3,7 +3,7 @@ import type React from "react"
 import { FaPlus } from "react-icons/fa"
 
 import AddUser from "../Admin/AddUser"
-import AddStudent from "../Students/Addstudent"  // 确保你有这个组件
+import AddStudent from "../Students/AddStudent"  // 确保你有这个组件
 import AddItem from "../Items/AddItem"
 import AddCourse from "../Courses/Addcourse"
 import ReturnCourse from "../Courses/Returncourse"

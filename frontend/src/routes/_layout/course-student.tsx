@@ -27,19 +27,19 @@ function Coursestudent() {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const courseId = urlParams.get('courseId');
+  const courseName = urlParams.get('courseName');
   const showToast = useCustomToast()
   const {
     data: studentlist,
     isLoading,
     isError,
     error,
-  } = useQuery("studentlist", () => CoursesService.courseidReadenrollmentlist({course_id: courseId}))
-
+  } = useQuery("studentlist", () => CoursesService.coursesGetenrollmentlist({courseId: courseId}))
+  console.log(studentlist);
   if (isError) {
     const errDetail = (error as ApiError).body?.detail
     showToast("Something went wrong.", `${errDetail}`, "error")
   }
-  console.log(studentlist)
 
   return (
     <>
@@ -56,24 +56,29 @@ function Coursestudent() {
               textAlign={{ base: "center", md: "left" }}
               pt={12}
             >
-              选课名单
+              {courseName}的选课名单
             </Heading>
             <Rebackbar type={"ReturnCourse"} />
             <TableContainer>
               <Table size={{ base: "sm", md: "md" }}>
                 <Thead>
                   <Tr>
-                    <Th>编号</Th>
+                    <Th>序号</Th>
                     <Th>学号</Th>
                     <Th>姓名</Th>
-                    <Th>Actions</Th>
+                    <Th>学院</Th>
+                    <Th>邮箱</Th>
+                    {/* <Th>Actions</Th> */}
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {studentlist.data?.map((student) => (
-                    <Tr key={student.id}>
-                      <Td>{student.student_id}</Td>
-                      <Td>student.student_name</Td>
+                  {studentlist.data?.map((enrollment,index) => (
+                    <Tr key={index}>
+                      <Td>{index + 1}</Td>
+                      <Td>{enrollment.student.student_id}</Td>
+                      <Td>{enrollment.student.name}</Td>
+                      <Td>{enrollment.student.major}</Td>
+                      <Td>{enrollment.student.email}</Td>
                       {/* <Td>
                         <ActionsMenu type={"student"} value={student} />
                       </Td> */}

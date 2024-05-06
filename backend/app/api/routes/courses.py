@@ -106,5 +106,5 @@ def getenrollmentlist(
     """
     获取课程报名名单
     """
-    items, count = course.getenrollmentlist_bycourseid(EnrollmentOut, session, course_id,skip,limit)
+    items, count = course.getenrollmentlist_bycourseid(EnrollmentList, session, course_id,skip,limit)
     return ListResp(data=items, count=count)
