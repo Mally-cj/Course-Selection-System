@@ -20,6 +20,7 @@ import { type ApiError, CoursesService } from "../../client"
 import ActionsMenu from "../../components/Courses/ActionsMenu"
 import Rebackbar from "../../components/Courses/Rebackbar"
 import useCustomToast from "../../hooks/useCustomToast"
+import Exporttexcel from '../../components/Courses/Exporttoexcel';
 
 export const Route = createFileRoute("/_layout/course-student")({
   component: Coursestudent,
@@ -42,20 +43,19 @@ function Coursestudent() {
     const errDetail = (error as ApiError).body?.detail
     showToast("Something went wrong.", `${errDetail}`, "error")
   }
-  const processedData = studentlist?.data.map((student) => {
+  const processedData = studentlist?.data.map((student, index) => {
     return {
-      course_id: student.course_id,
+      id: index + 1,
       student_id: student.student.student_id,
       name: student.student.name,
       email: student.student.email,
       major: student.student.major,
-      classLocation: student.student.classLocation,
     };
   });
   const columns = [
     {
         title: '序号',
-        render: (text, record, index) => index + 1
+        dataIndex: 'id'
     },
     {
       title: '学号',
@@ -137,7 +137,10 @@ function Coursestudent() {
         <Heading size="lg" textAlign={{ base: "center", md: "left" }} pt={8} pb={12}>
              {courseName}的选课名单
         </Heading>
-        <Rebackbar type={"ReturnCourse"} mb={4} />
+        <Flex justify="space-between" align="center" mb={4}>
+          <Rebackbar type={"ReturnCourse"} />
+          <Exporttexcel data={processedData} filename={`${courseName}_选课名单.xlsx`} buttonText="导出 Excel" />
+        </Flex>
         <Box pt={0} px={4}>
           <Table dataSource={processedData} columns={columns} />;
         </Box>
