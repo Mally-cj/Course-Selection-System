@@ -4,6 +4,7 @@ from typing import Any
 from app.models.models import EnrollmentList
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import func, select
+from sqlalchemy import and_
 
 from app.api.deps import CurrentUser, SessionDep
 from app.models import Comment, ListResp, CommentCreate, CommentUpdate
@@ -11,6 +12,18 @@ from app.models import Course
 from app.crud import crud
 
 router = APIRouter()
+
+
+@router.get("/{course_id}", response_model=ListResp[Comment])
+def get_coursecomments(
+    session: SessionDep, current_user: CurrentUser, course_id: int,skip: int = 0, limit: int = 100
+) -> Any:
+    """
+    获取课程的全部评价
+    """
+    cond = and_(Comment.course_id == course_id)
+    items, count = crud.list(Comment, session, skip, limit,cond)
+    return ListResp(data=items, count=count)
 
 @router.get("/", response_model=ListResp[Comment])
 def list_comments(
