@@ -1,17 +1,26 @@
 import React, { useRef } from 'react';
 import * as XLSX from 'xlsx';
 import { Button, Input } from "@chakra-ui/react";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";  // 引入 useQueryClient
 import { StudentsService } from "../../client";
 import useCustomToast from "../../hooks/useCustomToast";
 import type { StudentCreate } from '../../client/models/StudentCreate';
 
 const ImportFromExcel = () => {
+    const queryClient = useQueryClient();  // 获取 queryClient 实例
     const showToast = useCustomToast();
-    const fileInputRef = useRef(null);  // 创建 ref 用于存储文件输入元素的引用
+    const fileInputRef = useRef(null);
     const mutation = useMutation((students: StudentCreate[]) => StudentsService.studentsCreateStudentsList({
         requestBody: { students }
-    }));
+    }), {
+        onSuccess: () => {
+            showToast("Success!", "Students uploaded successfully.", "success");
+            queryClient.invalidateQueries('students');  // 无效化 students 查询以触发重新获取
+        },
+        onError: (error) => {
+            showToast("Error!", 'Failed to upload students. ' + error.message, "error");
+        }
+    });
 
     const handleFileUpload = async (event) => {
         const file = event.target.files ? event.target.files[0] : null;
@@ -36,10 +45,7 @@ const ImportFromExcel = () => {
                     classLocation: item.ClassLocation
                 }));
 
-                mutation.mutate(typedData, {
-                    onSuccess: () => showToast("Success!", "Students uploaded successfully.", "success"),
-                    onError: (error) => showToast("Error!", 'Failed to upload students. ' + error.message, "error")
-                });
+                mutation.mutate(typedData);
             } catch (error) {
                 showToast("Error!", "Failed to read or process the Excel file.", "error");
             }
@@ -48,7 +54,6 @@ const ImportFromExcel = () => {
     };
 
     const triggerFileInput = () => {
-        // 触发 file input 的点击事件
         fileInputRef.current.click();
     };
 
