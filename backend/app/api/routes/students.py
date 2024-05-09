@@ -1,12 +1,12 @@
 from typing import Any
-
+from typing import List
 # from app.models.models import StudentCourseLink
 from app.models.models import EnrollmentList
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import func, select
 
 from app.api.deps import CurrentUser, SessionDep
-from app.models import Student, ListResp, StudentCreate, StudentUpdate
+from app.models import Student, ListResp, StudentCreate, StudentUpdate,StudentCreateList
 from app.models import Course
 from app.crud import crud
 
@@ -32,6 +32,20 @@ def create_students(
     """
     data = crud.create(Student, session, req)
     return data
+
+@router.post("/List", response_model=List[Student])
+def create_students_bulk(
+session: SessionDep, current_user: CurrentUser, req: StudentCreateList
+) -> Any:
+    """
+    批量创建学生
+    """
+    new_students = []
+    for student_req in req.students:
+        # 假设你有一个函数crud.create_student可以处理StudentCreate数据
+        new_student = crud.create(Student, session, student_req)
+        new_students.append(new_student)
+    return new_students
 
 @router.get("/{id}", response_model=Student)
 def get_student(
