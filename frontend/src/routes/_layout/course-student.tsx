@@ -74,64 +74,12 @@ function Coursestudent() {
       title: '邮箱',
       dataIndex: 'email',
     },
-    // {
-    //   title: 'Action',
-    //   dataIndex: '',
-    //   key: 'x',
-    //   render: ( record) => <ActionsMenu type={"Course"} value={record} />,
-    // }
 
     ];
 
   return (
     <>
-      {/* {isLoading ? (
-        // TODO: Add skeleton
-        <Flex justify="center" align="center" height="100vh" width="full">
-          <Spinner size="xl" color="ui.main" />
-        </Flex>
-      ) : (
-        studentlist && (
-          <Container maxW="full">
-            <Heading
-              size="lg"
-              textAlign={{ base: "center", md: "left" }}
-              pt={12}
-            >
-              {courseName}的选课名单
-            </Heading>
-            <Rebackbar type={"ReturnCourse"} />
-            <TableContainer>
-              <Table size={{ base: "sm", md: "md" }}>
-                <Thead>
-                  <Tr>
-                    <Th>序号</Th>
-                    <Th>学号</Th>
-                    <Th>姓名</Th>
-                    <Th>学院</Th>
-                    <Th>邮箱</Th>
-                    {/* <Th>Actions</Th> 
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {studentlist.data?.map((enrollment,index) => (
-                    <Tr key={index}>
-                      <Td>{index + 1}</Td>
-                      <Td>{enrollment.student.student_id}</Td>
-                      <Td>{enrollment.student.name}</Td>
-                      <Td>{enrollment.student.major}</Td>
-                      <Td>{enrollment.student.email}</Td>
-                      {/* <Td>
-                        <ActionsMenu type={"student"} value={student} />
-                      </Td> 
-                    </Tr>
-                  ))}
-                </Tbody>
-              </Table>
-            </TableContainer>
-          </Container>
-        )
-      )} */}
+      
       <>
       <Container maxW="full">
         <Heading size="lg" textAlign={{ base: "center", md: "left" }} pt={8} pb={12}>
