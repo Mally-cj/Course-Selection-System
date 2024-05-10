@@ -24,6 +24,7 @@ import { Route as LayoutItemsImport } from './routes/_layout/items'
 import { Route as LayoutCoursesSelectionImport } from './routes/_layout/courses-selection'
 import { Route as LayoutCoursesImport } from './routes/_layout/courses'
 import { Route as LayoutCourseStudentImport } from './routes/_layout/course-student'
+import { Route as LayoutCourseCommentImport } from './routes/_layout/course-comment'
 import { Route as LayoutAdminImport } from './routes/_layout/admin'
 
 // Create/Update Routes
@@ -93,6 +94,11 @@ const LayoutCourseStudentRoute = LayoutCourseStudentImport.update({
   getParentRoute: () => LayoutRoute,
 } as any)
 
+const LayoutCourseCommentRoute = LayoutCourseCommentImport.update({
+  path: '/course-comment',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
 const LayoutAdminRoute = LayoutAdminImport.update({
   path: '/admin',
   getParentRoute: () => LayoutRoute,
@@ -120,6 +126,10 @@ declare module '@tanstack/react-router' {
     }
     '/_layout/admin': {
       preLoaderRoute: typeof LayoutAdminImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/course-comment': {
+      preLoaderRoute: typeof LayoutCourseCommentImport
       parentRoute: typeof LayoutImport
     }
     '/_layout/course-student': {
@@ -166,6 +176,7 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren([
   LayoutRoute.addChildren([
     LayoutAdminRoute,
+    LayoutCourseCommentRoute,
     LayoutCourseStudentRoute,
     LayoutCoursesRoute,
     LayoutCoursesSelectionRoute,

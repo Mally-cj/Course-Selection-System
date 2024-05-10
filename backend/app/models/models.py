@@ -36,11 +36,14 @@ class CommentBase(SQLModel):
     course_id: int = Field(foreign_key="course.id")
     student_id: int = Field(foreign_key="student.id")
     content: str
+    id: int | None = Field(default=None, primary_key=True)
     
 class Comment(CommentBase, table=True):
-    id: int | None = Field(default=None, primary_key=True)
     course: "Course" = Relationship(back_populates="comments")
     student: "Student" = Relationship(back_populates="comments")
+
+class CommentwithStudent(CommentBase):
+    student: Optional["Student"] = None
 
 class CommentCreate(CommentBase):
     pass

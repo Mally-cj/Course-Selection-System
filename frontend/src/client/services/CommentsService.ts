@@ -41,7 +41,7 @@ export class CommentsService {
 
     /**
      * Create Comments
-     * 获取评价
+     * 新增评价
      * @returns Comment Successful Response
      * @throws ApiError
      */
@@ -63,18 +63,41 @@ export class CommentsService {
 
     /**
      * Get Student
-     * 获取评价
+     * 通过课程id获取评价
      * @returns Comment Successful Response
      * @throws ApiError
      */
-    public static commentsGetStudent({
+     public static getcommentsBycourse({
+        courseId,
+    }: {
+        courseId: number,
+    }): CancelablePromise<ListResp_Comment_> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/comments/course/{course_id}',
+            path: {
+                'course_id': courseId,
+            },
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
+     * Get Student by id
+     * 获取一个评价
+     * @returns Comment Successful Response
+     * @throws ApiError
+     */
+    public static commentsGetbyid({
         id,
     }: {
         id: number,
     }): CancelablePromise<Comment> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/api/v1/comments/{id}',
+            url: '/api/v1/comments/one/{id}',
             path: {
                 'id': id,
             },
@@ -86,7 +109,7 @@ export class CommentsService {
 
     /**
      * Update Student
-     * 获取评价
+     * 更新评价
      * @returns Comment Successful Response
      * @throws ApiError
      */
@@ -113,7 +136,7 @@ export class CommentsService {
 
     /**
      * Delete Student
-     * 获取评价
+     * 删除评价
      * @returns Comment Successful Response
      * @throws ApiError
      */

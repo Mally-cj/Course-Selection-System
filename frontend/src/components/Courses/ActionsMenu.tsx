@@ -12,7 +12,7 @@ import { FiEdit, FiTrash, FiLink } from "react-icons/fi"
 
 import type { ItemOut, UserOut, CourseOut,  } from "../../client"
 import EditUser from "../Admin/EditUser"
-import EditItem from "../Items/EditItem"
+import Display from "../Courses/Display"
 
 import Delete from "../Common/DeleteAlert"
 import EditCourse from "../Courses/EditCourse"
@@ -26,6 +26,8 @@ interface ActionsMenuProps {
 const ActionsMenu: React.FC<ActionsMenuProps> = ({ type, value, disabled }) => {
   const editUserModal = useDisclosure()
   const deleteModal = useDisclosure()
+  const editCourseModal = useDisclosure()
+
 
   let editItem: (value: any) => JSX.Element | null = null;
   if (type === "User") {
@@ -35,19 +37,12 @@ const ActionsMenu: React.FC<ActionsMenuProps> = ({ type, value, disabled }) => {
         isOpen={editUserModal.isOpen}
         onClose={editUserModal.onClose}
       />)
-  } else if (type === "Item") {
-    editItem = (value: any) => (
-      <EditItem
-        item={value as ItemOut}
-        isOpen={editUserModal.isOpen}
-        onClose={editUserModal.onClose}
-      />)
-  } else if (type === "Course") {
+  }  else if (type === "Course") {
     editItem = (value: any) => (
       <EditCourse
         item={value as CourseOut}
-        isOpen={editUserModal.isOpen}
-        onClose={editUserModal.onClose}
+        isOpen={editCourseModal.isOpen}
+        onClose={editCourseModal.onClose}
       />)
   }
   return (
@@ -61,7 +56,7 @@ const ActionsMenu: React.FC<ActionsMenuProps> = ({ type, value, disabled }) => {
         />
         <MenuList>
           <MenuItem
-            onClick={editUserModal.onOpen}
+            onClick={editCourseModal.onOpen}
             icon={<FiEdit fontSize="16px" />}
           >
             编辑课程信息
@@ -74,6 +69,15 @@ const ActionsMenu: React.FC<ActionsMenuProps> = ({ type, value, disabled }) => {
             }}
           >
             选课名单
+          </MenuItem>
+          <MenuItem
+          icon={<FiLink fontSize="16px" />}
+            onClick={() => {
+              // Example: Redirect to a specific page
+              window.location.href = `/course-comment?courseId=${value.id}&courseName=${value.name}`;
+            }}
+          >
+            课程评价
           </MenuItem>
           <MenuItem
             onClick={deleteModal.onOpen}

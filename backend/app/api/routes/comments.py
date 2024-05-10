@@ -7,14 +7,14 @@ from sqlmodel import func, select
 from sqlalchemy import and_
 
 from app.api.deps import CurrentUser, SessionDep
-from app.models import Comment, ListResp, CommentCreate, CommentUpdate
+from app.models import Comment, ListResp, CommentCreate, CommentUpdate, CommentwithStudent
 from app.models import Course
 from app.crud import crud
 
 router = APIRouter()
 
 
-@router.get("/{course_id}", response_model=ListResp[Comment])
+@router.get("/course/{course_id}", response_model=ListResp[CommentwithStudent])
 def get_coursecomments(
     session: SessionDep, current_user: CurrentUser, course_id: int,skip: int = 0, limit: int = 100
 ) -> Any:
@@ -46,7 +46,7 @@ def create_comments(
     data = crud.create(Comment, session, req)
     return data
 
-@router.get("/{id}", response_model=Comment)
+@router.get("/one/{id}", response_model=CommentwithStudent)
 def get_student(
     session: SessionDep, current_user: CurrentUser, id: int
 ) -> Any:
