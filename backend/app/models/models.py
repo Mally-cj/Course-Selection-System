@@ -1,6 +1,8 @@
 from sqlmodel import Field, Relationship, SQLModel, ForeignKey
 from pydantic import BaseModel
 from typing import Optional
+from typing import List
+
 import enum
 # Shared properties
 # TODO replace email str with EmailStr when sqlmodel supports it
@@ -112,7 +114,8 @@ class StudentCreate(StudentBase):
 
 class StudentUpdate(StudentBase):
     pass
-
+class StudentCreateList(SQLModel):
+    students: List[StudentCreate]
 class TeacherBase(SQLModel):
     name: str
     email: str | None = None

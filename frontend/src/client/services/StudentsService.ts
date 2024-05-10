@@ -11,7 +11,9 @@ import type { StudentUpdate } from '../models/StudentUpdate';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-
+type StudentListCreate = {
+    students: StudentCreate[];
+};
 export class StudentsService {
 
     /**
@@ -61,6 +63,24 @@ export class StudentsService {
             },
         });
     }
+    public static studentsCreateStudentsList({
+        requestBody,
+    }: {
+        requestBody: StudentListCreate,  // 使用更新后的类型
+    }): CancelablePromise<Student[]> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/students/List',
+            body: requestBody,  // 现在这里发送的是一个包含 'students' 字段的对象
+            mediaType: 'application/json',
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+
+
+
 
     /**
      * Get Student
