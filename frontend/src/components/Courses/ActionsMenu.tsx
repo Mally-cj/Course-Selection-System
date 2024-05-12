@@ -47,6 +47,7 @@ const ActionsMenu: React.FC<ActionsMenuProps> = ({ type, value, disabled }) => {
   }
   return (
     <>
+    if(type === "Annoucement"){
       <Menu>
         <MenuButton
           isDisabled={disabled}
@@ -96,6 +97,9 @@ const ActionsMenu: React.FC<ActionsMenuProps> = ({ type, value, disabled }) => {
           onClose={deleteModal.onClose}
         />
       </Menu>
+    } else if (type === "an") {
+      
+    }else return null
     </>
   )
 }
