@@ -15,6 +15,54 @@ import { request as __request } from '../core/request';
 
 export class AnnouncementsService {
 
+
+    
+    /**
+     * Create Announcement
+     * 新增公告
+     * @returns Announcement Successful Response
+     * @throws ApiError
+     */
+     public static Createannouncement({
+        requestBody,
+    }: {
+        requestBody: AnnouncementCreate,
+    }): CancelablePromise<Announcement> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/announcements/add',
+            body: requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
+     * Create Announcement
+     * 新增公告
+     * @returns Announcement Successful Response
+     * @throws ApiError
+     */
+     public static EditcourseAndnnouncement({
+        requestBody,
+    }: {
+        requestBody: AnnouncementCreate,
+    }): CancelablePromise<Announcement> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/announcements/addAndedit',
+            body: requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    // 以下方法未更改：
+
     /**
      * List Comments
      * 获取评价
@@ -41,27 +89,6 @@ export class AnnouncementsService {
         });
     }
 
-    /**
-     * Create Announcement
-     * 新增评价
-     * @returns Announcement Successful Response
-     * @throws ApiError
-     */
-    public static Createannouncement({
-        requestBody,
-    }: {
-        requestBody: AnnouncementCreate,
-    }): CancelablePromise<Announcement> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/api/v1/announcements/add',
-            body: requestBody,
-            mediaType: 'application/json',
-            errors: {
-                422: `Validation Error`,
-            },
-        });
-    }
 
     /**
      * Get Student

@@ -37,8 +37,11 @@ const AddCourseannuncement: React.FC<AddCourseannuncementProps> = ({ id,isOpen, 
     mode: "onBlur",
     criteriaMode: "all",
     defaultValues: {
-      name: "",
-      description: "",
+      // name: "",
+      // description: "",
+      course_status: "",
+      course_time:"",
+      course_location: "",
     },
   })
 
@@ -63,6 +66,7 @@ const AddCourseannuncement: React.FC<AddCourseannuncementProps> = ({ id,isOpen, 
   })
 
   const onSubmit: SubmitHandler<AnnouncementCreate> = (data) => {
+    console.log(data)
     mutation.mutate(data)
   }
 

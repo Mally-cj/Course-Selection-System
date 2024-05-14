@@ -27,24 +27,24 @@ class TeacherCourseLink(SQLModel, table=True):
 
 # 课程公告表
 class Announcementbase(SQLModel):
-    id: int = Field(primary_key=True)
+    id: int | None = Field(default=None, primary_key=True)
     course_id: int = Field(foreign_key="course.id")
-    content: str
-    announcement_time: str
+    content: str | None = None
+    announcement_time: str | None = None
 class Announcement(Announcementbase, table=True):
     course: "Course" = Relationship(back_populates="announcements")
     
 class AnnouncementCreate(Announcementbase):
-    course_location:str
-    course_time:str
-    course_status:str
+    course_location:str | None = None
+    course_time:str | None = None
+    course_status:str | None = None
 
 
 # 课程评论表
 class CommentBase(SQLModel):
     course_id: int = Field(foreign_key="course.id")
     student_id: int = Field(foreign_key="student.id")
-    content: str
+    content: str | None = None
     id: int | None = Field(default=None, primary_key=True)
     
 class Comment(CommentBase, table=True):
@@ -62,13 +62,13 @@ class CommentUpdate(CommentBase):
 
 class CourseBase(SQLModel):
     id: int | None = Field(default=None, primary_key=True)
-    name: str
-    textbook: str
+    name: str | None = None
+    textbook: str | None = None
     description: str | None = None
-    class_time: str
-    class_location: str
+    class_time: str | None = None
+    class_location: str | None = None
     teacher_id: int | None = Field(foreign_key="teacher.id", default=None)
-    status: str
+    status: str | None = None
     max_capacity: int | None = 0
     current_capacity: int | None = 0
 

@@ -8,11 +8,45 @@ from sqlalchemy import and_
 from datetime import datetime
 
 from app.api.deps import CurrentUser, SessionDep
-from app.models import Comment, ListResp, CommentCreate, CommentUpdate, CommentwithStudent,Announcement,AnnouncementCreate
+from app.models import Comment, ListResp, CommentCreate, CommentUpdate, CommentwithStudent,Announcement,AnnouncementCreate,CourseUpdate
 from app.models import Course
 from app.crud import crud
 
 router = APIRouter()
+
+
+
+
+@router.post("/add", response_model=Announcement)
+def create_announcements(
+    session: SessionDep, current_user: CurrentUser, req: AnnouncementCreate
+) -> Any:
+    """
+    新增公告
+    """
+    req.announcement_time=str(datetime.utcnow())
+    data = crud.create(Announcement, session, req)
+    return data
+
+@router.post("/addAndedit", response_model=Announcement)
+def createAndedit_announcements(
+    session: SessionDep, current_user: CurrentUser, req: AnnouncementCreate
+) -> Any:
+    """
+    新增调课公告
+    """
+    req.announcement_time=str(datetime.utcnow())
+    req.content="上课时间已调整为："+req.course_time+"/n"+"上课地点已调整为："+req.course_location
+    data = crud.create(Announcement, session, req)
+    reqc = CourseUpdate(
+        class_time=req.course_time,
+        class_location=req.course_location,
+        status=req.course_status
+    )
+    id=req.course_id
+    data1 = crud.update(Course, session, id, reqc)
+    return data
+
 
 
 @router.get("/course/{course_id}", response_model=ListResp[Announcement])
@@ -37,30 +71,7 @@ def list_announcement(
     items, count = crud.list(Announcement, session, skip, limit)
     return ListResp(data=items, count=count)
 
-@router.post("/add", response_model=Announcement)
-def create_announcements(
-    session: SessionDep, current_user: CurrentUser, req: AnnouncementCreate
-) -> Any:
-    """
-    新增公告
-    """
-    # print(datetime.utcnow())
-    # req.announcement_time = datetime.utcnow()
-    # reqdata = {
-    #     "course_id": req.course_id,
-    #     "content": req.content,
-    #     "announcement_time": datetime.utcnow(),
-    # }
-    req_data = Announcement(
-        course_id=req.course_id,
-        content=req.content,
-        announcement_time=datetime.utcnow(),
-        # course_location=req.course_location,
-        # course_time=req.course_time,
-        # course_status=req.course_status
-    )
-    data = crud.create(Announcement, session, req_data)
-    return data
+
 
 
 @router.put("/{id}", response_model=Announcement)

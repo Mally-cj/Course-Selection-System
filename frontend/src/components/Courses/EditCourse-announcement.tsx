@@ -20,7 +20,8 @@ import {
   type ApiError,
   type CourseOut,
   type CourseUpdate,
-  CoursesService,
+  type AnnouncementCreate,
+  AnnouncementsService,
 } from "../../client"
 import useCustomToast from "../../hooks/useCustomToast"
 
@@ -38,20 +39,21 @@ const EditCourseannouncement: React.FC<EditItemProps> = ({ item, isOpen, onClose
     handleSubmit,
     reset,
     formState: { isSubmitting, errors, isDirty },
-  } = useForm<CourseUpdate>({
+  } = useForm<AnnouncementCreate>({
     mode: "onBlur",
     criteriaMode: "all",
-    defaultValues: item,
+    // defaultValues: item,
   })
 
-  const updateCourse = async (data: CourseUpdate) => {
-    await CoursesService.coursesUpdateCourse({ id: item.id, requestBody: data })
+  const updateCourse = async (data: AnnouncementCreate) => {
+    await AnnouncementsService.EditcourseAndnnouncement({ requestBody: data })
   }
 
   const mutation = useMutation(updateCourse, {
     onSuccess: () => {
       showToast("Success!", "Course updated successfully.", "success")
       onClose()
+      window.location.reload();
     },
     onError: (err: ApiError) => {
       const errDetail = err.body?.detail
@@ -63,7 +65,11 @@ const EditCourseannouncement: React.FC<EditItemProps> = ({ item, isOpen, onClose
   })
 
   const onSubmit: SubmitHandler<CourseUpdate> = async (data) => {
-    mutation.mutate(data)
+    if (data.course_time === item.class_time && data.course_location === item.class_location) {
+      showToast("请调课", "上课时间和上课地点都没有变化。", "warning")
+    } else {
+      mutation.mutate(data)
+    }
   }
 
   const onCancel = () => {
@@ -84,37 +90,52 @@ const EditCourseannouncement: React.FC<EditItemProps> = ({ item, isOpen, onClose
           <ModalHeader>编辑课程</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-            <FormControl isRequired isInvalid={!!errors.name}>
-              <FormLabel htmlFor="name">课程名</FormLabel>
+            <FormControl isRequired isInvalid={!!errors.course_time}>
+              <FormLabel htmlFor="course_time">上课时间</FormLabel>
               <Input
-                id="name"
-                {...register("name", {
-                  required: "课程名不能为空.",
+                id="course_time"
+                {...register("course_time", {
+                  required: "上课时间不能为空.",
                 })}
-                placeholder="请输入课程名"
+                placeholder="请输入上课时间"
                 type="text"
+                defaultValue={item.class_time}
               />
-              {errors.name && (
-                <FormErrorMessage>{errors.name.message}</FormErrorMessage>
+              {errors.course_time && (
+                <FormErrorMessage>{errors.course_time.message}</FormErrorMessage>
               )}
             </FormControl>
-            <FormControl mt={4}>
-              <FormLabel htmlFor="textbook">课程教材</FormLabel>
+            <FormControl isRequired isInvalid={!!errors.course_location} mt={4}>
+              <FormLabel htmlFor="course_location">上课地点</FormLabel>
               <Input
-                id="textbook"
-                {...register("textbook")}
-                placeholder="请输入课程教材"
+                id="course_location"
+                {...register("course_location", {
+                  required: "上课地点不能为空.",
+                })}
+                placeholder="请输入上课地点"
                 type="text"
+                defaultValue={item.class_location}
+              />
+              {errors.course_time && (
+                <FormErrorMessage>{errors.course_location.message}</FormErrorMessage>
+              )}
+            </FormControl>
+            <FormControl isHidden>
+              <Input
+                id="course_id"
+                {...register("course_id", {
+                  value: item.id
+                })}
+                type="hidden"
               />
             </FormControl>
-            <FormControl mt={4}>
-              <FormLabel htmlFor="description">课程简介</FormLabel>
+            <FormControl isHidden>
               <Input
-                id="description"
-                {...register("description")}
-                placeholder="请输入课程简介"
-                type="text"
-                style={{ width: "400px", height: "150px" }}
+                id="course_status"
+                {...register("course_status", {
+                  value: "未审核"
+                })}
+                type="hidden"
               />
             </FormControl>
           </ModalBody>

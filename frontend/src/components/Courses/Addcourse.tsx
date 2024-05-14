@@ -62,6 +62,7 @@ const AddCourse: React.FC<AddCourseProps> = ({ isOpen, onClose }) => {
   })
 
   const onSubmit: SubmitHandler<CourseCreate> = (data) => {
+    // console.log(data)
     mutation.mutate(data)
   }
 
