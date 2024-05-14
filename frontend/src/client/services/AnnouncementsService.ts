@@ -3,7 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { Comment } from '../models/Comment';
-import type { CommentCreate } from '../models/CommentCreate';
+import type { AnnouncementCreate } from '../models/AnnouncementCreate';
 import type { CommentUpdate } from '../models/CommentUpdate';
 import type { ListResp_Comment_ } from '../models/ListResp_Comment_';
 import type {Announcement} from '../models/Announcement'
@@ -13,7 +13,7 @@ import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
 
-export class AnnoucementsService {
+export class AnnouncementsService {
 
     /**
      * List Comments
@@ -27,7 +27,7 @@ export class AnnoucementsService {
     }: {
         skip?: number,
         limit?: number,
-    }): CancelablePromise<ListResp_Comment_> {
+    }): CancelablePromise<ListResp_Announcement_> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/announcements/',
@@ -42,19 +42,19 @@ export class AnnoucementsService {
     }
 
     /**
-     * Create Comments
+     * Create Announcement
      * 新增评价
-     * @returns Comment Successful Response
+     * @returns Announcement Successful Response
      * @throws ApiError
      */
-    public static commentsCreateComments({
+    public static Createannouncement({
         requestBody,
     }: {
-        requestBody: CommentCreate,
-    }): CancelablePromise<Comment> {
+        requestBody: AnnouncementCreate,
+    }): CancelablePromise<Announcement> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/api/v1/announcements/',
+            url: '/api/v1/announcements/add',
             body: requestBody,
             mediaType: 'application/json',
             errors: {
@@ -73,7 +73,7 @@ export class AnnoucementsService {
         courseId,
     }: {
         courseId: number,
-    }): CancelablePromise<ListResp_Comment_> {
+    }): CancelablePromise<ListResp_Announcement_> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/announcements/course/{course_id}',
@@ -96,7 +96,7 @@ export class AnnoucementsService {
         id,
     }: {
         id: number,
-    }): CancelablePromise<Comment> {
+    }): CancelablePromise<Announcement> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/announcements/one/{id}',
@@ -121,7 +121,7 @@ export class AnnoucementsService {
     }: {
         id: number,
         requestBody: CommentUpdate,
-    }): CancelablePromise<Comment> {
+    }): CancelablePromise<Announcement> {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/api/v1/announcements/{id}',
@@ -146,7 +146,7 @@ export class AnnoucementsService {
         id,
     }: {
         id: number,
-    }): CancelablePromise<Comment> {
+    }): CancelablePromise<Announcement> {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/api/v1/announcements/{id}',

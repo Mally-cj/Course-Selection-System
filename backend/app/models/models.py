@@ -26,12 +26,19 @@ class TeacherCourseLink(SQLModel, table=True):
 
 
 # 课程公告表
-class Announcement(SQLModel, table=True):
+class Announcementbase(SQLModel):
     id: int = Field(primary_key=True)
     course_id: int = Field(foreign_key="course.id")
-    course: "Course" = Relationship(back_populates="announcements")
     content: str
     announcement_time: str
+class Announcement(Announcementbase, table=True):
+    course: "Course" = Relationship(back_populates="announcements")
+    
+class AnnouncementCreate(Announcementbase):
+    course_location:str
+    course_time:str
+    course_status:str
+
 
 # 课程评论表
 class CommentBase(SQLModel):

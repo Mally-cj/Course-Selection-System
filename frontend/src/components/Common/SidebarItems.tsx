@@ -32,6 +32,7 @@ const SidebarItems: React.FC<SidebarItemsProps> = ({ onClose }) => {
     // 如果当前用户是老师
     items = [...items, ...[
       { icon: FiBriefcase, title: "课程管理", path: "/courses" },
+      { icon: FiBriefcase, title: "调课及公告", path: "/course-announcement" },
       ]
     ]
   } else {

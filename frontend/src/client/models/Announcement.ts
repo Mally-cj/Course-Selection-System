@@ -7,7 +7,7 @@ export type Announcement = {
     course_id: number;
     content: string;
     id?: (number | null);
-    Course?:(Course | null);
+    course?:(Course | null);
     announcement_time: string;
 };
 

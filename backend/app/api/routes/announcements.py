@@ -5,9 +5,10 @@ from app.models.models import EnrollmentList
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import func, select
 from sqlalchemy import and_
+from datetime import datetime
 
 from app.api.deps import CurrentUser, SessionDep
-from app.models import Comment, ListResp, CommentCreate, CommentUpdate, CommentwithStudent,Announcement
+from app.models import Comment, ListResp, CommentCreate, CommentUpdate, CommentwithStudent,Announcement,AnnouncementCreate
 from app.models import Course
 from app.crud import crud
 
@@ -36,14 +37,29 @@ def list_announcement(
     items, count = crud.list(Announcement, session, skip, limit)
     return ListResp(data=items, count=count)
 
-@router.post("/", response_model=Announcement)
+@router.post("/add", response_model=Announcement)
 def create_announcements(
-    session: SessionDep, current_user: CurrentUser, req: CommentCreate
+    session: SessionDep, current_user: CurrentUser, req: AnnouncementCreate
 ) -> Any:
     """
-    新增评价
+    新增公告
     """
-    data = crud.create(Announcement, session, req)
+    # print(datetime.utcnow())
+    # req.announcement_time = datetime.utcnow()
+    # reqdata = {
+    #     "course_id": req.course_id,
+    #     "content": req.content,
+    #     "announcement_time": datetime.utcnow(),
+    # }
+    req_data = Announcement(
+        course_id=req.course_id,
+        content=req.content,
+        announcement_time=datetime.utcnow(),
+        # course_location=req.course_location,
+        # course_time=req.course_time,
+        # course_status=req.course_status
+    )
+    data = crud.create(Announcement, session, req_data)
     return data
 
 
@@ -57,7 +73,7 @@ def update_announcement(
     data = crud.update(Announcement, session, id, req)
     return data
 
-@router.delete("/{id}", response_model=ComAnnouncementment)
+@router.delete("/{id}", response_model=Announcement)
 def delete_announcement(
     session: SessionDep, current_user: CurrentUser, id: int
 ) -> Any:
