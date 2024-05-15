@@ -14,6 +14,7 @@ import {
   Th,
   Thead,
   Tr,
+  Text
 } from "@chakra-ui/react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "react-query";
@@ -34,6 +35,7 @@ function StuManage() {
   const queryClient = useQueryClient();
   const showToast = useCustomToast();
   const [importedData, setImportedData] = useState([]);
+  const [selectedStudent, setSelectedStudent] = useState(null); // 新增状态
   const { data: students, isLoading, isError, error } = useQuery("students", StudentsService.studentsListStudents);
 
   const handleDataImported = (data) => {
@@ -51,8 +53,21 @@ function StuManage() {
 
   if (isError) {
     const errDetail = (error as ApiError).body?.detail;
-    showToast("Something went wrong.", `${errDetail}`, "error");
+    showToast("出现错误。", `${errDetail}`, "error");
   }
+
+  // 渲染学生详细信息
+  const renderStudentDetails = (student) => (
+    <Container maxW="full">
+      <Heading size="lg">学生详细信息</Heading>
+      <Text fontSize="lg"><strong>姓名：</strong>{student.name}</Text>
+      <Text fontSize="lg"><strong>邮箱：</strong>{student.email}</Text>
+      <Text fontSize="lg"><strong>学号：</strong>{student.student_id}</Text>
+      <Text fontSize="lg"><strong>专业：</strong>{student.major}</Text>
+      <Text fontSize="lg"><strong>教室位置：</strong>{student.classLocation}</Text>
+      <Button mt="4" onClick={() => setSelectedStudent(null)}>返回</Button>
+    </Container>
+  );
 
   return (
     <>
@@ -60,6 +75,8 @@ function StuManage() {
         <Flex justify="center" align="center" height="100vh" width="full">
           <Spinner size="xl" color="ui.main" />
         </Flex>
+      ) : selectedStudent ? (
+        renderStudentDetails(selectedStudent)
       ) : (
         <Container maxW="full">
           <Heading size="lg" textAlign={{ base: "center", md: "left" }} pt={12}>
@@ -81,7 +98,11 @@ function StuManage() {
               <Tbody>
                 {students?.data.map(student => (
                   <Tr key={student.id}>
-                    <Td>{student.name}</Td>
+                    <Td>
+                      <Button variant="link" onClick={() => setSelectedStudent(student)}>
+                        {student.name}
+                      </Button>
+                    </Td>
                     <Td>{student.email}</Td>
                     <Td>{student.student_id}</Td>
                     <Td>{student.major}</Td>
@@ -95,10 +116,9 @@ function StuManage() {
             </Table>
           </TableContainer>
           <Flex justify="space-between" align="center" mt={4}>
-            <ExportToExcel data={processedData || []} filename="StudentsList.xlsx" buttonText="导出 Excel" />
+            <ExportToExcel data={importedData || []} filename="StudentsList.xlsx" buttonText="导出 Excel" />
             <ImportFromExcel onImported={handleDataImported} />
           </Flex>
-          {/* Optional: Display imported data */}
           {importedData.length > 0 && (
             <Box overflowX="auto">
               <Table variant="simple">
