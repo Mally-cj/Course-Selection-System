@@ -8,6 +8,30 @@ export const $Teacher = {
             type: 'string',
             isRequired: true,
         },
+        email: {
+            type: 'any-of',
+            contains: [{
+                type: 'string',
+            }, {
+                type: 'null',
+            }],
+        },
+        title: {
+            type: 'any-of',
+            contains: [{
+                type: 'string',
+            }, {
+                type: 'null',
+            }],
+        },
+        college: {
+            type: 'any-of',
+            contains: [{
+                type: 'string',
+            }, {
+                type: 'null',
+            }],
+        },
         id: {
             type: 'any-of',
             contains: [{

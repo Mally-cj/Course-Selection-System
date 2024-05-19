@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export const $CommentCreate = {
+export const $CommentwithStudent = {
     properties: {
         course_id: {
             type: 'number',
@@ -24,6 +24,14 @@ export const $CommentCreate = {
             type: 'any-of',
             contains: [{
                 type: 'number',
+            }, {
+                type: 'null',
+            }],
+        },
+        student: {
+            type: 'any-of',
+            contains: [{
+                type: 'Student',
             }, {
                 type: 'null',
             }],

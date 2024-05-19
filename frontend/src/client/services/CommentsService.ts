@@ -5,7 +5,9 @@
 import type { Comment } from '../models/Comment';
 import type { CommentCreate } from '../models/CommentCreate';
 import type { CommentUpdate } from '../models/CommentUpdate';
+import type { CommentwithStudent } from '../models/CommentwithStudent';
 import type { ListResp_Comment_ } from '../models/ListResp_Comment_';
+import type { ListResp_CommentwithStudent_ } from '../models/ListResp_CommentwithStudent_';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -14,8 +16,39 @@ import { request as __request } from '../core/request';
 export class CommentsService {
 
     /**
+     * Get Coursecomments
+     * 获取课程的全部评价
+     * @returns ListResp_CommentwithStudent_ Successful Response
+     * @throws ApiError
+     */
+    public static commentsGetCoursecomments({
+        courseId,
+        skip,
+        limit = 100,
+    }: {
+        courseId: number,
+        skip?: number,
+        limit?: number,
+    }): CancelablePromise<ListResp_CommentwithStudent_> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/comments/course/{course_id}',
+            path: {
+                'course_id': courseId,
+            },
+            query: {
+                'skip': skip,
+                'limit': limit,
+            },
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
      * List Comments
-     * 获取评价
+     * 无条件获取全部评价
      * @returns ListResp_Comment_ Successful Response
      * @throws ApiError
      */
@@ -63,38 +96,15 @@ export class CommentsService {
 
     /**
      * Get Student
-     * 通过课程id获取评价
-     * @returns Comment Successful Response
+     * 通过id获取评价
+     * @returns CommentwithStudent Successful Response
      * @throws ApiError
      */
-     public static getcommentsBycourse({
-        courseId,
-    }: {
-        courseId: number,
-    }): CancelablePromise<ListResp_Comment_> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/v1/comments/course/{course_id}',
-            path: {
-                'course_id': courseId,
-            },
-            errors: {
-                422: `Validation Error`,
-            },
-        });
-    }
-
-    /**
-     * Get Student by id
-     * 获取一个评价
-     * @returns Comment Successful Response
-     * @throws ApiError
-     */
-    public static commentsGetbyid({
+    public static commentsGetStudent({
         id,
     }: {
         id: number,
-    }): CancelablePromise<Comment> {
+    }): CancelablePromise<CommentwithStudent> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/v1/comments/one/{id}',

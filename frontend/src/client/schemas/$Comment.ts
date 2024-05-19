@@ -13,8 +13,12 @@ export const $Comment = {
             isRequired: true,
         },
         content: {
-            type: 'string',
-            isRequired: true,
+            type: 'any-of',
+            contains: [{
+                type: 'string',
+            }, {
+                type: 'null',
+            }],
         },
         id: {
             type: 'any-of',

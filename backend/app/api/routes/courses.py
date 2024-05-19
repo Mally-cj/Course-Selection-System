@@ -80,20 +80,51 @@ def select_course(
     session: SessionDep, current_user: CurrentUser, req: CourseSelect
 ) -> Any:
     """
-    获取课程
+    学生选课
     """
     course = crud.get(Course, session, req.course_id)
     if course is None:
-        raise HTTPException(status_code=200, detail="Course not found")
+        raise HTTPException(status_code=500, detail="Course not found")
+    if course.current_capacity>=course.max_capacity:
+        raise HTTPException(status_code=500, detail="课程已经选满了!")
+    course.current_capacity+=1
     student = crud.get(Student, session, req.student_id)
     if student is None:
-        raise HTTPException(status_code=200, detail="Student not found")
+        raise HTTPException(status_code=500, detail="Student not found")
     course.students.append(student)
     session.add(course)
     try:
         session.commit()
     except sqlalchemy.exc.IntegrityError as e:
-        raise HTTPException(status_code=500, detail="Course Already selected")
+        
+        raise HTTPException(status_code=500, detail="报错!课程已选过")
+    session.refresh(course)
+    
+    return "OK"
+
+@router.post("/unselect")
+def unselect_course(
+    session: SessionDep, current_user: CurrentUser, req: CourseSelect
+) -> Any:
+    """
+    学生退课
+    """
+    course = crud.get(Course, session, req.course_id)
+    if course is None:
+        raise HTTPException(status_code=500, detail="Course not found")
+    course.current_capacity-=1
+    student = crud.get(Student, session, req.student_id)
+    if student is None:
+        raise HTTPException(status_code=500, detail="Student not found")
+    try:
+        course.students.remove(student)
+    except ValueError as e:
+        raise HTTPException(status_code=500, detail="报错!课程未选过!")
+    session.add(course)
+    try:
+        session.commit()
+    except sqlalchemy.exc.IntegrityError as e:
+        raise HTTPException(status_code=500, detail="报错!课程未选过!")
     session.refresh(course)
     
     return "OK"

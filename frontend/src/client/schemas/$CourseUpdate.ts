@@ -13,12 +13,20 @@ export const $CourseUpdate = {
             }],
         },
         name: {
-            type: 'string',
-            isRequired: true,
+            type: 'any-of',
+            contains: [{
+                type: 'string',
+            }, {
+                type: 'null',
+            }],
         },
         textbook: {
-            type: 'string',
-            isRequired: true,
+            type: 'any-of',
+            contains: [{
+                type: 'string',
+            }, {
+                type: 'null',
+            }],
         },
         description: {
             type: 'any-of',
@@ -29,12 +37,20 @@ export const $CourseUpdate = {
             }],
         },
         class_time: {
-            type: 'string',
-            isRequired: true,
+            type: 'any-of',
+            contains: [{
+                type: 'string',
+            }, {
+                type: 'null',
+            }],
         },
         class_location: {
-            type: 'string',
-            isRequired: true,
+            type: 'any-of',
+            contains: [{
+                type: 'string',
+            }, {
+                type: 'null',
+            }],
         },
         teacher_id: {
             type: 'any-of',
@@ -45,8 +61,12 @@ export const $CourseUpdate = {
             }],
         },
         status: {
-            type: 'string',
-            isRequired: true,
+            type: 'any-of',
+            contains: [{
+                type: 'string',
+            }, {
+                type: 'null',
+            }],
         },
         max_capacity: {
             type: 'any-of',

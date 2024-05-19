@@ -79,7 +79,7 @@ function CourseSelect() {
                     async () => {
                         let resp = null;
                         try {
-                            resp = await CoursesService.coursesSelectCourse({requestBody: {
+                            resp = await CoursesService.coursesUnselectCourse({requestBody: {
                                 course_id: item.id || 0,
                                 student_id: currentUser?.student_id || 0
                             }})

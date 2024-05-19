@@ -12,9 +12,17 @@ export const $AnnouncementCreate = {
                 type: 'null',
             }],
         },
-        content: {
-            type: 'string',
+        course_id: {
+            type: 'number',
             isRequired: true,
+        },
+        content: {
+            type: 'any-of',
+            contains: [{
+                type: 'string',
+            }, {
+                type: 'null',
+            }],
         },
         announcement_time: {
             type: 'any-of',
@@ -24,10 +32,10 @@ export const $AnnouncementCreate = {
                 type: 'null',
             }],
         },
-        course_id: {
+        course_location: {
             type: 'any-of',
             contains: [{
-                type: 'number',
+                type: 'string',
             }, {
                 type: 'null',
             }],
@@ -41,14 +49,6 @@ export const $AnnouncementCreate = {
             }],
         },
         course_status: {
-            type: 'any-of',
-            contains: [{
-                type: 'string',
-            }, {
-                type: 'null',
-            }],
-        },
-        course_location: {
             type: 'any-of',
             contains: [{
                 type: 'string',

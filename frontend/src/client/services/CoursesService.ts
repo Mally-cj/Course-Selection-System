@@ -164,7 +164,7 @@ export class CoursesService {
 
     /**
      * Select Course
-     * 获取课程
+     * 学生选课
      * @returns any Successful Response
      * @throws ApiError
      */
@@ -185,6 +185,28 @@ export class CoursesService {
     }
 
     /**
+     * Unselect Course
+     * 学生退课
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static coursesUnselectCourse({
+        requestBody,
+    }: {
+        requestBody: CourseSelect,
+    }): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/v1/courses/unselect',
+            body: requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
      * Getenrollmentlist
      * 获取课程报名名单
      * @returns ListResp_EnrollmentOut_ Successful Response
@@ -192,8 +214,12 @@ export class CoursesService {
      */
     public static coursesGetenrollmentlist({
         courseId,
+        skip,
+        limit = 100,
     }: {
         courseId: number,
+        skip?: number,
+        limit?: number,
     }): CancelablePromise<ListResp_EnrollmentOut_> {
         return __request(OpenAPI, {
             method: 'GET',
@@ -201,13 +227,14 @@ export class CoursesService {
             path: {
                 'course_id': courseId,
             },
-
+            query: {
+                'skip': skip,
+                'limit': limit,
+            },
             errors: {
                 422: `Validation Error`,
             },
         });
     }
-
- 
 
 }

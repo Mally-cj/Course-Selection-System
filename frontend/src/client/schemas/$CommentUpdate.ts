@@ -13,8 +13,20 @@ export const $CommentUpdate = {
             isRequired: true,
         },
         content: {
-            type: 'string',
-            isRequired: true,
+            type: 'any-of',
+            contains: [{
+                type: 'string',
+            }, {
+                type: 'null',
+            }],
+        },
+        id: {
+            type: 'any-of',
+            contains: [{
+                type: 'number',
+            }, {
+                type: 'null',
+            }],
         },
     },
 } as const;

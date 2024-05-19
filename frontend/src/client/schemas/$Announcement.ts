@@ -2,7 +2,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export const $Announcement = {
     properties: {
         id: {
@@ -13,25 +12,25 @@ export const $Announcement = {
                 type: 'null',
             }],
         },
-        announcement_time: {
-            type: 'string',
-            isRequired: true,
-        },
-        course: {
-            type: 'any-of',
-            contains: [{
-                type: 'Course',
-            }, {
-                type: 'null',
-            }],
-        },
         course_id: {
             type: 'number',
             isRequired: true,
         },
         content: {
-            type: 'string',
-            isRequired: true,
+            type: 'any-of',
+            contains: [{
+                type: 'string',
+            }, {
+                type: 'null',
+            }],
+        },
+        announcement_time: {
+            type: 'any-of',
+            contains: [{
+                type: 'string',
+            }, {
+                type: 'null',
+            }],
         },
     },
 } as const;

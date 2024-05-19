@@ -5,10 +5,26 @@
 export const $StudentCreate = {
     properties: {
         name: {
+            type: 'any-of',
+            contains: [{
+                type: 'string',
+            }, {
+                type: 'null',
+            }],
+        },
+        student_id: {
             type: 'string',
             isRequired: true,
         },
-        student_id: {
+        email: {
+            type: 'string',
+            isRequired: true,
+        },
+        major: {
+            type: 'string',
+            isRequired: true,
+        },
+        classLocation: {
             type: 'string',
             isRequired: true,
         },

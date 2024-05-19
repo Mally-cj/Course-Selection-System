@@ -5,9 +5,9 @@
 
 export type StudentCreate = {
     name?: (string | null);
+    student_id: string;
     email: string;
-    student_id?: (string | null);
-    major?: (string | null);
-    classLocation?: (string | null);
+    major: string;
+    classLocation: string;
 };
 

@@ -3,10 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type CommentUpdate = {
-    course_id: number;
-    student_id: number;
-    content?: (string | null);
-    id?: (number | null);
+import type { StudentCreate } from './StudentCreate';
+
+export type StudentCreateList = {
+    students: Array<StudentCreate>;
 };
 

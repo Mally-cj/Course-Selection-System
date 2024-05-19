@@ -6,6 +6,7 @@
 export type CommentCreate = {
     course_id: number;
     student_id: number;
-    content: string;
+    content?: (string | null);
+    id?: (number | null);
 };
 

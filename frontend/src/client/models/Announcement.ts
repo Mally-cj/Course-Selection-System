@@ -2,12 +2,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Course } from './Course';
+
 export type Announcement = {
-    course_id: number;
-    content: string;
     id?: (number | null);
-    course?:(Course | null);
-    announcement_time: string;
+    course_id: number;
+    content?: (string | null);
+    announcement_time?: (string | null);
 };
 

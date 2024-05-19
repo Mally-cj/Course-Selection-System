@@ -5,9 +5,8 @@
 
 export type TeacherUpdate = {
     name: string;
-    id?: (number | null);
-    email: (string | null);
-    title: (string | null);
-    college: (string | null);
+    email?: (string | null);
+    title?: (string | null);
+    college?: (string | null);
 };
 

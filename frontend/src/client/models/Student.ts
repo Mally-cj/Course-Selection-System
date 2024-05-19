@@ -4,11 +4,11 @@
 /* eslint-disable */
 
 export type Student = {
-    name: string;
+    name?: (string | null);
     student_id: string;
-    id?: (number | null);
     email: string;
     major: string;
-    classLocation?: (string | null);
+    classLocation: string;
+    id?: (number | null);
 };
 

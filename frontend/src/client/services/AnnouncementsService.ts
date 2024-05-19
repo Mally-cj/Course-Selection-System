@@ -2,12 +2,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Comment } from '../models/Comment';
+import type { Announcement } from '../models/Announcement';
 import type { AnnouncementCreate } from '../models/AnnouncementCreate';
 import type { CommentUpdate } from '../models/CommentUpdate';
-import type { ListResp_Comment_ } from '../models/ListResp_Comment_';
-import type {Announcement} from '../models/Announcement'
-import type {ListResp_Announcement_} from '../models/ListResp_Announcement_'
+import type { ListResp_Announcement_ } from '../models/ListResp_Announcement_';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -15,15 +13,13 @@ import { request as __request } from '../core/request';
 
 export class AnnouncementsService {
 
-
-    
     /**
-     * Create Announcement
+     * Create Announcements
      * 新增公告
      * @returns Announcement Successful Response
      * @throws ApiError
      */
-     public static Createannouncement({
+    public static announcementsCreateAnnouncements({
         requestBody,
     }: {
         requestBody: AnnouncementCreate,
@@ -40,12 +36,12 @@ export class AnnouncementsService {
     }
 
     /**
-     * Create Announcement
-     * 新增公告
+     * Createandedit Announcements
+     * 新增调课公告
      * @returns Announcement Successful Response
      * @throws ApiError
      */
-     public static EditcourseAndnnouncement({
+    public static announcementsCreateAndeditAnnouncements({
         requestBody,
     }: {
         requestBody: AnnouncementCreate,
@@ -61,15 +57,44 @@ export class AnnouncementsService {
         });
     }
 
-    // 以下方法未更改：
-
     /**
-     * List Comments
-     * 获取评价
-     * @returns ListResp_Comment_ Successful Response
+     * Get Courseannouncement
+     * 获取课程的全部公告
+     * @returns ListResp_Announcement_ Successful Response
      * @throws ApiError
      */
-    public static commentsListComments({
+    public static announcementsGetCourseannouncement({
+        courseId,
+        skip,
+        limit = 100,
+    }: {
+        courseId: number,
+        skip?: number,
+        limit?: number,
+    }): CancelablePromise<ListResp_Announcement_> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/announcements/course/{course_id}',
+            path: {
+                'course_id': courseId,
+            },
+            query: {
+                'skip': skip,
+                'limit': limit,
+            },
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
+     * List Announcement
+     * 无条件获取全部公告
+     * @returns ListResp_Announcement_ Successful Response
+     * @throws ApiError
+     */
+    public static announcementsListAnnouncement({
         skip,
         limit = 100,
     }: {
@@ -89,60 +114,13 @@ export class AnnouncementsService {
         });
     }
 
-
     /**
-     * Get Student
-     * 通过课程id获取评价
-     * @returns Comment Successful Response
-     * @throws ApiError
-     */
-     public static getcommentsBycourse({
-        courseId,
-    }: {
-        courseId: number,
-    }): CancelablePromise<ListResp_Announcement_> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/v1/announcements/course/{course_id}',
-            path: {
-                'course_id': courseId,
-            },
-            errors: {
-                422: `Validation Error`,
-            },
-        });
-    }
-
-    /**
-     * Get Student by id
-     * 获取一个评价
-     * @returns Comment Successful Response
-     * @throws ApiError
-     */
-    public static commentsGetbyid({
-        id,
-    }: {
-        id: number,
-    }): CancelablePromise<Announcement> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/v1/announcements/one/{id}',
-            path: {
-                'id': id,
-            },
-            errors: {
-                422: `Validation Error`,
-            },
-        });
-    }
-
-    /**
-     * Update Student
+     * Update Announcement
      * 更新评价
-     * @returns Comment Successful Response
+     * @returns Announcement Successful Response
      * @throws ApiError
      */
-    public static commentsUpdateStudent({
+    public static announcementsUpdateAnnouncement({
         id,
         requestBody,
     }: {
@@ -164,12 +142,12 @@ export class AnnouncementsService {
     }
 
     /**
-     * Delete Student
+     * Delete Announcement
      * 删除评价
-     * @returns Comment Successful Response
+     * @returns Announcement Successful Response
      * @throws ApiError
      */
-    public static commentsDeleteStudent({
+    public static announcementsDeleteAnnouncement({
         id,
     }: {
         id: number,
