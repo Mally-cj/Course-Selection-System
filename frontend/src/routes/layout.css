@@ -1,0 +1,12 @@
+.customer-service-button {
+    position: fixed; /* 固定定位 */
+    right: 20px;     /* 距离右边界20像素 */
+    bottom: 20px;    /* 距离底部边界20像素 */
+    /* 其他样式，比如大小、颜色等 */
+    padding: 10px;
+    background-color: green;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }

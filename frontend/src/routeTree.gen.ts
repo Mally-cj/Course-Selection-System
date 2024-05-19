@@ -14,6 +14,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as ResetPasswordImport } from './routes/reset-password'
 import { Route as RecoverPasswordImport } from './routes/recover-password'
 import { Route as LoginImport } from './routes/login'
+import { Route as ChatImport } from './routes/chat'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as LayoutIndexImport } from './routes/_layout/index'
 import { Route as LayoutTeacherManagementImport } from './routes/_layout/teacher-management'
@@ -21,6 +22,7 @@ import { Route as LayoutStudentManagementImport } from './routes/_layout/student
 import { Route as LayoutSettingsImport } from './routes/_layout/settings'
 import { Route as LayoutMyCoursesImport } from './routes/_layout/my-courses'
 import { Route as LayoutItemsImport } from './routes/_layout/items'
+import { Route as LayoutCoursesSelectionTableImport } from './routes/_layout/courses-selection-table'
 import { Route as LayoutCoursesSelectionImport } from './routes/_layout/courses-selection'
 import { Route as LayoutCoursesImport } from './routes/_layout/courses'
 import { Route as LayoutCourseStudentImport } from './routes/_layout/course-student'
@@ -42,6 +44,11 @@ const RecoverPasswordRoute = RecoverPasswordImport.update({
 
 const LoginRoute = LoginImport.update({
   path: '/login',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ChatRoute = ChatImport.update({
+  path: '/chat',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -79,6 +86,12 @@ const LayoutItemsRoute = LayoutItemsImport.update({
   path: '/items',
   getParentRoute: () => LayoutRoute,
 } as any)
+
+const LayoutCoursesSelectionTableRoute =
+  LayoutCoursesSelectionTableImport.update({
+    path: '/courses-selection-table',
+    getParentRoute: () => LayoutRoute,
+  } as any)
 
 const LayoutCoursesSelectionRoute = LayoutCoursesSelectionImport.update({
   path: '/courses-selection',
@@ -118,6 +131,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutImport
       parentRoute: typeof rootRoute
     }
+    '/chat': {
+      preLoaderRoute: typeof ChatImport
+      parentRoute: typeof rootRoute
+    }
     '/login': {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
@@ -152,6 +169,10 @@ declare module '@tanstack/react-router' {
     }
     '/_layout/courses-selection': {
       preLoaderRoute: typeof LayoutCoursesSelectionImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/courses-selection-table': {
+      preLoaderRoute: typeof LayoutCoursesSelectionTableImport
       parentRoute: typeof LayoutImport
     }
     '/_layout/items': {
@@ -191,6 +212,7 @@ export const routeTree = rootRoute.addChildren([
     LayoutCourseStudentRoute,
     LayoutCoursesRoute,
     LayoutCoursesSelectionRoute,
+    LayoutCoursesSelectionTableRoute,
     LayoutItemsRoute,
     LayoutMyCoursesRoute,
     LayoutSettingsRoute,
@@ -198,6 +220,7 @@ export const routeTree = rootRoute.addChildren([
     LayoutTeacherManagementRoute,
     LayoutIndexRoute,
   ]),
+  ChatRoute,
   LoginRoute,
   RecoverPasswordRoute,
   ResetPasswordRoute,

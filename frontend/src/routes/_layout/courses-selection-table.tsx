@@ -3,12 +3,14 @@ import { createFileRoute } from "@tanstack/react-router"
 import { Button, Table, Typography, Space } from "antd"
 import { useQuery, useQueryClient } from "react-query"
 import { ApiError, CourseOut, CoursesService, UserOut } from "../../client"
+import CourseTable from '../../components/Courses/CourseTable';
+
 import "../layout.css"
-export const Route = createFileRoute("/_layout/courses-selection")({
-  component: CourseSelect,
+export const Route = createFileRoute("/_layout/courses-selection-table")({
+  component: CourseSelectTable,
 })
 
-function CourseSelect() {
+function CourseSelectTable() {
     const queryClient = useQueryClient()
 
     const currentUser = queryClient.getQueryData<UserOut>("currentUser")
@@ -103,6 +105,36 @@ function CourseSelect() {
             window.open('/chat', '_blank');
         }
 
+
+      const getCourseTables = () => {
+        let courseTables = {
+            1: [
+              {
+                weeks: [1,2],
+                course_indexs: [7,8],
+                stuNameList: [],
+                courseName: "张三",
+                teaName: '312'
+              }
+            ],
+            2: [
+              {
+                weeks: [1,2],
+                course_indexs: [17,18],
+                stuNameList: [],
+                courseName: "张三",
+                teaName: '312'
+              }
+            ]
+          };
+          return courseTables;
+      }
+
+      const courseTables = getCourseTables()
+
+      const handleConfirm = () => {
+        //   handleOK()
+      };
         return (
         <>
             <Container maxW="full">
@@ -110,7 +142,10 @@ function CourseSelect() {
                     课程选择
                 </Heading>
                 <Box pt={12} m={4}>
-                    <Table dataSource={courses?.data || []} columns={columns} />;
+                    <CourseTable
+                    courseTables={courseTables}
+                    handleConfirm={handleConfirm}
+                    />,
                 </Box>
                 <Button className="customer-service-button" onClick={handlerKefuClick}>询问AI助手</Button>
             </Container>
@@ -118,4 +153,4 @@ function CourseSelect() {
         )
 }
 
-export default CourseSelect
+export default CourseSelectTable
