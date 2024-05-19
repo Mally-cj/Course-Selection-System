@@ -2,7 +2,7 @@ import { Box, Container, Heading, Text } from "@chakra-ui/react"
 import { createFileRoute } from "@tanstack/react-router"
 import { Button, Table, Typography, Space } from "antd"
 import { useQuery, useQueryClient } from "react-query"
-import { ApiError, CourseOut, CoursesService, UserOut } from "../../client"
+import { ApiError, CourseOut, CoursesService, StudentsService, UserOut } from "../../client"
 import CourseTable from '../../components/Courses/CourseTable';
 
 import "../layout.css"
@@ -20,7 +20,9 @@ function CourseSelectTable() {
         isLoading,
         isError,
         error,
-      } = useQuery("courses", () => CoursesService.coursesListCourses({}))
+      } = useQuery("courses", () => StudentsService.studentsListStudentCourses({
+        id: currentUser?.student_id || 0
+      }))
 
     const columns = [
         {
@@ -106,31 +108,75 @@ function CourseSelectTable() {
         }
 
 
-      const getCourseTables = () => {
-        let courseTables = {
-            1: [
-              {
-                weeks: [1,2],
-                course_indexs: [7,8],
-                stuNameList: [],
-                courseName: "张三",
-                teaName: '312'
-              }
-            ],
-            2: [
-              {
-                weeks: [1,2],
-                course_indexs: [17,18],
-                stuNameList: [],
-                courseName: "张三",
-                teaName: '312'
-              }
-            ]
-          };
-          return courseTables;
-      }
+//       const getCourseTables = () => {
+//         let courseTables = {
+//             1: [
+//               {
+//                 weeks: [1,2],
+//                 course_indexs: [7,8],
+//                 stuNameList: [],
+//                 courseName: "张三",
+//                 teaName: '312'
+//               }
+//             ],
+//             2: [
+//               {
+//                 weeks: [1,2],
+//                 course_indexs: [17,18],
+//                 stuNameList: [],
+//                 courseName: "张三",
+//                 teaName: '312'
+//             }
+//         ]
+//     };
+//     return courseTables;
+// }
 
-      const courseTables = getCourseTables()
+    let courseTables = {};
+    for (let index = 0; index < courses?.data?.length; index++) {
+        let item = courses?.data[index]
+        let spdata = item?.class_time.split(";")
+        if (spdata?.length != 2) {
+            continue
+        }
+        let weeks = [];
+        let spweek = spdata[0].split(",");
+        for (let i = 0; i < spweek.length; i++) {
+            let week_range = spweek[i].split("-");
+            if (week_range.length == 2) {
+                for (let j = parseInt(week_range[0], 10); j <= parseInt(week_range[1], 10);j++) {
+                    weeks.push(j);
+                }
+
+            } else {
+                weeks.push(parseInt(week_range, 10));
+            }
+        }
+
+        let course_indexs = [];
+        let spindex = spdata[1].split(",");
+        for (let i = 0; i < spindex.length; i++) {
+            let index_range = spindex[i].split("-");
+            if (index_range.length == 2) {
+                for (let j = parseInt(index_range[0], 10); j <= parseInt(index_range[1], 10);j++) {
+                    course_indexs.push(j);
+                }
+
+            } else {
+                course_indexs.push(parseInt(index_range, 10));
+            }
+        }
+        courseTables[index] = [
+            {
+                weeks: weeks,
+                course_indexs: course_indexs,
+                stuNameList: [],
+                courseName: item?.name,
+                teaName: item?.teacher?.name,
+            }
+        ]
+      }
+      console.log("courseTables", courseTables);
 
       const handleConfirm = () => {
         //   handleOK()

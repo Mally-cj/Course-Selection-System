@@ -1,7 +1,7 @@
 import { Box, Container, Heading, Text, useDisclosure } from "@chakra-ui/react"
 import { createFileRoute } from "@tanstack/react-router"
 import { useQuery, useQueryClient } from "react-query"
-import { Table } from "antd";
+import { Button, Table } from "antd";
 
 import { CourseOut, CoursesService, StudentsService, type UserOut } from "../../client"
 import AddComment from "../../components/Comment/AddComment";
@@ -55,6 +55,9 @@ function MyCourse() {
         <Heading size="lg" textAlign={{ base: "center", md: "left" }} py={12}>
             我的课程
         </Heading>
+        <Button onClick={() => {
+          window.open("/courses-selection-table", "_blank")
+        }}>打开选课表格</Button>
         <AddComment courseId={selectCourseId} studentId={student_id} isOpen={addCommentModal.isOpen} onClose={addCommentModal.onClose} />
         <Box pt={12} m={4}>
           <Table dataSource={courses?.data || []} columns={columns} />;

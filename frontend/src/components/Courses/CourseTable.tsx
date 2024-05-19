@@ -195,21 +195,18 @@ class CourseTables extends PureComponent{
         // const top = `${this.state.contentItemWidth * index + this.state.timeLineWidth}px`;
         console.log("this.state.contentItemWidth: ", this.state.contentItemWidth);
         console.log("this.state.timeLineWidth: ", this.state.timeLineWidth);
-        const day = Math.floor((index + 9) / 10);
+        const day = Math.floor((index + 10) / 10);
         const hour = index % 10;
         const top = 28 + (hour) * 60 + "px";
         const left = (this.state.contentItemWidth * (day - 1) + this.state.timeLineWidth ) + "px";
         const height = 60 * course_indexs.length + `px`;
         const content = (
             <div>
-              <ul className="rectList">
+              {/* <ul className="rectList">
                 <li>
-                  教师姓名：{items.teaName}
+                  教师：{items.teaName}
                 </li>
-                <li>
-                  学生姓名：{items.stuNameList.join('，')}
-                </li>
-              </ul>
+              </ul> */}
             </div>
         );
         return (
