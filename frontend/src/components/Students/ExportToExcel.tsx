@@ -2,15 +2,14 @@ import React from 'react';
 import { Button } from '@chakra-ui/react';
 import * as XLSX from 'xlsx';
 
-function Exporttexcel({ data, filename, buttonText }) {
+function ExportToexcel({ data, filename, buttonText }) {
     const exportToExcel = () => {
         const modifiedData = data.map((data) => ({
-            '序号': data.id,
-            '课程编号': data.course_id,
-            '学号': data.student_id,
-            '姓名': data.name,
-            '邮箱': data.email,
-            '学院': data.major,
+            'FullName': data.name,
+            'Email': data.email,
+            'ID': data.student_id,
+            'Major': data.major,
+            'ClassLocation': data.classLocation
         }));
         const ws = XLSX.utils.json_to_sheet(modifiedData);
         const wb = XLSX.utils.book_new();
@@ -26,4 +25,4 @@ function Exporttexcel({ data, filename, buttonText }) {
 }
 
 
-export default Exporttexcel;
+export default ExportToexcel;

@@ -35,21 +35,24 @@ function StuManage() {
   const queryClient = useQueryClient();
   const showToast = useCustomToast();
   const [importedData, setImportedData] = useState([]);
-  const [selectedStudent, setSelectedStudent] = useState(null); // 新增状态
+  const [selectedStudent, setSelectedStudent] = useState(null);
   const { data: students, isLoading, isError, error } = useQuery("students", StudentsService.studentsListStudents);
 
   const handleDataImported = (data) => {
-    console.log(data);
+    console.log("Imported data:", data);
     setImportedData(data);
   };
 
   const processedData = students?.data.map(student => ({
-    FullName: student.name,
-    Email: student.email,
-    ID: student.student_id,
-    Major: student.major,
-    ClassLocation: student.classLocation
+    student_id: student.student_id,
+    name: student.name,
+    email: student.email,
+    major: student.major,
+    classLocation: student.classLocation
   }));
+
+  console.log("Processed data:", processedData);
+  console.log("Imported data state:", importedData);
 
   if (isError) {
     const errDetail = (error as ApiError).body?.detail;
@@ -116,11 +119,11 @@ function StuManage() {
             </Table>
           </TableContainer>
           <Flex justify="space-between" align="center" mt={4}>
-            <ExportToExcel data={importedData || []} filename="StudentsList.xlsx" buttonText="导出 Excel" />
+            <ExportToExcel data={importedData.length > 0 ? importedData : processedData} filename="StudentsList.xlsx" buttonText="导出 Excel" />
             <ImportFromExcel onImported={handleDataImported} />
           </Flex>
           {importedData.length > 0 && (
-            <Box overflowX="auto">
+            <Box overflowX="auto" mt={4}>
               <Table variant="simple">
                 <Thead>
                   <Tr>
@@ -134,11 +137,11 @@ function StuManage() {
                 <Tbody>
                   {importedData.map((row, index) => (
                     <Tr key={index}>
-                      <Td>{row.FullName}</Td>
-                      <Td>{row.Email}</Td>
-                      <Td>{row.ID}</Td>
-                      <Td>{row.Major}</Td>
-                      <Td>{row.ClassLocation}</Td>
+                      <Td>{row.name}</Td>
+                      <Td>{row.email}</Td>
+                      <Td>{row.student_id}</Td>
+                      <Td>{row.major}</Td>
+                      <Td>{row.classLocation}</Td>
                     </Tr>
                   ))}
                 </Tbody>
