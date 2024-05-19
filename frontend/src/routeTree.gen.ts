@@ -26,6 +26,7 @@ import { Route as LayoutCoursesSelectionTableImport } from './routes/_layout/cou
 import { Route as LayoutCoursesSelectionImport } from './routes/_layout/courses-selection'
 import { Route as LayoutCoursesImport } from './routes/_layout/courses'
 import { Route as LayoutCourseStudentImport } from './routes/_layout/course-student'
+import { Route as LayoutCourseStatisticImport } from './routes/_layout/course-statistic'
 import { Route as LayoutCourseCommentImport } from './routes/_layout/course-comment'
 import { Route as LayoutCourseAnnouncementImport } from './routes/_layout/course-announcement'
 import { Route as LayoutAdminImport } from './routes/_layout/admin'
@@ -108,6 +109,11 @@ const LayoutCourseStudentRoute = LayoutCourseStudentImport.update({
   getParentRoute: () => LayoutRoute,
 } as any)
 
+const LayoutCourseStatisticRoute = LayoutCourseStatisticImport.update({
+  path: '/course-statistic',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
 const LayoutCourseCommentRoute = LayoutCourseCommentImport.update({
   path: '/course-comment',
   getParentRoute: () => LayoutRoute,
@@ -157,6 +163,10 @@ declare module '@tanstack/react-router' {
     }
     '/_layout/course-comment': {
       preLoaderRoute: typeof LayoutCourseCommentImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/course-statistic': {
+      preLoaderRoute: typeof LayoutCourseStatisticImport
       parentRoute: typeof LayoutImport
     }
     '/_layout/course-student': {
@@ -209,6 +219,7 @@ export const routeTree = rootRoute.addChildren([
     LayoutAdminRoute,
     LayoutCourseAnnouncementRoute,
     LayoutCourseCommentRoute,
+    LayoutCourseStatisticRoute,
     LayoutCourseStudentRoute,
     LayoutCoursesRoute,
     LayoutCoursesSelectionRoute,
