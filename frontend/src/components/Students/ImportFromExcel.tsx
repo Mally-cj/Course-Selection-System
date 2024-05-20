@@ -10,7 +10,7 @@ const ImportFromExcel = () => {
     const queryClient = useQueryClient();  // 获取 queryClient 实例
     const showToast = useCustomToast();
     const fileInputRef = useRef(null);
-    const mutation = useMutation((students: StudentCreate[]) => StudentsService.studentsCreateStudentsList({
+    const mutation = useMutation((students: StudentCreate[]) => StudentsService.studentsCreateStudentsBulk({
         requestBody: { students }
     }), {
         onSuccess: () => {
