@@ -26,6 +26,7 @@ import Navbar from "../../components/Common/Navbar";
 import useCustomToast from "../../hooks/useCustomToast";
 import ImportFromExcel from "../../components/Students/ImportFromExcel";
 import ExportToExcel from "../../components/Students/ExportToExcel";
+import StudentDetails from "../../components/Students/StudentDentail"; // 导入新的组件
 
 export const Route = createFileRoute("/_layout/student-management")({
   component: StuManage,
@@ -61,15 +62,7 @@ function StuManage() {
 
   // 渲染学生详细信息
   const renderStudentDetails = (student) => (
-    <Container maxW="full">
-      <Heading size="lg">学生详细信息</Heading>
-      <Text fontSize="lg"><strong>姓名：</strong>{student.name}</Text>
-      <Text fontSize="lg"><strong>邮箱：</strong>{student.email}</Text>
-      <Text fontSize="lg"><strong>学号：</strong>{student.student_id}</Text>
-      <Text fontSize="lg"><strong>专业：</strong>{student.major}</Text>
-      <Text fontSize="lg"><strong>教室位置：</strong>{student.classLocation}</Text>
-      <Button mt="4" onClick={() => setSelectedStudent(null)}>返回</Button>
-    </Container>
+    <StudentDetails student={student} onClose={() => setSelectedStudent(null)} />
   );
 
   return (
