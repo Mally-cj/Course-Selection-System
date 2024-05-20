@@ -22,6 +22,7 @@ import { type ApiError, type UserOut, TeachersService } from "../../client"
 import ActionsMenu from "../../components/Teachers/TeaManActionsMenu"
 import Navbar from "../../components/Common/Navbar"
 import useCustomToast from "../../hooks/useCustomToast"
+import ExportToExcel from "../../components/Teachers/ExportToExcel";
 
 import TeacherDetails from "../../components/Teachers/teacherDetail"; // 导入新的组件
 
@@ -132,7 +133,11 @@ function TeacherManage() {
                 </Tbody>
               </Table>
             </TableContainer>
-
+            
+            <Flex justify="space-between" align="center" mt={4}>
+            <ExportToExcel data={importedData.length > 0 ? importedData : processedData} filename="TeachersList.xlsx" buttonText="导出 Excel" />
+            
+          </Flex>
             
           </Container>
         )
