@@ -16,7 +16,7 @@ import type React from "react"
 import { type SubmitHandler, useForm } from "react-hook-form"
 import { useMutation, useQueryClient } from "react-query"
 
-import { type ApiError,  AnnouncementsService, AnnouncementService, type AnnouncementCreate} from "../../client"
+import { type ApiError,  AnnouncementsService, type AnnouncementCreate} from "../../client"
 import useCustomToast from "../../hooks/useCustomToast"
 
 interface AddCourseannuncementProps {
@@ -46,7 +46,7 @@ const AddCourseannuncement: React.FC<AddCourseannuncementProps> = ({ id,isOpen, 
   })
 
   const addCourse = async (data: AnnouncementCreate) => {
-    await AnnouncementsService.Createannouncement({ requestBody: data })
+    await AnnouncementsService.announcementsCreateAnnouncements({ requestBody: data })
   }
 
   const mutation = useMutation(addCourse, {
