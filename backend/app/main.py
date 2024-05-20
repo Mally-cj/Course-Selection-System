@@ -1,8 +1,6 @@
 from fastapi import FastAPI
 from fastapi.routing import APIRoute
 from starlette.middleware.cors import CORSMiddleware
-import sys
-sys.path.append("/home/jiaming/Course-Selection-System/backend")  # 每个人电脑路径不同建议注释
 
 from app.api.main import api_router
 from app.core.config import settings

@@ -59,10 +59,43 @@ function TeacherManage() {
     };
   };
 
-
-
-
-
+  const getOption2 = () => ({
+      title: {
+        text: '选课率统计',
+        left: 'center'
+      },
+      tooltip: {
+        trigger: 'item'
+      },
+      legend: {
+        orient: 'vertical',
+        left: 'left',
+      },
+      series: [
+        {
+          name: '选课率',
+          type: 'pie',
+          radius: '50%',
+          data: [
+            { value: 2, name: '数学' },
+            { value: 2, name: '英语' },
+            { value: 1, name: 'qqq' },
+            { value: 1, name: '小明' },
+            { value: 1, name: '整时展' },
+            { value: 2, name: '2515' }
+          ],
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+          }
+        }
+      ]
+  });
+  
+  
   const queryClient = useQueryClient()
   const showToast = useCustomToast()
   const currentUser = queryClient.getQueryData<UserOut>("currentUser")
@@ -101,12 +134,14 @@ function TeacherManage() {
       style={{ height: '400px', width: '100%' }}
       />
 
-      
+      <ReactEcharts option={getOption2()} style={{ height: '400px', width: '100%' }}/>
           </Container>
         )
       )}
     </>
   )
 }
+
+
 
 export default TeacherManage
