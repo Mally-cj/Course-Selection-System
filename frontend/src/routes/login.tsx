@@ -12,6 +12,9 @@ import {
   InputRightElement,
   Link,
   useBoolean,
+  Box,
+  Heading,
+  Text,
 } from "@chakra-ui/react"
 import {
   Link as RouterLink,
@@ -22,6 +25,7 @@ import React from "react"
 import { type SubmitHandler, useForm } from "react-hook-form"
 
 import Logo from "../assets/images/fastapi-logo.svg"
+import Background from "../assets/images/background.png"
 import type { ApiError } from "../client"
 import type { Body_login_login_access_token as AccessToken } from "../client/models/Body_login_login_access_token"
 import useAuth, { isLoggedIn } from "../hooks/useAuth"
@@ -65,25 +69,35 @@ function Login() {
 
   return (
     <>
+    <Box
+      bgImage={Background} // 确保路径正确
+      bgPosition="center"
+      bgRepeat="no-repeat"
+      bgSize="cover"
+      h="100vh"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+    >
       <Container
         as="form"
         onSubmit={handleSubmit(onSubmit)}
-        h="100vh"
         maxW="sm"
-        alignItems="stretch"
-        justifyContent="center"
-        gap={4}
-        centerContent
+        p={8}
+        boxShadow="lg"
+        borderRadius="md"
+        backgroundColor="white"
       >
-        <Image
-          src={Logo}
-          alt="FastAPI logo"
-          height="auto"
-          maxW="2xs"
-          alignSelf="center"
-          mb={4}
-        />
-        <FormControl id="username" isInvalid={!!errors.username || !!error}>
+        {/* <Center mb={6}>
+          <Image src={Logo} alt="FastAPI logo" height="auto" maxW="2xs" />
+        </Center> */}
+        <Heading as="h1" size="lg" textAlign="center" mb={4}>
+          欢迎使用
+        </Heading>
+        {/* <Text fontSize="lg" textAlign="center" mb={6} color="blue.600">
+          INTELLIGENT COURSE SELECTION SYSTEM
+        </Text> */}
+        <FormControl id="username" isInvalid={!!errors.username || !!error} mb={4}>
           <Input
             id="username"
             {...register("username", {
@@ -99,7 +113,7 @@ function Login() {
             <FormErrorMessage>{errors.username.message}</FormErrorMessage>
           )}
         </FormControl>
-        <FormControl id="password" isInvalid={!!error}>
+        <FormControl id="password" isInvalid={!!error} mb={4}>
           <InputGroup>
             <Input
               {...register("password")}
@@ -122,17 +136,17 @@ function Login() {
           </InputGroup>
           {error && <FormErrorMessage>{error}</FormErrorMessage>}
         </FormControl>
-        <Center>
+        <Center mb={4}>
           <Link as={RouterLink} to="/recover-password" color="blue.500">
             Forgot password?
           </Link>
         </Center>
-        <Button variant="primary" type="submit" isLoading={isSubmitting}>
+        <Button variant="solid" colorScheme="blue" type="submit" isLoading={isSubmitting} w="full">
           Log In
         </Button>
       </Container>
+    </Box>
     </>
   )
 }
 
-export default Login
