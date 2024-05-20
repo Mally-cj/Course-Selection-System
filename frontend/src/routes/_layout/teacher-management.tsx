@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Badge,
   Box,
@@ -7,6 +8,7 @@ import {
   Spinner,
   Table,
   TableContainer,
+  Button,
   Tbody,
   Td,
   Th,
@@ -21,6 +23,9 @@ import ActionsMenu from "../../components/Teachers/TeaManActionsMenu"
 import Navbar from "../../components/Common/Navbar"
 import useCustomToast from "../../hooks/useCustomToast"
 
+import TeacherDetails from "../../components/Teachers/teacherDetail"; // 导入新的组件
+
+
 export const Route = createFileRoute("/_layout/teacher-management")({
   component: TeacherManage,
 })
@@ -30,6 +35,11 @@ export const Route = createFileRoute("/_layout/teacher-management")({
 function TeacherManage() {
   const queryClient = useQueryClient()
   const showToast = useCustomToast()
+
+  // 渲染
+  const [importedData, setImportedData] = useState([]);
+  const [selectedTeacher, setSelectedTeacher] = useState(null);
+
   const currentUser = queryClient.getQueryData<UserOut>("currentUser")
   const {
     data: teachers,
@@ -43,6 +53,27 @@ function TeacherManage() {
     showToast("Something went wrong.", `${errDetail}`, "error")
   }
 
+
+  const handleDataImported = (data) => {
+    console.log("Imported data:", data);
+    setImportedData(data);
+  };
+
+  const processedData = teachers?.data.map(teacher => ({
+    teacher_id: teacher.id,
+    name: teacher.name,
+    email: teacher.email,
+    title: teacher.title,
+    college: teacher.college
+  }));
+
+
+   // 渲染教师详细信息
+   const renderTeacherDetails = (teachers) => (
+    <TeacherDetails teachers={teachers} onClose={() => setSelectedTeacher(null)} />
+  );
+
+
   return (
     <>
       {isLoading ? (
@@ -50,7 +81,9 @@ function TeacherManage() {
         <Flex justify="center" align="center" height="100vh" width="full">
           <Spinner size="xl" color="ui.main" />
         </Flex>
-      ) : (
+      ) : selectedTeacher?(renderTeacherDetails(selectedTeacher)
+    ):
+    (
         teachers && (
           <Container maxW="full">
             <Heading
@@ -74,19 +107,23 @@ function TeacherManage() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {teachers.data?.map((teachers) => (
-                    <Tr key={teachers.id}>
+                  {teachers.data?.map((teacher) => (
+                    <Tr key={teacher.id}>
                       
-                      <Td>{teachers.name}</Td>
+                      <Td>
+                      <Button variant="link" onClick={() => setSelectedTeacher(teacher)}>
+                        {teacher.name}
+                        </Button>
+                        </Td>
                       {/* TODO: 补充数据库的表然后填补 */}
-                      <Td>{teachers.email}</Td>
-                      <Td>{teachers.id}</Td>
-                      <Td>{teachers.title}</Td>
-                      <Td>{teachers.college }</Td>
+                      <Td>{teacher.email}</Td>
+                      <Td>{teacher.id}</Td>
+                      <Td>{teacher.title}</Td>
+                      <Td>{teacher.college }</Td>
                       <Td>
                         <ActionsMenu
                           type="Teacher"
-                          value={teachers}
+                          value={teacher}
                         //ToDO: ActionsMenu的Teachers类
                         />
                       </Td>
@@ -95,6 +132,8 @@ function TeacherManage() {
                 </Tbody>
               </Table>
             </TableContainer>
+
+            
           </Container>
         )
       )}

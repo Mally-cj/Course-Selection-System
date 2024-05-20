@@ -54,16 +54,16 @@ const ActionsMenu: React.FC<ActionsMenuProps> = ({ type, value, disabled }) => {
             编辑 {type}
           </MenuItem>
           
-          <MenuItem
+          {/* <MenuItem
             onClick={() => {
               // Example: Redirect to a specific page
-              window.location.href = `/teacher-detailInfo?teacherId=${value.id}`;
+              window.location.href = `/teacherDetailInfo?teacherId=${value.id}`;
             }}
             icon={<FiEdit fontSize="16px" />}
             
           >
             教师信息
-          </MenuItem>
+          </MenuItem> */}
 
           <MenuItem
             onClick={deleteModal.onOpen}
