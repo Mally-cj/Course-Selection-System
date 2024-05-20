@@ -39,7 +39,7 @@ function MyCourse() {
         key: 'name',
     },
     {
-        title: 'Action',
+        title: '操作',
         dataIndex: '',
         key: 'x',
         render: (item: CourseOut) => <a onClick={ () => {

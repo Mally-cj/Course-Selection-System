@@ -50,7 +50,7 @@ function CourseSelect() {
             }
         },
         {
-            title: 'Action',
+            title: '退选课',
             dataIndex: '',
             key: 'x',
             render: (item: CourseOut) =>

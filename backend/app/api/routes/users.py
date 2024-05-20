@@ -79,7 +79,7 @@ def update_user_me(
     """
     Update own user.
     """
-
+    console.log("hello")
     if user_in.email:
         existing_user = crud.get_user_by_email(session=session, email=user_in.email)
         if existing_user and existing_user.id != current_user.id:

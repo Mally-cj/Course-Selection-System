@@ -80,7 +80,7 @@ function Coursecomment() {
       dataIndex: 'major',
     },
     {
-      title: 'Action',
+      title: '操作',
       key: 'x',
       // dataIndex: 'comment_id',
       render: (record) => (

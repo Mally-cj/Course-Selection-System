@@ -67,7 +67,7 @@ function Courses() {
       key: 'status',
     },
     {
-      title: 'Action',
+      title: '操作',
       dataIndex: '',
       key: 'x',
       render: ( record) => <ActionsMenu type={"Course"} value={record} />,

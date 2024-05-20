@@ -81,12 +81,12 @@ const UserInformation: React.FC = () => {
     <>
       <Container maxW="full" as="form" onSubmit={handleSubmit(onSubmit)}>
         <Heading size="sm" py={4}>
-          User Information
+          用户信息
         </Heading>
         <Box w={{ sm: "full", md: "50%" }}>
           <FormControl>
             <FormLabel color={color} htmlFor="name">
-              Full name
+              全名
             </FormLabel>
             {editMode ? (
               <Input
@@ -107,7 +107,7 @@ const UserInformation: React.FC = () => {
           </FormControl>
           <FormControl mt={4} isInvalid={!!errors.email}>
             <FormLabel color={color} htmlFor="email">
-              Email
+              邮箱
             </FormLabel>
             {editMode ? (
               <Input

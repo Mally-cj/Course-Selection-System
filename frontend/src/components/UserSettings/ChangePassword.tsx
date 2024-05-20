@@ -57,12 +57,12 @@ const ChangePassword: React.FC = () => {
     <>
       <Container maxW="full" as="form" onSubmit={handleSubmit(onSubmit)}>
         <Heading size="sm" py={4}>
-          Change Password
+          改变密码
         </Heading>
         <Box w={{ sm: "full", md: "50%" }}>
           <FormControl isRequired isInvalid={!!errors.current_password}>
             <FormLabel color={color} htmlFor="current_password">
-              Current password
+              当前密码
             </FormLabel>
             <Input
               id="current_password"
@@ -77,7 +77,7 @@ const ChangePassword: React.FC = () => {
             )}
           </FormControl>
           <FormControl mt={4} isRequired isInvalid={!!errors.new_password}>
-            <FormLabel htmlFor="password">Set Password</FormLabel>
+            <FormLabel htmlFor="password">设置密码</FormLabel>
             <Input
               id="password"
               {...register("new_password", {
@@ -95,7 +95,7 @@ const ChangePassword: React.FC = () => {
             )}
           </FormControl>
           <FormControl mt={4} isRequired isInvalid={!!errors.confirm_password}>
-            <FormLabel htmlFor="confirm_password">Confirm Password</FormLabel>
+            <FormLabel htmlFor="confirm_password">确定密码</FormLabel>
             <Input
               id="confirm_password"
               {...register("confirm_password", {
@@ -119,7 +119,7 @@ const ChangePassword: React.FC = () => {
             type="submit"
             isLoading={isSubmitting}
           >
-            Save
+            保存
           </Button>
         </Box>
       </Container>
