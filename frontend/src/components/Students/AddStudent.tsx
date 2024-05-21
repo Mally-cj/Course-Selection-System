@@ -100,6 +100,10 @@ const AddStudent: React.FC<AddStudentProps> = ({ isOpen, onClose }) => {
                 id="email"
                 {...register("email", {
                   required: "电子邮箱不能为空",
+                  pattern: {
+                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                    message: "无效的电子邮箱地址",
+                  },
                 })}
                 placeholder="请输入学生邮箱"
                 type="email"
@@ -114,6 +118,14 @@ const AddStudent: React.FC<AddStudentProps> = ({ isOpen, onClose }) => {
                 id="student_id"
                 {...register("student_id", {
                   required: "学号不能为空",
+                  minLength: {
+                    value: 10,
+                    message: "学号必须是10位",
+                  },
+                  maxLength: {
+                    value: 10,
+                    message: "学号必须是10位",
+                  },
                 })}
                 placeholder="请输入学生学号"
                 type="text"
@@ -142,6 +154,10 @@ const AddStudent: React.FC<AddStudentProps> = ({ isOpen, onClose }) => {
                 id="classLocation"
                 {...register("classLocation", {
                   required: "班级不能为空",
+                  pattern: {
+                    value: /^[A-Za-z]\d{3}$/,
+                    message: "班级格式必须是一个字母加三个数字",
+                  },
                 })}
                 placeholder="请输入学生班级"
                 type="text"
@@ -152,16 +168,21 @@ const AddStudent: React.FC<AddStudentProps> = ({ isOpen, onClose }) => {
             </FormControl>
           </ModalBody>
 
-          <ModalFooter gap={3}>
-            <Button variant="primary" type="submit" isLoading={isSubmitting}>
-              Save
+          <ModalFooter>
+            <Button onClick={onClose}>取消</Button>
+            <Button
+              colorScheme="blue"
+              isLoading={isSubmitting}
+              type="submit"
+              ml={3}
+            >
+              保存
             </Button>
-            <Button onClick={onClose}>Cancel</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
     </>
-  )
+  );
 };
 
 export default AddStudent;

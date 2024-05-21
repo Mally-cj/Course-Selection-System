@@ -99,11 +99,15 @@ const EditStudent: React.FC<EditStudentProps> = ({ student, isOpen, onClose }) =
                             )}
                         </FormControl>
                         <FormControl isRequired isInvalid={!!errors.email}>
-                            <FormLabel htmlFor="email">邮箱</FormLabel>
+                            <FormLabel htmlFor="email">电子邮箱</FormLabel>
                             <Input
                                 id="email"
                                 {...register("email", {
-                                    required: "邮箱不能为空",
+                                    required: "电子邮箱不能为空",
+                                    pattern: {
+                                        value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                                        message: "无效的电子邮箱地址",
+                                    },
                                 })}
                                 placeholder="请输入学生邮箱"
                                 type="email"
@@ -113,11 +117,19 @@ const EditStudent: React.FC<EditStudentProps> = ({ student, isOpen, onClose }) =
                             )}
                         </FormControl>
                         <FormControl isRequired isInvalid={!!errors.student_id}>
-                            <FormLabel htmlFor="studentId">学号</FormLabel>
+                            <FormLabel htmlFor="student_id">学号</FormLabel>
                             <Input
-                                id="studentId"
+                                id="student_id"
                                 {...register("student_id", {
                                     required: "学号不能为空",
+                                    minLength: {
+                                        value: 10,
+                                        message: "学号必须是10位",
+                                    },
+                                    maxLength: {
+                                        value: 10,
+                                        message: "学号必须是10位",
+                                    },
                                 })}
                                 placeholder="请输入学生学号"
                                 type="text"
@@ -126,14 +138,37 @@ const EditStudent: React.FC<EditStudentProps> = ({ student, isOpen, onClose }) =
                                 <FormErrorMessage>{errors.student_id.message}</FormErrorMessage>
                             )}
                         </FormControl>
-                        <FormControl mt={4}>
+                        <FormControl isRequired isInvalid={!!errors.major}>
                             <FormLabel htmlFor="major">专业</FormLabel>
                             <Input
                                 id="major"
-                                {...register("major")}
+                                {...register("major", {
+                                    required: "专业不能为空",
+                                })}
                                 placeholder="请输入学生专业"
                                 type="text"
                             />
+                            {errors.major && (
+                                <FormErrorMessage>{errors.major.message}</FormErrorMessage>
+                            )}
+                        </FormControl>
+                        <FormControl isRequired isInvalid={!!errors.classLocation}>
+                            <FormLabel htmlFor="classLocation">班级</FormLabel>
+                            <Input
+                                id="classLocation"
+                                {...register("classLocation", {
+                                    required: "班级不能为空",
+                                    pattern: {
+                                        value: /^[A-Za-z]\d{3}$/,
+                                        message: "班级格式必须是一个字母加三个数字",
+                                    },
+                                })}
+                                placeholder="请输入学生班级"
+                                type="text"
+                            />
+                            {errors.classLocation && (
+                                <FormErrorMessage>{errors.classLocation.message}</FormErrorMessage>
+                            )}
                         </FormControl>
                     </ModalBody>
 

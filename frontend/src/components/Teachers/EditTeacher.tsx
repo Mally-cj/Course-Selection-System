@@ -89,27 +89,28 @@ const EditTeacher: React.FC<EditTeacherProps> = ({ teacher, isOpen, onClose }) =
                                 id="name"
                                 {...register("name", {
                                     required: "姓名不能为空",
+                                    validate: (value) => value.trim() !== "" || "姓名不能为空",
                                 })}
                                 placeholder="请输入教师姓名"
                                 type="text"
                             />
-                            {errors.name && (
-                                <FormErrorMessage>{errors.name.message}</FormErrorMessage>
-                            )}
+                            {errors.name && <FormErrorMessage>{errors.name.message}</FormErrorMessage>}
                         </FormControl>
                         <FormControl isRequired isInvalid={!!errors.email}>
-                            <FormLabel htmlFor="email">邮箱</FormLabel>
+                            <FormLabel htmlFor="email">电子邮箱</FormLabel>
                             <Input
                                 id="email"
                                 {...register("email", {
-                                    required: "邮箱不能为空",
+                                    required: "电子邮箱不能为空",
+                                    pattern: {
+                                        value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                                        message: "无效的电子邮箱地址",
+                                    },
                                 })}
                                 placeholder="请输入教师邮箱"
                                 type="email"
                             />
-                            {errors.email && (
-                                <FormErrorMessage>{errors.email.message}</FormErrorMessage>
-                            )}
+                            {errors.email && <FormErrorMessage>{errors.email.message}</FormErrorMessage>}
                         </FormControl>
                         <FormControl isRequired isInvalid={!!errors.title}>
                             <FormLabel htmlFor="title">职称</FormLabel>
@@ -117,13 +118,15 @@ const EditTeacher: React.FC<EditTeacherProps> = ({ teacher, isOpen, onClose }) =
                                 id="title"
                                 {...register("title", {
                                     required: "职称不能为空",
+                                    validate: (value) => {
+                                        const validTitles = ["教授", "副教授", "讲师", "助教"];
+                                        return validTitles.includes(value.trim()) || "无效的职称";
+                                    },
                                 })}
                                 placeholder="请输入教师职称"
                                 type="text"
                             />
-                            {errors.title && (
-                                <FormErrorMessage>{errors.title.message}</FormErrorMessage>
-                            )}
+                            {errors.title && <FormErrorMessage>{errors.title.message}</FormErrorMessage>}
                         </FormControl>
                         <FormControl isRequired isInvalid={!!errors.college}>
                             <FormLabel htmlFor="college">所属学院</FormLabel>
@@ -131,13 +134,12 @@ const EditTeacher: React.FC<EditTeacherProps> = ({ teacher, isOpen, onClose }) =
                                 id="college"
                                 {...register("college", {
                                     required: "所属学院不能为空",
+                                    validate: (value) => value.trim() !== "" || "所属学院不能为空",
                                 })}
                                 placeholder="请输入教师所属学院"
                                 type="text"
                             />
-                            {errors.college && (
-                                <FormErrorMessage>{errors.college.message}</FormErrorMessage>
-                            )}
+                            {errors.college && <FormErrorMessage>{errors.college.message}</FormErrorMessage>}
                         </FormControl>
                     </ModalBody>
 

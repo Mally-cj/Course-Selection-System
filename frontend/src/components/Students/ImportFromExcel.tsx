@@ -22,6 +22,28 @@ const ImportFromExcel = () => {
         }
     });
 
+    const validateStudentData = (student: StudentCreate) => {
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        const classLocationRegex = /^[A-Za-z]\d{3}$/;
+
+        if (!student.name) {
+            return '姓名不能为空';
+        }
+        if (!student.email || !emailRegex.test(student.email)) {
+            return '无效的电子邮箱地址';
+        }
+        if (!student.student_id || student.student_id.length !== 10) {
+            return '学号必须是10位';
+        }
+        if (!student.major) {
+            return '专业不能为空';
+        }
+        if (!student.classLocation || !classLocationRegex.test(student.classLocation)) {
+            return '班级格式必须是一个字母加三个数字';
+        }
+        return null;
+    };
+
     const handleFileUpload = async (event) => {
         const file = event.target.files ? event.target.files[0] : null;
         if (!file) {
@@ -44,6 +66,12 @@ const ImportFromExcel = () => {
                     major: item.Major,
                     classLocation: item.ClassLocation
                 }));
+
+                const validationErrors = typedData.map(validateStudentData).filter(error => error !== null);
+                if (validationErrors.length > 0) {
+                    showToast("Error!", "Data validation failed: " + validationErrors.join(', '), "error");
+                    return;
+                }
 
                 mutation.mutate(typedData);
             } catch (error) {
