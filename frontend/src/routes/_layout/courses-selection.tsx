@@ -18,7 +18,7 @@ function CourseSelect() {
         isLoading,
         isError,
         error,
-      } = useQuery("courses", () => CoursesService.coursesListCourses({}))
+      } = useQuery("courses", () => CoursesService.coursesListCheckedcourses({}))
 
     const columns = [
         {

@@ -34,6 +34,17 @@ def list_courses(
     items, count = crud.list(Course, session, skip, limit)
     return ListResp(data=items, count=count)
 
+@router.get("/checked", response_model=ListResp[CourseOut])
+def list_checkedcourses(
+    session: SessionDep, current_user: CurrentUser, skip: int = 0, limit: int = 100
+) -> Any:
+    """
+    获取审核已通过的课程
+    """
+    cond = (Course.status == "已审核")
+    items, count = crud.list(Course, session, skip, limit,cond)
+    return ListResp(data=items, count=count)
+
 @router.post("/add", response_model=Course)
 def create_courses(
     session: SessionDep, current_user: CurrentUser, req: CourseCreate

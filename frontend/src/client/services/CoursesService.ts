@@ -68,6 +68,32 @@ export class CoursesService {
     }
 
     /**
+     * List Checkedcourses
+     * 获取审核已通过的课程
+     * @returns ListResp_CourseOut_ Successful Response
+     * @throws ApiError
+     */
+    public static coursesListCheckedcourses({
+        skip,
+        limit = 100,
+    }: {
+        skip?: number,
+        limit?: number,
+    }): CancelablePromise<ListResp_CourseOut_> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/courses/checked',
+            query: {
+                'skip': skip,
+                'limit': limit,
+            },
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
      * Create Courses
      * 添加课程课程
      * @returns Course Successful Response

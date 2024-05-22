@@ -29,7 +29,7 @@ function Coursecomment() {
     isLoading,
     isError,
     error,
-  } = useQuery("studentlist", () => CommentsService.getcommentsBycourse({courseId: courseId}))
+  } = useQuery("studentlist", () => CommentsService.commentsGetCoursecomments({courseId: courseId}))
 
   // const displayModal = useDisclosure()
   const [displayModal, setDisplayModal] = useState(false);

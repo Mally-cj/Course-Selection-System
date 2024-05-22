@@ -46,7 +46,7 @@ const EditCourseannouncement: React.FC<EditItemProps> = ({ item, isOpen, onClose
   })
 
   const updateCourse = async (data: AnnouncementCreate) => {
-    await AnnouncementsService.EditcourseAndnnouncement({ requestBody: data })
+    await AnnouncementsService.announcementsCreateAndeditAnnouncements({ requestBody: data })
   }
 
   const mutation = useMutation(updateCourse, {
