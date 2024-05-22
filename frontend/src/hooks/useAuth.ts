@@ -33,6 +33,7 @@ const useAuth = () => {
   const logout = () => {
     localStorage.removeItem("access_token")
     navigate({ to: "/login" })
+    window.location.reload();
   }
 
   return { login, logout, user, isLoading }

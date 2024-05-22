@@ -89,6 +89,37 @@ export class AnnouncementsService {
     }
 
     /**
+     * Get Studentcourseannouncement
+     * 获取学生已选课程的公告
+     * @returns ListResp_Announcement_ Successful Response
+     * @throws ApiError
+     */
+    public static announcementsGetStudentcourseannouncement({
+        studentId,
+        skip,
+        limit = 100,
+    }: {
+        studentId: number,
+        skip?: number,
+        limit?: number,
+    }): CancelablePromise<ListResp_Announcement_> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/announcements/student/{student_id}',
+            path: {
+                'student_id': studentId,
+            },
+            query: {
+                'skip': skip,
+                'limit': limit,
+            },
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
      * List Announcement
      * 无条件获取全部公告
      * @returns ListResp_Announcement_ Successful Response
