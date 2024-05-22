@@ -25,6 +25,8 @@ def create_announcements(
     新增公告
     """
     req.announcement_time=str(datetime.utcnow())
+    coursedata=crud.get(Course, session, req.course_id)
+    req.content=coursedata.name+"：\n"+req.content
     data = crud.create(Announcement, session, req)
     return data
 
