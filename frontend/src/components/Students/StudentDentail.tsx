@@ -1,7 +1,27 @@
 import React from "react";
-import { Box, Button, Container, Divider, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
+import {
+    Box,
+    Button,
+    Container,
+    Divider,
+    Grid,
+    GridItem,
+    Heading,
+    Spinner,
+    Text,
+} from "@chakra-ui/react";
+import { useQuery, useQueryClient } from "react-query";
+import { StudentsService } from "../../client";
 
 function StudentDetails({ student, onClose }) {
+    const queryClient = useQueryClient();
+    const currentUser = queryClient.getQueryData("currentUser");
+
+    const { data: courses, isLoading, isError, error } = useQuery(
+        ["courses", student.id],
+        () => StudentsService.studentsListStudentCourses({ id: student.id || 0 })
+    );
+
     const headerStyle = {
         backgroundColor: '#3182CE', // 蓝色底色
         color: 'white', // 白色字体
@@ -40,42 +60,41 @@ function StudentDetails({ student, onClose }) {
                 </Box>
                 <Grid templateColumns="repeat(2, 1fr)" gap={6} mt={4}>
                     <GridItem>
-                        <Text fontSize="lg"><strong>年龄：</strong>21</Text>
+                        <Text fontSize="lg"><strong>年龄：</strong>{student.age}</Text>
                     </GridItem>
                     <GridItem>
-                        <Text fontSize="lg"><strong>年级：</strong>大三</Text>
+                        <Text fontSize="lg"><strong>年级：</strong>{student.grade}</Text>
                     </GridItem>
                     <GridItem>
-                        <Text fontSize="lg"><strong>GPA：</strong>3.8</Text>
+                        <Text fontSize="lg"><strong>GPA：</strong>{student.gpa}</Text>
                     </GridItem>
                     <GridItem>
-                        <Text fontSize="lg"><strong>导师：</strong>张教授</Text>
+                        <Text fontSize="lg"><strong>导师：</strong>{student.advisor}</Text>
                     </GridItem>
                     <GridItem>
-                        <Text fontSize="lg"><strong>联系方式：</strong>123-456-7890</Text>
+                        <Text fontSize="lg"><strong>联系方式：</strong>{student.contact_number}</Text>
                     </GridItem>
                     <GridItem>
-                        <Text fontSize="lg"><strong>地址：</strong>北京市朝阳区</Text>
+                        <Text fontSize="lg"><strong>地址：</strong>{student.home_address}</Text>
                     </GridItem>
                 </Grid>
                 <Divider my={4} borderColor="blue.500" />
                 <Box style={headerStyle}>
                     <Heading size="md">选修课程</Heading>
                 </Box>
-                <Grid templateColumns="repeat(2, 1fr)" gap={6} mt={4}>
-                    <GridItem>
-                        <Text fontSize="lg"><strong>课程1：</strong>自然语言处理</Text>
-                    </GridItem>
-                    <GridItem>
-                        <Text fontSize="lg"><strong>课程2：</strong>计算机视觉</Text>
-                    </GridItem>
-                    <GridItem>
-                        <Text fontSize="lg"><strong>课程3：</strong>机器学习</Text>
-                    </GridItem>
-                    <GridItem>
-                        <Text fontSize="lg"><strong>课程4：</strong>深度学习</Text>
-                    </GridItem>
-                </Grid>
+                {isLoading ? (
+                    <Spinner />
+                ) : isError ? (
+                    <Text color="red.500">获取学生选课数据时出错: {error.message}</Text>
+                ) : (
+                    <Grid templateColumns="repeat(2, 1fr)" gap={6} mt={4}>
+                        {(courses?.data ?? []).map((course, index) => (
+                            <GridItem key={index}>
+                                <Text fontSize="lg"><strong>课程{index + 1}：</strong>{course.name}</Text>
+                            </GridItem>
+                        ))}
+                    </Grid>
+                )}
                 <Button mt={4} colorScheme="teal" onClick={onClose}>返回</Button>
             </Box>
         </Container>

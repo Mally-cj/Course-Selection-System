@@ -104,6 +104,12 @@ class StudentBase(SQLModel):
     email: str
     major: str
     classLocation: str
+    age: int | None = 0
+    grade: str | None = None
+    gpa: float | None = 0
+    advisor: str | None = None
+    contact_number: str| None = None
+    home_address: str | None = None
     
     
 class Student(StudentBase, table=True):
@@ -113,7 +119,6 @@ class Student(StudentBase, table=True):
     courses: list["Course"] = Relationship(back_populates="students", link_model=EnrollmentList)
     user: "User" = Relationship(back_populates="student")
     enrollment_list: list["EnrollmentList"] = Relationship(back_populates="student")
-
 
 
 class StudentCreate(StudentBase):

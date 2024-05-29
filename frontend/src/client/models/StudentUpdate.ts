@@ -9,5 +9,11 @@ export type StudentUpdate = {
     email: string;
     major: string;
     classLocation: string;
+    age: Int16Array;
+    grade: string;
+    gpa: Float32Array;
+    advisor: string;
+    contact_number: string;
+    home_address: string;
 };
 

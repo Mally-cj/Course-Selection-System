@@ -1,4 +1,3 @@
-
 import {
     Button,
     FormControl,
@@ -73,12 +72,7 @@ const EditStudent: React.FC<EditStudentProps> = ({ student, isOpen, onClose }) =
 
     return (
         <>
-            <Modal
-                isOpen={isOpen}
-                onClose={onClose}
-                size={{ base: "sm", md: "md" }}
-                isCentered
-            >
+            <Modal isOpen={isOpen} onClose={onClose} size={{ base: "sm", md: "md" }} isCentered>
                 <ModalOverlay />
                 <ModalContent as="form" onSubmit={handleSubmit(onSubmit)}>
                     <ModalHeader>编辑学生信息</ModalHeader>
@@ -152,31 +146,111 @@ const EditStudent: React.FC<EditStudentProps> = ({ student, isOpen, onClose }) =
                                 <FormErrorMessage>{errors.major.message}</FormErrorMessage>
                             )}
                         </FormControl>
-                        <FormControl isRequired isInvalid={!!errors.classLocation}>
-                            <FormLabel htmlFor="classLocation">班级</FormLabel>
+                        <FormControl isRequired isInvalid={!!errors.age}>
+                            <FormLabel htmlFor="age">年龄</FormLabel>
                             <Input
-                                id="classLocation"
-                                {...register("classLocation", {
-                                    required: "班级不能为空",
-                                    pattern: {
-                                        value: /^[A-Za-z]\d{3}$/,
-                                        message: "班级格式必须是一个字母加三个数字",
+                                id="age"
+                                {...register("age", {
+                                    required: "年龄不能为空",
+                                    min: {
+                                        value: 0,
+                                        message: "年龄不能为负数",
                                     },
                                 })}
-                                placeholder="请输入学生班级"
+                                placeholder="请输入学生年龄"
+                                type="number"
+                            />
+                            {errors.age && (
+                                <FormErrorMessage>{errors.age.message}</FormErrorMessage>
+                            )}
+                        </FormControl>
+                        <FormControl isRequired isInvalid={!!errors.grade}>
+                            <FormLabel htmlFor="grade">年级</FormLabel>
+                            <Input
+                                id="grade"
+                                {...register("grade", {
+                                    required: "年级不能为空",
+                                })}
+                                placeholder="请输入学生年级"
                                 type="text"
                             />
-                            {errors.classLocation && (
-                                <FormErrorMessage>{errors.classLocation.message}</FormErrorMessage>
+                            {errors.grade && (
+                                <FormErrorMessage>{errors.grade.message}</FormErrorMessage>
+                            )}
+                        </FormControl>
+                        <FormControl isRequired isInvalid={!!errors.gpa}>
+                            <FormLabel htmlFor="gpa">平均成绩点 (GPA)</FormLabel>
+                            <Input
+                                id="gpa"
+                                {...register("gpa", {
+                                    required: "GPA不能为空",
+                                    min: {
+                                        value: 0.0,
+                                        message: "GPA不能为负数",
+                                    },
+                                    max: {
+                                        value: 4.0,
+                                        message: "GPA不能超过4.0",
+                                    },
+                                })}
+                                placeholder="请输入学生GPA"
+                                type="number"
+                                step="0.01"
+                            />
+                            {errors.gpa && (
+                                <FormErrorMessage>{errors.gpa.message}</FormErrorMessage>
+                            )}
+                        </FormControl>
+                        <FormControl isRequired isInvalid={!!errors.advisor}>
+                            <FormLabel htmlFor="advisor">导师</FormLabel>
+                            <Input
+                                id="advisor"
+                                {...register("advisor", {
+                                    required: "导师不能为空",
+                                })}
+                                placeholder="请输入学生导师"
+                                type="text"
+                            />
+                            {errors.advisor && (
+                                <FormErrorMessage>{errors.advisor.message}</FormErrorMessage>
+                            )}
+                        </FormControl>
+                        <FormControl isInvalid={!!errors.contact_number}>
+                            <FormLabel htmlFor="contact_number">联系电话</FormLabel>
+                            <Input
+                                id="contact_number"
+                                {...register("contact_number", {
+                                    pattern: {
+                                        value: /^\d{10,15}$/,
+                                        message: "无效的电话号码",
+                                    },
+                                })}
+                                placeholder="请输入联系电话"
+                                type="tel"
+                            />
+                            {errors.contact_number && (
+                                <FormErrorMessage>{errors.contact_number.message}</FormErrorMessage>
+                            )}
+                        </FormControl>
+                        <FormControl isInvalid={!!errors.home_address}>
+                            <FormLabel htmlFor="home_address">家庭住址</FormLabel>
+                            <Input
+                                id="home_address"
+                                {...register("home_address")}
+                                placeholder="请输入家庭住址"
+                                type="text"
+                            />
+                            {errors.home_address && (
+                                <FormErrorMessage>{errors.home_address.message}</FormErrorMessage>
                             )}
                         </FormControl>
                     </ModalBody>
 
                     <ModalFooter gap={3}>
                         <Button variant="primary" type="submit" isLoading={isSubmitting}>
-                            Save
+                            保存
                         </Button>
-                        <Button onClick={onCancel}>Cancel</Button>
+                        <Button onClick={onCancel}>取消</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
