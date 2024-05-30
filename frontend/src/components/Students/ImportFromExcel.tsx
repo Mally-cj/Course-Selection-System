@@ -1,13 +1,13 @@
 import React, { useRef } from 'react';
 import * as XLSX from 'xlsx';
 import { Button, Input } from "@chakra-ui/react";
-import { useMutation, useQueryClient } from "react-query";  // 引入 useQueryClient
+import { useMutation, useQueryClient } from "react-query";
 import { StudentsService } from "../../client";
 import useCustomToast from "../../hooks/useCustomToast";
 import type { StudentCreate } from '../../client/models/StudentCreate';
 
 const ImportFromExcel = () => {
-    const queryClient = useQueryClient();  // 获取 queryClient 实例
+    const queryClient = useQueryClient();
     const showToast = useCustomToast();
     const fileInputRef = useRef(null);
     const mutation = useMutation((students: StudentCreate[]) => StudentsService.studentsCreateStudentsBulk({
@@ -15,12 +15,22 @@ const ImportFromExcel = () => {
     }), {
         onSuccess: () => {
             showToast("Success!", "Students uploaded successfully.", "success");
-            queryClient.invalidateQueries('students');  // 无效化 students 查询以触发重新获取
+            queryClient.invalidateQueries('students');
         },
         onError: (error) => {
             showToast("Error!", 'Failed to upload students. ' + error.message, "error");
         }
     });
+
+    const checkStudentIdUnique = async (student_id: string) => {
+        try {
+            const { data: studentsList } = await StudentsService.studentsListStudents({ limit: 1000 });
+            return !studentsList.some((student) => student.student_id === student_id);
+        } catch (error) {
+            console.error("Error fetching students:", error);
+            return false;
+        }
+    };
 
     const validateStudentData = (student: StudentCreate) => {
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -73,6 +83,15 @@ const ImportFromExcel = () => {
                     return;
                 }
 
+                // 检查学号唯一性
+                for (const student of typedData) {
+                    const isUnique = await checkStudentIdUnique(student.student_id);
+                    if (!isUnique) {
+                        showToast("Error!", `学号 ${student.student_id} 已存在，请使用不同的学号`, "error");
+                        return;
+                    }
+                }
+
                 mutation.mutate(typedData);
             } catch (error) {
                 showToast("Error!", "Failed to read or process the Excel file.", "error");
@@ -92,7 +111,7 @@ const ImportFromExcel = () => {
                 type="file"
                 accept=".xlsx, .xls"
                 onChange={handleFileUpload}
-                hidden  // 隐藏真实的文件输入
+                hidden
             />
             <Button onClick={triggerFileInput} colorScheme="blue" size="md">
                 导入 Excel

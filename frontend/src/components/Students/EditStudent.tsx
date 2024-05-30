@@ -28,7 +28,15 @@ interface EditStudentProps {
     isOpen: boolean;
     onClose: () => void;
 }
-
+const checkStudentIdUnique = async (student_id: string) => {
+    try {
+        const { data: studentsList } = await StudentsService.studentsListStudents({ limit: 1000 });
+        return !studentsList.some((student) => student.student_id === student_id);
+    } catch (error) {
+        console.error("Error fetching students:", error);
+        return false;
+    }
+};
 const EditStudent: React.FC<EditStudentProps> = ({ student, isOpen, onClose }) => {
     const queryClient = useQueryClient();
     const showToast = useCustomToast();
@@ -123,6 +131,10 @@ const EditStudent: React.FC<EditStudentProps> = ({ student, isOpen, onClose }) =
                                     maxLength: {
                                         value: 10,
                                         message: "学号必须是10位",
+                                    },
+                                    validate: {
+                                        checkUnique: async (value) =>
+                                            (await checkStudentIdUnique(value)) || "学号已存在，请使用不同的学号",
                                     },
                                 })}
                                 placeholder="请输入学生学号"

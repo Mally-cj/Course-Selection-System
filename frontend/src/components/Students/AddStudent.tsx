@@ -43,8 +43,21 @@ const AddStudent: React.FC<AddStudentProps> = ({ isOpen, onClose }) => {
       classLocation: ""
     },
   });
+  const checkStudentIdUnique = async (student_id: string) => {
+    try {
+      const { data: studentsList } = await StudentsService.studentsListStudents({ limit: 1000 });
+      return !studentsList.some((student) => student.student_id === student_id);
+    } catch (error) {
+      console.error("Error fetching students:", error);
+      return false;
+    }
+  };
 
   const addStudent = async (data: StudentCreate) => {
+    const isUnique = await checkStudentIdUnique(data.student_id);
+    if (!isUnique) {
+      throw new Error("学号已存在，请使用不同的学号");
+    }
     await StudentsService.studentsCreateStudents({ requestBody: data });
   };
 
@@ -54,8 +67,8 @@ const AddStudent: React.FC<AddStudentProps> = ({ isOpen, onClose }) => {
       reset();
       onClose();
     },
-    onError: (err: ApiError) => {
-      const errDetail = err.body?.detail;
+    onError: (err: ApiError | Error) => {
+      const errDetail = err instanceof Error ? err.message : err.body?.detail;
       showToast("Something went wrong.", `${errDetail}`, "error");
     },
     onSettled: () => {
@@ -120,11 +133,15 @@ const AddStudent: React.FC<AddStudentProps> = ({ isOpen, onClose }) => {
                   required: "学号不能为空",
                   minLength: {
                     value: 10,
-                    message: "学号必须是10位",
+                    message: "学号长度必须为10位",
                   },
                   maxLength: {
                     value: 10,
-                    message: "学号必须是10位",
+                    message: "学号长度必须为10位",
+                  },
+                  validate: {
+                    checkUnique: async (value) =>
+                      (await checkStudentIdUnique(value)) || "学号已存在，请使用不同的学号",
                   },
                 })}
                 placeholder="请输入学生学号"
@@ -134,13 +151,11 @@ const AddStudent: React.FC<AddStudentProps> = ({ isOpen, onClose }) => {
                 <FormErrorMessage>{errors.student_id.message}</FormErrorMessage>
               )}
             </FormControl>
-            <FormControl isRequired isInvalid={!!errors.major}>
+            <FormControl isInvalid={!!errors.major}>
               <FormLabel htmlFor="major">专业</FormLabel>
               <Input
                 id="major"
-                {...register("major", {
-                  required: "专业不能为空",
-                })}
+                {...register("major")}
                 placeholder="请输入学生专业"
                 type="text"
               />
@@ -148,18 +163,12 @@ const AddStudent: React.FC<AddStudentProps> = ({ isOpen, onClose }) => {
                 <FormErrorMessage>{errors.major.message}</FormErrorMessage>
               )}
             </FormControl>
-            <FormControl isRequired isInvalid={!!errors.classLocation}>
-              <FormLabel htmlFor="classLocation">班级</FormLabel>
+            <FormControl isInvalid={!!errors.classLocation}>
+              <FormLabel htmlFor="classLocation">教室位置</FormLabel>
               <Input
                 id="classLocation"
-                {...register("classLocation", {
-                  required: "班级不能为空",
-                  pattern: {
-                    value: /^[A-Za-z]\d{3}$/,
-                    message: "班级格式必须是一个字母加三个数字",
-                  },
-                })}
-                placeholder="请输入学生班级"
+                {...register("classLocation")}
+                placeholder="请输入教室位置"
                 type="text"
               />
               {errors.classLocation && (
@@ -167,16 +176,12 @@ const AddStudent: React.FC<AddStudentProps> = ({ isOpen, onClose }) => {
               )}
             </FormControl>
           </ModalBody>
-
           <ModalFooter>
-            <Button onClick={onClose}>取消</Button>
-            <Button
-              colorScheme="blue"
-              isLoading={isSubmitting}
-              type="submit"
-              ml={3}
-            >
-              保存
+            <Button onClick={onClose} mr={3}>
+              取消
+            </Button>
+            <Button colorScheme="teal" isLoading={isSubmitting} type="submit">
+              添加
             </Button>
           </ModalFooter>
         </ModalContent>
