@@ -2,7 +2,7 @@
 from typing import Any, Optional
 from app.api.deps import CurrentUser, SessionDep
 from app.llm.history import clear_chat_history, set_chat_history, get_chat_history
-from app.llm import ChatModel, SearchCourseTool, SelectCourseTool, get_llm
+from app.llm import ChatModel, CourseCommentTool, SearchCourseTool, SelectCourseTool, get_llm
 from fastapi import APIRouter
 import pydantic
 from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
@@ -49,7 +49,7 @@ def chat(
     进行聊天
     """
     llm = get_llm(req.model)
-    tools = [SearchCourseTool(session=session), SelectCourseTool(session=session, student_id=current_user.student_id)]
+    tools = [SearchCourseTool(session=session), SelectCourseTool(session=session, student_id=current_user.student_id), CourseCommentTool(session=session)]
     agent_executor = chat_agent_executor.create_tool_calling_executor(llm, tools, debug=True)
     messages = get_chat_history(req.chat_id, current_user)
     messages.append(HumanMessage(req.message))

@@ -51,6 +51,9 @@ class Comment(CommentBase, table=True):
     course: "Course" = Relationship(back_populates="comments")
     student: "Student" = Relationship(back_populates="comments")
 
+class CommentQuery(BaseModel):
+    course_id: int | None = None
+    student_id: int | None = None    
 class CommentwithStudent(CommentBase):
     student: Optional["Student"] = None
 

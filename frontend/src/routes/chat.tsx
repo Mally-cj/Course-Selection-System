@@ -67,7 +67,9 @@ function CourseSelect() {
       chatId: chat_id,
     }).then((value) => {
       console.log(value)
+      // 刷新页面
       alert("清除成功")
+      window.location.reload()
     })
   }
   const initalMessages = [];

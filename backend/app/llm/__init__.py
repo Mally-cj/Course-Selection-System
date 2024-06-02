@@ -11,13 +11,14 @@ from langchain_core.callbacks import (
 )
 from app.crud import crud
 from langchain_openai import ChatOpenAI, AzureChatOpenAI
-from sqlmodel import Session
+from sqlmodel import Session, col
 from app.core.config import settings
-class ChatModel(str, enum.Enum):
+class ChatModel(str, enum.Enum):   ##枚举类型
     Kimi = "kimi"
     GPT4O = "gpt-4o"
 
 def get_llm(model: ChatModel):
+    ##由于gpt4是从微软购买，故而用AzureChatOpenAI，而kimi逆向用的兼容的是openai的接口，故而是用ChatOpenAI
     if model == ChatModel.GPT4O:
         llm = AzureChatOpenAI(model="gpt-4o", azure_endpoint=settings.OPENAI_ENDPOINT, api_key=settings.OPENAI_TOKEN, api_version="2024-03-01-preview")
     else:
@@ -36,11 +37,30 @@ class SearchCourseTool(BaseTool):
         self, course_name: str=None, run_manager: Optional[CallbackManagerForToolRun] = None
     ) -> str:
         if course_name is None:
-            items, count = crud.list(Course, self.session, 0, 1000)
+            items, count = logic.get_course_list(session=self.session, skip=0, limit=100)
             return items
         else:
             c = col(Course.name).contains(course_name)
             items, count = crud.list(Course, self.session, 0, 100, cond=c)
+
+    async def _arun(
+        self, query: str, run_manager: Optional[AsyncCallbackManagerForToolRun] = None
+    ) -> str:
+        """Use the tool asynchronously."""
+        raise NotImplementedError("custom_search does not support async")
+class CourseCommentInput(BaseModel):
+    course_id: int = Field(description="课程id")
+class CourseCommentTool(BaseTool):
+    name = "course_comment_query"
+    description = "查询课程评价信息"
+    args_schema: Type[BaseModel] = SearchInput
+    session: Session
+    def _run(
+        self, course_id: int, run_manager: Optional[CallbackManagerForToolRun] = None
+    ) -> str:
+        items, count = logic.get_course_comment_list(session=self.session, course_id=course_id, skip=0, limit=100)
+        return items
+
 
     async def _arun(
         self, query: str, run_manager: Optional[AsyncCallbackManagerForToolRun] = None

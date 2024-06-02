@@ -1,9 +1,10 @@
-from app.models.models import Course, Student
+from typing import Tuple
+from app.models.models import Course, CourseOut, ListResp, Student
 from app.crud import crud
 from fastapi import HTTPException
 import sqlalchemy
 from sqlmodel import Session
-
+from app.models.models import Comment, CommentQuery
 
 def select_course(session: Session, course_id: int, student_id: int):
     course = crud.get(Course, session, course_id)
@@ -45,3 +46,11 @@ def unselect_course(session: Session, course_id: int, student_id: int):
         raise HTTPException(status_code=500, detail="报错!课程未选过!")
     session.refresh(course)
     return "OK"
+
+def get_course_list(session:Session, skip: int, limit: int) -> Tuple[list[CourseOut], int]:
+    items, count = crud.list(Course, session, skip, limit)
+    return [CourseOut(**item.dict()) for item in items], count
+
+def get_course_comment_list(session:Session, course_id: int, skip: int, limit: int):
+    items, count = crud.list(Comment, session, skip, limit, CommentQuery(course_id=course_id))
+    return items, count
