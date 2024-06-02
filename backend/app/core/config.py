@@ -118,11 +118,11 @@ class Settings(BaseSettings):
         return self
 
 
-    KIMI_TOKEN: str
-    KIMI_BASE_URL: str
+    KIMI_TOKEN: str = ""
+    KIMI_BASE_URL: str = ""
 
-    OPENAI_ENDPOINT: str
-    OPENAI_TOKEN: str
+    OPENAI_ENDPOINT: str = ""
+    OPENAI_TOKEN: str = ""
 
 
 settings = Settings()  # type: ignore
