@@ -52,5 +52,5 @@ def get_course_list(session:Session, skip: int, limit: int) -> Tuple[list[Course
     return [CourseOut(**item.dict()) for item in items], count
 
 def get_course_comment_list(session:Session, course_id: int, skip: int, limit: int):
-    items, count = crud.list(Comment, session, skip, limit, CommentQuery(course_id=course_id))
+    items, count = crud.list(Comment, session, skip, limit, Comment.course_id==course_id)
     return items, count

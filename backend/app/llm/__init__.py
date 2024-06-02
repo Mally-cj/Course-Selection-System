@@ -53,7 +53,7 @@ class CourseCommentInput(BaseModel):
 class CourseCommentTool(BaseTool):
     name = "course_comment_query"
     description = "查询课程评价信息"
-    args_schema: Type[BaseModel] = SearchInput
+    args_schema: Type[BaseModel] = CourseCommentInput
     session: Session
     def _run(
         self, course_id: int, run_manager: Optional[CallbackManagerForToolRun] = None
