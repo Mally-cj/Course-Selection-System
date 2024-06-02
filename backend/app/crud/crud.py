@@ -2,6 +2,8 @@ from typing import Any
 
 from app.api.deps import SessionDep
 from pydantic import BaseModel
+from sqlalchemy import ColumnElement
+# from sqlalchemy i
 from sqlmodel import Session, select, func
 
 from app.core.security import get_password_hash, verify_password
@@ -19,7 +21,7 @@ from typing import TypeVar, Generic, Optional
 
 T = TypeVar('T', bound=SQLModel)
 
-def list(model: T, session: SessionDep, skip: int, limit: int, cond: dict| BaseModel = None) -> tuple[list[T], int]:
+def list(model: T, session: SessionDep, skip: int, limit: int, cond: dict| BaseModel | ColumnElement = None) -> tuple[list[T], int]:
     count_statement = select(func.count()).select_from(model)
     if cond is not None:
         count_statement = count_statement.where(cond)

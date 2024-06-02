@@ -9,6 +9,12 @@ export type Student = {
     email: string;
     major: string;
     classLocation: string;
+    age?: (number | null);
+    grade?: (string | null);
+    gpa?: (number | null);
+    advisor?: (string | null);
+    contact_number?: (string | null);
+    home_address?: (string | null);
     id?: (number | null);
 };
 
