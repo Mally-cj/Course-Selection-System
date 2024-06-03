@@ -1,4 +1,17 @@
-import { Button, FormControl, FormErrorMessage, FormLabel, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/react";
+import {
+  Button,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+} from "@chakra-ui/react";
 import React from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
@@ -25,7 +38,13 @@ const AddTeacher: React.FC<AddTeacherProps> = ({ isOpen, onClose }) => {
       name: "",
       email: "",
       title: "",
-      college: ""
+      college: "",
+      homepage: "",
+      img: "",
+      address: "",
+      postalCode: "",
+      Education: "",
+      phone: "",
     },
   });
 
@@ -117,6 +136,75 @@ const AddTeacher: React.FC<AddTeacherProps> = ({ isOpen, onClose }) => {
                 type="text"
               />
               {errors.college && <FormErrorMessage>{errors.college.message}</FormErrorMessage>}
+            </FormControl>
+            <FormControl isInvalid={!!errors.homepage}>
+              <FormLabel htmlFor="homepage">主页</FormLabel>
+              <Input
+                id="homepage"
+                {...register("homepage", {
+                  pattern: {
+                    value: /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/,
+                    message: "无效的主页地址",
+                  },
+                })}
+                placeholder="请输入教师主页"
+                type="url"
+              />
+              {errors.homepage && <FormErrorMessage>{errors.homepage.message}</FormErrorMessage>}
+            </FormControl>
+            <FormControl isInvalid={!!errors.address}>
+              <FormLabel htmlFor="address">地址</FormLabel>
+              <Input
+                id="address"
+                {...register("address")}
+                placeholder="请输入教师地址"
+                type="text"
+              />
+              {errors.address && <FormErrorMessage>{errors.address.message}</FormErrorMessage>}
+            </FormControl>
+            <FormControl isInvalid={!!errors.postalCode}>
+              <FormLabel htmlFor="postalCode">邮编</FormLabel>
+              <Input
+                id="postalCode"
+                {...register("postalCode", {
+                  pattern: {
+                    value: /^[0-9]{5}([- ]?[0-9]{4})?$/,
+                    message: "无效的邮政编码",
+                  },
+                })}
+                placeholder="请输入邮政编码"
+                type="text"
+              />
+              {errors.postalCode && <FormErrorMessage>{errors.postalCode.message}</FormErrorMessage>}
+            </FormControl>
+            <FormControl isRequired isInvalid={!!errors.Education}>
+              <FormLabel htmlFor="education">学历</FormLabel>
+              <Input
+                id="education"
+                {...register("Education", {
+                  required: "学历不能为空",
+                  validate: (value) => value.trim() !== "" || "学历不能为空",
+                })}
+                placeholder="请输入教师学历"
+                type="text"
+              />
+              {errors.Education && <FormErrorMessage>{errors.Education.message}</FormErrorMessage>}
+            </FormControl>
+            <FormControl isRequired isInvalid={!!errors.phone}>
+              <FormLabel htmlFor="phone">电话</FormLabel>
+              <Input
+                id="phone"
+                {...register("phone", {
+                  required: "电话不能为空",
+                  pattern: {
+                    value: /^\d{3,4}-?\d{7,8}$/,
+                    message: "无效的电话号码",
+                  },
+                })}
+                placeholder="请输入联系电话"
+                type="tel"
+              />
+              {errors.phone && <FormErrorMessage>{errors.phone.message}</FormErrorMessage>}
             </FormControl>
           </ModalBody>
           <ModalFooter gap={3}>
