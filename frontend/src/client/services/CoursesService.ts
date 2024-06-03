@@ -205,8 +205,8 @@ export class CoursesService {
         requestBody: CourseUpdate,
     }): CancelablePromise<Course> {
         return __request(OpenAPI, {
-            method: 'PUT',
-            url: '/api/v1/courses/audit/{id}',
+            method: 'DELETE',
+            url: '/api/v1/courses/{id}',
             path: {
                 'id': id,
             },

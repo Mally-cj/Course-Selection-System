@@ -55,9 +55,9 @@ def update(model: T, session: Session, id: int, param: SQLModel) -> T:
 
 def updateAuditCourse(model: T, session: Session, id: int, param: SQLModel) -> T:
     db_item: T = session.get(model, id)
-    print(db_item)
+    
     db_item.sqlmodel_update(param.model_dump(exclude_unset=True))
-    #db_item.status = "已审核"
+    
 
     session.add(db_item)
     session.commit()

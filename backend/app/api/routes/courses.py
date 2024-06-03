@@ -97,7 +97,11 @@ def update_course(
     """
     审核通过课程
     """
-    data = crud.updateAuditCourse(Course, session, id, req)
+
+    #req = {"status":"已审核"}
+    # data = crud.updateAuditCourse(Course, session, id, req)
+    # return data
+    data = crud.delete(Course, session, id)
     return data
 
 
