@@ -199,18 +199,17 @@ export class CoursesService {
      */
     public static coursesUpdateAuditCourse({
         id,
-        requestBody,
+        
     }: {
         id: number,
-        requestBody: CourseUpdate,
     }): CancelablePromise<Course> {
         return __request(OpenAPI, {
-            method: 'DELETE',
-            url: '/api/v1/courses/{id}',
+            method: 'PUT',
+            url: '/api/v1/courses/audit/{id}',
             path: {
                 'id': id,
             },
-            body: requestBody,
+            
             mediaType: 'application/json',
             errors: {
                 422: `Validation Error`,

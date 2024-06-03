@@ -92,16 +92,15 @@ def update_course(
 
 @router.put("/audit/{id}", response_model=Course)
 def update_course(
-    session: SessionDep, current_user: CurrentUser, id: int, req: CourseUpdate
+    session: SessionDep, current_user: CurrentUser, id: int
 ) -> Any:
     """
     审核通过课程
     """
-
-    #req = {"status":"已审核"}
-    # data = crud.updateAuditCourse(Course, session, id, req)
+    req = CourseOut(status ="已审核")
+    data = crud.updateAuditCourse(Course, session, id, req)
     # return data
-    data = crud.delete(Course, session, id)
+    #data = crud.update(Course, session, id)
     return data
 
 
@@ -114,6 +113,7 @@ def delete_course(
     """
     data = crud.delete(Course, session, id)
     return data
+
 
 @router.post("/select")
 def select_course(

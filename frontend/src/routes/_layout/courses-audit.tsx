@@ -132,7 +132,7 @@ function Courses() {
         </Heading>
         
         <Box pt={0} px={4}>
-          <Table dataSource={courses?.data || []} columns={columns} />;
+          <Table dataSource={courses?.data || []} columns={columns} />
         </Box>
       </Container>
     </>
