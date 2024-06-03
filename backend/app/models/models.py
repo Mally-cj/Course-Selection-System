@@ -137,6 +137,14 @@ class TeacherBase(SQLModel):
     title: str| None = None
     college: str| None = None
 
+    img: str | None = None
+    phone: str 
+    homepage: str
+    address: str
+    postalCode:str
+    Education:str
+
+
 class Teacher(TeacherBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
     # course_id: int = ForeignKey('course.id')
