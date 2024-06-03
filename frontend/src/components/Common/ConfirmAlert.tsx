@@ -30,7 +30,7 @@ const Confirm: React.FC<ConfirmProps> = ({ type, id, isOpen, onClose }) => {
     formState: { isSubmitting },
   } = useForm()
 
-  const deleteEntity = async (id: number) => {
+  const confirmEntity = async (id: number) => {
     console.log("id: ", id)
     if (type === "Item") {
       await ItemsService.itemsConfirmItem({ id: id })
@@ -38,16 +38,20 @@ const Confirm: React.FC<ConfirmProps> = ({ type, id, isOpen, onClose }) => {
       await UsersService.usersConfirmUser({ userId: id })
     } else if (type == "Course") {
       await CoursesService.coursesConfirmCourse({ id: id })
-    } else {
+    } 
+    else if (type == "CourseAudit") {
+      await CoursesService.coursesUpdateAuditCourse({ id: id })
+    }
+    else {
       throw new Error(`Unexpected type: ${type}`)
     }
   }
 
-  const mutation = useMutation(deleteEntity, {
+  const mutation = useMutation(confirmEntity, {
     onSuccess: () => {
       showToast(
         "Success",
-        `The ${type.toLowerCase()} was deleted successfully.`,
+        `The ${type.toLowerCase()} was changed successfully.`,
         "success",
       )
       onClose()
@@ -55,7 +59,7 @@ const Confirm: React.FC<ConfirmProps> = ({ type, id, isOpen, onClose }) => {
     onError: () => {
       showToast(
         "An error occurred.",
-        `An error occurred while deleting the ${type.toLowerCase()}.`,
+        `An error occurred while updating the ${type.toLowerCase()}.`,
         "error",
       )
     },

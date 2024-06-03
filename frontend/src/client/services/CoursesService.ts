@@ -94,6 +94,32 @@ export class CoursesService {
     }
 
     /**
+     * List Checkedcourses
+     * 获取审核未通过的课程
+     * @returns ListResp_CourseOut_ Successful Response
+     * @throws ApiError
+     */
+    public static coursesListUnCheckedcourses({
+        skip,
+        limit = 100,
+    }: {
+        skip?: number,
+        limit?: number,
+    }): CancelablePromise<ListResp_CourseOut_> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/v1/courses/unchecked',
+            query: {
+                'skip': skip,
+                'limit': limit,
+            },
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
      * Create Courses
      * 添加课程课程
      * @returns Course Successful Response
@@ -154,6 +180,33 @@ export class CoursesService {
         return __request(OpenAPI, {
             method: 'PUT',
             url: '/api/v1/courses/{id}',
+            path: {
+                'id': id,
+            },
+            body: requestBody,
+            mediaType: 'application/json',
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
+     * Update Course
+     * 审核通过课程
+     * @returns Course Successful Response
+     * @throws ApiError
+     */
+    public static coursesUpdateAuditCourse({
+        id,
+        requestBody,
+    }: {
+        id: number,
+        requestBody: CourseUpdate,
+    }): CancelablePromise<Course> {
+        return __request(OpenAPI, {
+            method: 'PUT',
+            url: '/api/v1/courses/audit/{id}',
             path: {
                 'id': id,
             },

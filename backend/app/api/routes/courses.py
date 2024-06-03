@@ -46,6 +46,18 @@ def list_checkedcourses(
     items, count = crud.list(Course, session, skip, limit,cond)
     return ListResp(data=items, count=count)
 
+
+@router.get("/unchecked", response_model=ListResp[CourseOut])
+def list_uncheckedcourses(
+    session: SessionDep, current_user: CurrentUser, skip: int = 0, limit: int = 100
+) -> Any:
+    """
+    获取审核未通过的课程
+    """
+    cond = (Course.status == "未审核")
+    items, count = crud.list(Course, session, skip, limit,cond)
+    return ListResp(data=items, count=count)
+
 @router.post("/add", response_model=Course)
 def create_courses(
     session: SessionDep, current_user: CurrentUser, req: CourseCreate
@@ -76,6 +88,18 @@ def update_course(
     """
     data = crud.update(Course, session, id, req)
     return data
+
+
+@router.put("/audit/{id}", response_model=Course)
+def update_course(
+    session: SessionDep, current_user: CurrentUser, id: int, req: CourseUpdate
+) -> Any:
+    """
+    审核通过课程
+    """
+    data = crud.updateAuditCourse(Course, session, id, req)
+    return data
+
 
 @router.delete("/{id}", response_model=Course)
 def delete_course(

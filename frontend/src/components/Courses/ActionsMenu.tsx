@@ -15,6 +15,8 @@ import EditUser from "../Admin/EditUser"
 import Display from "../Courses/Display"
 
 import Delete from "../Common/DeleteAlert"
+import Confirm from "../Common/ConfirmAlert"
+
 import EditCourse from "../Courses/EditCourse"
 import AddCourseannuncement from "../Courses/Addcourse-announcement"
 import EditCourseannouncement from "../Courses/EditCourse-announcement"
@@ -28,6 +30,7 @@ interface ActionsMenuProps {
 const ActionsMenu: React.FC<ActionsMenuProps> = ({ type, value, disabled }) => {
   const editUserModal = useDisclosure()
   const deleteModal = useDisclosure()
+  const confirmModal = useDisclosure()
   const editCourseModal = useDisclosure()
   const editCourseannouncementModal = useDisclosure()
   const addCourseannuncementModal = useDisclosure()
@@ -54,6 +57,14 @@ const ActionsMenu: React.FC<ActionsMenuProps> = ({ type, value, disabled }) => {
             isOpen={editCourseannouncementModal.isOpen}
             onClose={editCourseannouncementModal.onClose}
           />)
+  }
+  else if (type === "CourseAudit") {
+    editItem = (value: any) => (
+      <EditCourse
+        item={value as CourseOut}
+        isOpen={editCourseModal.isOpen}
+        onClose={editCourseModal.onClose}
+      />)
   }
 
     if(type === "Course"){
@@ -151,7 +162,63 @@ const ActionsMenu: React.FC<ActionsMenuProps> = ({ type, value, disabled }) => {
         </Menu>
         </>
           )
-    }else return null
+    }
+    else if(type === "CourseAudit"){
+      return (
+        <>
+        <Menu>
+          <MenuButton
+            isDisabled={disabled}
+            as={Button}
+            rightIcon={<BsThreeDotsVertical />}
+            variant="unstyled"
+          />
+          <MenuList>
+            <MenuItem
+              onClick={editCourseModal.onOpen}
+              icon={<FiEdit fontSize="16px" />}
+            >
+              编辑课程信息
+            </MenuItem>
+            
+            <MenuItem
+              onClick={confirmModal.onOpen}
+              icon={<FiEdit fontSize="16px" />}
+              color="ui.success"
+            >
+              审核通过
+            </MenuItem>
+
+
+            <MenuItem
+              onClick={deleteModal.onOpen}
+              icon={<FiTrash fontSize="16px" />}
+              color="ui.danger"
+            >
+              删除 
+            </MenuItem>
+          </MenuList>
+          {editItem(value)}
+        
+          <Confirm
+            type={type}
+            id={value.id}
+            isOpen={confirmModal.isOpen}
+            onClose={confirmModal.onClose}
+          />
+          
+          <Delete
+            type={type}
+            id={value.id}
+            isOpen={deleteModal.isOpen}
+            onClose={deleteModal.onClose}
+          />
+
+        </Menu>
+        </>
+          )
+    } 
+    else return null
 
 
 }

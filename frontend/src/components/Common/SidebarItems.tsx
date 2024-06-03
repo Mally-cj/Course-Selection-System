@@ -40,6 +40,7 @@ const SidebarItems: React.FC<SidebarItemsProps> = ({ onClose }) => {
     items = [...items, ...[
       { icon: FiUsers, title: "学生管理", path: "/student-management"},
       { icon: FiUsers, title: "教师管理", path: "/teacher-management"},
+      { icon: FiUsers, title: "课程审核", path: "/courses-audit"},
       { icon: FiUsers, title: "统计大厅", path: "/course-Statistic"}
       ]
     ] 
