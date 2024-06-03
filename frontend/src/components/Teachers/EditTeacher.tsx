@@ -14,47 +14,42 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
+
 import { useMutation, useQueryClient } from "react-query";
-import { type ApiError, type TeacherCreate, TeachersService } from "../../client";
+import {
+    type ApiError,
+    type TeacherUpdate,
+    TeachersService,
+} from "../../client";
 import useCustomToast from "../../hooks/useCustomToast";
 
-interface AddTeacherProps {
+interface EditTeacherProps {
+    teacher: TeacherUpdate;
     isOpen: boolean;
     onClose: () => void;
 }
 
-const AddTeacher: React.FC<AddTeacherProps> = ({ isOpen, onClose }) => {
+const EditTeacher: React.FC<EditTeacherProps> = ({ teacher, isOpen, onClose }) => {
     const queryClient = useQueryClient();
     const showToast = useCustomToast();
     const {
         register,
         handleSubmit,
         reset,
-        formState: { errors, isSubmitting },
-    } = useForm<TeacherCreate>({
+        formState: { isSubmitting, errors },
+    } = useForm<TeacherUpdate>({
         mode: "onBlur",
         criteriaMode: "all",
-        defaultValues: {
-            name: "",
-            email: "",
-            title: "",
-            college: "",
-            phone: "",
-            homepage: "",
-            address: "",
-            postalCode: "",
-            Education: "",
-        },
+        defaultValues: teacher,
     });
 
-    const addTeacher = async (data: TeacherCreate) => {
-        await TeachersService.teachersCreateTeacher({ requestBody: data });
+    const updateTeacher = async (data: TeacherUpdate) => {
+        await TeachersService.teachersUpdateTeacher({ id: teacher.id, requestBody: data });
     };
 
-    const mutation = useMutation(addTeacher, {
+    const mutation = useMutation(updateTeacher, {
         onSuccess: () => {
-            showToast("Success!", "Teacher added successfully.", "success");
-            reset();
+            showToast("Success!", "Teacher updated successfully.", "success");
             onClose();
         },
         onError: (err: ApiError) => {
@@ -66,16 +61,26 @@ const AddTeacher: React.FC<AddTeacherProps> = ({ isOpen, onClose }) => {
         },
     });
 
-    const onSubmit: SubmitHandler<TeacherCreate> = (data) => {
+    const onSubmit: SubmitHandler<TeacherUpdate> = async (data) => {
         mutation.mutate(data);
+    };
+
+    const onCancel = () => {
+        reset();
+        onClose();
     };
 
     return (
         <>
-            <Modal isOpen={isOpen} onClose={onClose} size={{ base: "sm", md: "md" }} isCentered>
+            <Modal
+                isOpen={isOpen}
+                onClose={onClose}
+                size={{ base: "sm", md: "md" }}
+                isCentered
+            >
                 <ModalOverlay />
                 <ModalContent as="form" onSubmit={handleSubmit(onSubmit)}>
-                    <ModalHeader>添加教师</ModalHeader>
+                    <ModalHeader>编辑教师信息</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody pb={6}>
                         <FormControl isRequired isInvalid={!!errors.name}>
@@ -142,11 +147,11 @@ const AddTeacher: React.FC<AddTeacherProps> = ({ isOpen, onClose }) => {
                                 id="phone"
                                 {...register("phone", {
                                     pattern: {
-                                        value: /^(\+?\d{1,4}[\s-])?(?!0+\s+,?$)\d{10,13}$/i,
+                                        value: /^[0-9]{7,15}$/,
                                         message: "无效的电话号码",
                                     },
                                 })}
-                                placeholder="请输入教师电话"
+                                placeholder="请输入电话号码"
                                 type="tel"
                             />
                             {errors.phone && <FormErrorMessage>{errors.phone.message}</FormErrorMessage>}
@@ -157,11 +162,11 @@ const AddTeacher: React.FC<AddTeacherProps> = ({ isOpen, onClose }) => {
                                 id="homepage"
                                 {...register("homepage", {
                                     pattern: {
-                                        value: /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/,
-                                        message: "无效的主页地址",
+                                        value: /^(https?:\/\/)?([\w\d\-_]+)\.([\w\d\-_]+)([\w\d\-.,@?^=%&:/~+#]*[\w\d\-@?^=%&/~+#])?$/,
+                                        message: "无效的网址",
                                     },
                                 })}
-                                placeholder="请输入教师主页"
+                                placeholder="请输入主页网址"
                                 type="url"
                             />
                             {errors.homepage && <FormErrorMessage>{errors.homepage.message}</FormErrorMessage>}
@@ -170,19 +175,21 @@ const AddTeacher: React.FC<AddTeacherProps> = ({ isOpen, onClose }) => {
                             <FormLabel htmlFor="address">地址</FormLabel>
                             <Input
                                 id="address"
-                                {...register("address")}
-                                placeholder="请输入教师地址"
+                                {...register("address", {
+                                    validate: (value) => value.trim() !== "" || "地址不能为空",
+                                })}
+                                placeholder="请输入地址"
                                 type="text"
                             />
                             {errors.address && <FormErrorMessage>{errors.address.message}</FormErrorMessage>}
                         </FormControl>
                         <FormControl isInvalid={!!errors.postalCode}>
-                            <FormLabel htmlFor="postalCode">邮编</FormLabel>
+                            <FormLabel htmlFor="postalCode">邮政编码</FormLabel>
                             <Input
                                 id="postalCode"
                                 {...register("postalCode", {
                                     pattern: {
-                                        value: /^[0-9]{5}([- ]?[0-9]{4})?$/,
+                                        value: /^[0-9]{5,10}$/,
                                         message: "无效的邮政编码",
                                     },
                                 })}
@@ -191,30 +198,36 @@ const AddTeacher: React.FC<AddTeacherProps> = ({ isOpen, onClose }) => {
                             />
                             {errors.postalCode && <FormErrorMessage>{errors.postalCode.message}</FormErrorMessage>}
                         </FormControl>
-                        <FormControl isRequired isInvalid={!!errors.Education}>
-                            <FormLabel htmlFor="Education">学历</FormLabel>
+                        <FormControl isInvalid={!!errors.Education}>
+                            <FormLabel htmlFor="Education">教育背景</FormLabel>
                             <Input
                                 id="Education"
                                 {...register("Education", {
-                                    required: "学历不能为空",
-                                    validate: (value) => value.trim() !== "" || "学历不能为空",
+                                    validate: (value) => value.trim() !== "" || "教育背景不能为空",
                                 })}
-                                placeholder="请输入教师学历"
+                                placeholder="请输入教育背景"
                                 type="text"
                             />
                             {errors.Education && <FormErrorMessage>{errors.Education.message}</FormErrorMessage>}
                         </FormControl>
                     </ModalBody>
-                    <ModalFooter gap={3}>
-                        <Button variant="primary" type="submit" isLoading={isSubmitting}>
-                            Save
+
+                    <ModalFooter>
+                        <Button onClick={onCancel} mr={3}>
+                            取消
                         </Button>
-                        <Button onClick={onClose}>Cancel</Button>
+                        <Button
+                            colorScheme="blue"
+                            isLoading={isSubmitting}
+                            type="submit"
+                        >
+                            保存
+                        </Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
         </>
     );
-}
+};
 
-export default AddTeacher;
+export default EditTeacher;

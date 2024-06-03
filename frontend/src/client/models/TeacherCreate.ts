@@ -8,8 +8,8 @@ export type TeacherCreate = {
     email?: (string | null);
     title?: (string | null);
     college?: (string | null);
-    phone?: (string | null);
     img?: (string | null);
+    phone?: (string | null);
     homepage?: (string | null);
     address?: (string | null);
     postalCode?: (string | null);
