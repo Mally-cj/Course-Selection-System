@@ -27,7 +27,11 @@ import ReactEcharts from 'echarts-for-react';
 import axisTrigger from "echarts/types/src/component/axisPointer/axisTrigger.js"
 
 function CourseStatistic() {
-
+  
+  const queryClient = useQueryClient()
+  const showToast = useCustomToast()
+ 
+ 
   const {
     data: courses,
     isLoading,
@@ -35,11 +39,11 @@ function CourseStatistic() {
     error,
   } = useQuery("courses", () => CoursesService.coursesListCheckedcourses<CourseOut>({}))
 
-  const values = courses.data.map(course => course.current_capacity);
+  const values = courses?.data.map(course => course.current_capacity);
 
-  const names = courses.data.map(course => course.name);
+  const names = courses?.data.map(course => course.name);
 
-  const dicts = courses.data.map(course => ({
+  const dicts = courses?.data.map(course => ({
     name: course.name,
     value: course.current_capacity
   }));
@@ -102,14 +106,6 @@ function CourseStatistic() {
       ]
   });
   
-  
-  const queryClient = useQueryClient()
-  const showToast = useCustomToast()
- 
-  if (isError) {
-    const errDetail = (error as ApiError).body?.detail
-    showToast("Something went wrong.", `${errDetail}`, "error")
-  }
 
   return (
     <>
