@@ -5,13 +5,7 @@ import {
   Flex,
   Heading,
   Spinner,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
+  Text
 } from "@chakra-ui/react"
 import { createFileRoute } from "@tanstack/react-router"
 import { useQuery, useQueryClient } from "react-query"
@@ -21,18 +15,34 @@ import ActionsMenu from "../../components/Common/ActionsMenu"
 import Navbar from "../../components/Common/Navbar"
 import useCustomToast from "../../hooks/useCustomToast"
 
+import { CourseOut, CoursesService } from "../../client"
+
 export const Route = createFileRoute("/_layout/course-statistic")({
-  component: TeacherManage,
+  component: CourseStatistic,
 })
 
 // TODO: 可以加个管理员身份验证
 
 import ReactEcharts from 'echarts-for-react';
+import axisTrigger from "echarts/types/src/component/axisPointer/axisTrigger.js"
 
+function CourseStatistic() {
 
-function TeacherManage() {
-  const sales = [2, 2, 1, 1, 1, 2];
-  //const stores = [15, 120, 36, 110, 110, 20];
+  const {
+    data: courses,
+    isLoading,
+    isError,
+    error,
+  } = useQuery("courses", () => CoursesService.coursesListCheckedcourses<CourseOut>({}))
+
+  const values = courses.data.map(course => course.current_capacity);
+
+  const names = courses.data.map(course => course.name);
+
+  const dicts = courses.data.map(course => ({
+    name: course.name,
+    value: course.current_capacity
+  }));
 
   // 配置选项
   const getOption = () => {
@@ -45,14 +55,18 @@ function TeacherManage() {
         data: ['选课人数']
       },
       xAxis: {
-        data: ["数学", "英语", "qqq", "小明", "整时展", "2525"]
+        data: names,
+        axisLabel: {
+        interval: 0   // 强制显示所有标签
       },
+      },
+      
       yAxis: {},
       series: [
         {
           name: '选课人数',
           type: 'bar',
-          data: sales
+          data: values
         },
         
       ]
@@ -76,14 +90,7 @@ function TeacherManage() {
           name: '选课率',
           type: 'pie',
           radius: '50%',
-          data: [
-            { value: 2, name: '数学' },
-            { value: 2, name: '英语' },
-            { value: 1, name: 'qqq' },
-            { value: 1, name: '小明' },
-            { value: 1, name: '整时展' },
-            { value: 2, name: '2515' }
-          ],
+          data: dicts,
           emphasis: {
             itemStyle: {
               shadowBlur: 10,
@@ -98,14 +105,7 @@ function TeacherManage() {
   
   const queryClient = useQueryClient()
   const showToast = useCustomToast()
-  const currentUser = queryClient.getQueryData<UserOut>("currentUser")
-  const {
-    data: teachers,
-    isLoading,
-    isError,
-    error,
-  } = useQuery("teachers", () => TeachersService.teachersListTeacher({}))
-
+ 
   if (isError) {
     const errDetail = (error as ApiError).body?.detail
     showToast("Something went wrong.", `${errDetail}`, "error")
@@ -119,7 +119,7 @@ function TeacherManage() {
           <Spinner size="xl" color="ui.main" />
         </Flex>
       ) : (
-        teachers && (
+        courses && (
           <Container maxW="full">
             <Heading
               size="lg"
@@ -134,7 +134,7 @@ function TeacherManage() {
       style={{ height: '400px', width: '100%' }}
       />
 
-      <ReactEcharts option={getOption2()} style={{ height: '400px', width: '100%' }}/>
+      <ReactEcharts option={getOption2()} style={{ height: '400px', width: '100%' }}/> 
           </Container>
         )
       )}
@@ -144,4 +144,4 @@ function TeacherManage() {
 
 
 
-export default TeacherManage
+export default CourseStatistic
