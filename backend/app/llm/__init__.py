@@ -30,7 +30,7 @@ class SearchInput(BaseModel):
 
 class SearchCourseTool(BaseTool):
     name = "search_course"
-    description = "查询课程信息, 只需要告知学生课程的名称，授课老师，和授课时间"
+    description = "查询可选的课程信息然后做推荐, 可选的课程是审核通过的课程，只需要告知学生课程的名称，授课老师，和授课时间，最后总结下推荐理由"
     args_schema: Type[BaseModel] = SearchInput
     session: Session
     def _run(
@@ -52,7 +52,7 @@ class CourseCommentInput(BaseModel):
     course_id: int = Field(description="课程id")
 class CourseCommentTool(BaseTool):
     name = "course_comment_query"
-    description = "查询课程评价信息"
+    description = "查询课程评价信息，只显示评价内容。最后对这个课程做总结评价"
     args_schema: Type[BaseModel] = CourseCommentInput
     session: Session
     def _run(

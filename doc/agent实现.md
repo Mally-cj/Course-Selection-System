@@ -34,7 +34,7 @@ services:
 
 #### kimi逆向存在问题
 
-kimi这个逆向的仓库不支持 使用agent技术。故而用了gpt
+kimi这个逆向的仓库不支持 使用agent技术 [支持函数调用吗？ · Issue #87 · LLM-Red-Team/kimi-free-api (github.com)](https://github.com/LLM-Red-Team/kimi-free-api/issues/87)。故而用了gpt
 
 
 
@@ -43,6 +43,8 @@ kimi这个逆向的仓库不支持 使用agent技术。故而用了gpt
 使用**langchain**这个包实现，使用文档见[构建一个简单的LLM应用程序 |🦜️🔗 LangChain的 --- Build a Simple LLM Application | 🦜️🔗 LangChain](https://python.langchain.com/v0.2/docs/tutorials/llm_chain/)
 
 在backend/app/llm/__init__.py 中定义了gpt接口的调用 和 agent的工具实现，
+
+
 
 
 
